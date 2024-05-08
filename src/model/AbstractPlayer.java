@@ -9,9 +9,12 @@ public abstract class AbstractPlayer {
     private final int filtroSizeRiga ;
     private final int filtroSizeColonna;
 
-    public AbstractPlayer(Position position, int filtroSizeRiga, int filtroSizeColonna) {
+    public AbstractPlayer(Position position, int filtroSizeRiga, int filtroSizeColonna) { //super classe di player
         this.filtroSizeColonna= filtroSizeColonna;
         this.filtroSizeRiga= filtroSizeRiga;
         this.position= position;
     }
+
+    Position getPosition()
+    {return position;}
 }

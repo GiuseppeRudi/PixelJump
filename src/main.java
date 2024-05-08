@@ -8,7 +8,8 @@ public class main {
 
     public static void main(String[] args) throws IOException {
         World world = new World();
-        world.inizializzaMatrice();
+        world.inizializzaMatricePrincipale();
+        world.stampa_matrice_principale();
 
     }
 }

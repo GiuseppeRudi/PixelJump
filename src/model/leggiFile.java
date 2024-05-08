@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class leggiFile {
-    public List<String> leggi(String nomeFile) throws IOException {
+    public List<String> leggi(String nomeFile) throws IOException { //legge tutte le righe del file prendendo come parametro il nomefile
         return Files.readAllLines(Path.of(nomeFile));
     }
 }
