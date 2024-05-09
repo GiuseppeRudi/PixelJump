@@ -1,4 +1,4 @@
-package model;
+package application.model;
 
 //questa classe serve per creare piu player , nemici che utilizzano questo modello
 // generale su cui altri classi che la estendono possono usare
@@ -14,6 +14,7 @@ public abstract class AbstractPlayer {
         this.filtroSizeRiga= filtroSizeRiga;
         this.position= position;
     }
+
 
     Position getPosition()
     {return position;}
