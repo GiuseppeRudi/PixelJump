@@ -1,11 +1,19 @@
 package application.model;
 
+import java.util.LinkedList;
+
 public class Player  extends AbstractPlayer{
 
+    private LinkedList<Position> coordinatePlayer = new LinkedList<>();
+
     private int direction = Settings.NOT_MOVING;
-    public Player(Position position, int filtroSizeRiga, int filtroSizeColonna) { //costruttore player
-        super(position,filtroSizeRiga,filtroSizeColonna); //richiama la super classe
+
+
+    public Player(LinkedList<Position> coordinate) { //costruttore player
+        super(coordinate); //richiama la super classe
+
     }
+
 
 
     public void updateDirection(int direction) {

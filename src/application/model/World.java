@@ -1,25 +1,32 @@
 package application.model;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 
 public class World {
 
-    boolean movePlayer()
-    {
 
+    World() throws IOException {
+        inizializzaMatricePrincipale();
+
+        coordinatePlayer.add(new Position(15,5));
+        coordinatePlayer.add(new Position(16,5));
     }
-
-    World() throws IOException {inizializzaMatricePrincipale();}
 
     enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO};
     //vuoto == 0 ; terra == 1 ; personaggio == 2 nemico == 3 ; muro == 4
 
     private final Block[][] matrice_Principale  = new Block[Settings.World_Size_Riga][Settings.World_Size_Colonna];
-    private final int [][] matrice_filtro = new int[Settings.Filtro_Size_Riga][Settings.Filtro_Size_Colonna];
-    private final Player player = new Player(new Position(Settings.Filtro_Size_Riga-5,5,Settings.Filtro_Size_Riga-4,5), Settings.Filtro_Size_Riga,Settings.Filtro_Size_Colonna); //mette il player in posizione 0,0 , la grandezza della riga
+
+
+    private  LinkedList<Position> coordinatePlayer = new LinkedList<>();
+
+    private final Player player = new Player(coordinatePlayer); //mette il player in posizione 0,0 , la grandezza della riga
     public void inizializzaMatricePrincipale() throws IOException {  //legge il file e quindi la matrice
+
+
         leggiFile file = new leggiFile();
         List<String>  viewPort = file.leggi("src/application.resources/livelli/LivelloProva.txt");
 
@@ -44,8 +51,9 @@ public class World {
             }
         }
 
-        matrice_Principale[player.getPosition().testa_r()][player.getPosition().testa_c()]=Block.PERSONAGGIO;
-        matrice_Principale[player.getPosition().corpo_r()][player.getPosition().corpo_c()]=Block.PERSONAGGIO;
+
+        matrice_Principale[coordinatePlayer.getFirst().i()][coordinatePlayer.getFirst().j()]=Block.PERSONAGGIO;
+        matrice_Principale[coordinatePlayer.get(1).j()][coordinatePlayer.get(1).j()]=Block.PERSONAGGIO;
     }
 
     public void updateDirection(int direction) {
@@ -64,7 +72,7 @@ public class World {
     }
 
 
-    public boolean isWall(int i,int j) {return isType(i,j,Block.MURO)}
+    public boolean isWall(int i,int j) {return isType(i,j,Block.MURO);}
 
 
 

@@ -3,19 +3,17 @@ package application.model;
 //questa classe serve per creare piu player , nemici che utilizzano questo modello
 // generale su cui altri classi che la estendono possono usare
 
+import java.util.LinkedList;
+
 public abstract class AbstractPlayer {
 
-    private Position position;
-    private final int filtroSizeRiga ;
-    private final int filtroSizeColonna;
+    private LinkedList<Position> coordinate;
 
-    public AbstractPlayer(Position position, int filtroSizeRiga, int filtroSizeColonna) { //super classe di player
-        this.filtroSizeColonna= filtroSizeColonna;
-        this.filtroSizeRiga= filtroSizeRiga;
-        this.position= position;
+    public AbstractPlayer(LinkedList<Position> coordinate) { //super classe di player
+        this.coordinate= coordinate;
     }
 
 
-    Position getPosition()
-    {return position;}
+    LinkedList<Position> getPosition()
+    {return coordinate;}
 }
