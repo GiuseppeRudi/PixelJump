@@ -19,18 +19,21 @@ public class Game
 
     public static Game getInstance() {return instance;}
 
-    public void setDirections(int direction)  {world.updateDirection(direction);}
+    public void setDirection(int direction)  {world.updateDirection(direction);}
 
+
+    //viene chiamata dal player controller
     public void update()
     {
-        if(world.movePlayer)
-        {
-           //qualcosa
-        }
+//        if(world.movePlayer())
+//        {
+//           //qualcosa
+//        }
+        //AL MOMENTO SENZA IF PERCHE LE MONETE NON CI SERVONO
+        world.movePlayer();
     }
 
     public World getWorld() { return world;}
-
 
 
 

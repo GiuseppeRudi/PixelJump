@@ -11,8 +11,14 @@ public class World {
     World() throws IOException {
         inizializzaMatricePrincipale();
 
-        coordinatePlayer.add(new Position(15,5));
-        coordinatePlayer.add(new Position(16,5));
+        coordinatePlayer.add(new Position(15,5)); //la posizione 0 ha la testa
+        coordinatePlayer.add(new Position(16,5)); //la posizione 1 ha il corpo
+    }
+
+
+    //serve per far muovere il player e aggiornare la sua posizione sulla matrice principale
+    public void movePlayer() {
+        LinkedList<Position> position = player.simulateMove();
     }
 
     enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO};
@@ -57,6 +63,7 @@ public class World {
     }
 
     public void updateDirection(int direction) {
+        //CHIAMO LA FUNZIONE PER AGGIORNARE LA DIREZIONE DEL PLAYER
         player.updateDirection(direction);
     }
 

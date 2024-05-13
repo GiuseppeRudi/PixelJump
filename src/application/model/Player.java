@@ -17,6 +17,13 @@ public class Player  extends AbstractPlayer{
 
 
     public void updateDirection(int direction) {
+        //aggiorno la direction del player
         this.direction = direction;
+    }
+
+    //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
+    @Override
+    public LinkedList<Position> simulateMove() {
+        return super.simulateMove(direction);
     }
 }
