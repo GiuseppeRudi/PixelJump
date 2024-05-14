@@ -9,10 +9,12 @@ public class World {
 
 
     World() throws IOException {
-        inizializzaMatricePrincipale();
 
         coordinatePlayer.add(new Position(15,5)); //la posizione 0 ha la testa
         coordinatePlayer.add(new Position(16,5)); //la posizione 1 ha il corpo
+
+        inizializzaMatricePrincipale();
+
     }
 
 
@@ -34,6 +36,7 @@ public class World {
 
         }
 
+        System.out.println(count);
         if (count==2)
         {
             //getPosition prende da parametro un intero che se è 0 restituisce la position della testa 1 il corpo
@@ -44,6 +47,10 @@ public class World {
                 matrice_Principale[player.getPosition(k).i()][player.getPosition(k).j()] = Block.VUOTO;
             }
             player.move();
+
+            //qui dopo che si muove metto not moving cosi sta ferma e non va in quella direzione in loop
+            updateDirection(Settings.NOT_MOVING);
+
             //aggiorniamo nella matrice principale la nuova posizione del personaggio
             for(int k=0; k<coordinatePlayer.size();k++)
             {
@@ -51,6 +58,8 @@ public class World {
             }
         }
     }
+
+
 
     enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO};
     //vuoto == 0 ; terra == 1 ; personaggio == 2 nemico == 3 ; muro == 4
@@ -65,7 +74,7 @@ public class World {
 
 
         leggiFile file = new leggiFile();
-        List<String>  viewPort = file.leggi("src/application.resources/livelli/LivelloProva.txt");
+        List<String>  viewPort = file.leggi("src/application/resources/livelli/LivelloProva.txt");
 
         System.out.println(viewPort.size());
         System.out.println(viewPort.get(0).length());
@@ -85,17 +94,36 @@ public class World {
                 else if (cella=='3') {
                     matrice_Principale[i][j] =Block.NEMICO;
                 }
+                else if (cella=='4')
+                {
+                    matrice_Principale[i][j] = Block.MURO;
+                }
             }
         }
 
 
         matrice_Principale[coordinatePlayer.getFirst().i()][coordinatePlayer.getFirst().j()]=Block.PERSONAGGIO;
-        matrice_Principale[coordinatePlayer.get(1).j()][coordinatePlayer.get(1).j()]=Block.PERSONAGGIO;
+        matrice_Principale[coordinatePlayer.get(1).i()][coordinatePlayer.get(1).j()]=Block.PERSONAGGIO;
+    }
+
+    public void stampamatrice()
+    {
+        for (int i=0; i<matrice_Principale.length;i++)
+        {
+            for(int j=0; j<matrice_Principale[i].length;j++)
+            {
+                System.out.print(matrice_Principale[i][j] + " ");
+            }
+
+            System.out.println();
+        }
     }
 
     public void updateDirection(int direction) {
         //CHIAMO LA FUNZIONE PER AGGIORNARE LA DIREZIONE DEL PLAYER
         player.updateDirection(direction);
+
+        stampamatrice();
     }
 
     private boolean isType(int i,int j,Block b)
@@ -106,12 +134,14 @@ public class World {
     }
 
     private boolean isValidPosition(int i, int j) {
-        return i>=0 && i<Settings.World_Size_Riga && j>=0 && j<Settings.World_Size_Colonna && !isWall(i,j);
+        return i>=0 && i<Settings.World_Size_Riga && j>=0 && j<Settings.World_Size_Colonna;
     }
 
 
     public boolean isWall(int i,int j) {return isType(i,j,Block.MURO);}
 
     public boolean isPlayer(int i,int j) {return isType(i,j,Block.PERSONAGGIO);}
+
+    public boolean isTerra(int i, int j) { return isType(i,j,Block.TERRA);}
 
 }

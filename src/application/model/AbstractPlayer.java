@@ -26,17 +26,22 @@ public abstract class AbstractPlayer {
         int testa_j = coordinate.getFirst().j();
 
         int corpo_i = coordinate.get(1).i();
-        int corpo_J = coordinate.get(1).j();
+        int corpo_j = coordinate.get(1).j();
 
         // per il momento commetanto serve per controllare se il gioco va in contro a qualcosa
-//
-//        switch (direction) {
-//            case Settings.MOVE_LEFT -> x = (worldSize+x-1) % worldSize;
-//            case Settings.MOVE_RIGHT -> x = (x+1) % worldSize;
-//            case Settings.JUMP -> y = (worldSize+y-1) % worldSize;
-//
-//        }
-        return coordinate;
+
+        switch (direction) {
+            case Settings.MOVE_LEFT -> { testa_j= testa_j-1; corpo_j=corpo_j-1;}
+            case Settings.MOVE_RIGHT -> { testa_j= testa_j+1; corpo_j=corpo_j+1;}
+            case Settings.JUMP -> { testa_i= testa_i-2;  corpo_i= corpo_i-2;}
+        }
+
+        System.out.print(testa_i);
+        System.out.println(corpo_i);
+        LinkedList<Position> newCoordinate = new LinkedList<>();
+        newCoordinate.add(new Position(testa_i,testa_j));
+        newCoordinate.add(new Position(corpo_i,corpo_j));
+        return newCoordinate;
     }
 
     //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions

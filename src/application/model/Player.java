@@ -22,7 +22,12 @@ public class Player  extends AbstractPlayer{
 
     public void updateDirection(int direction) {
         //aggiorno la direction del player
+        System.out.println("vecchia direzione: " );
+        System.out.println(direction);
         this.direction = direction;
+
+        System.out.println("nuova direzione: " );
+        System.out.println(direction);
     }
 
     //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions

@@ -13,11 +13,10 @@ public class Settings {
     public final static int Filtro_Size_Colonna = 30;
 
     // grandezza Jframe da visualizzare
-    public static final int WINDOW_SIZE_X = Filtro_Size_Riga*30;
-    public static final int WINDOW_SIZE_Y = Filtro_Size_Colonna*30;
+    public static final int WINDOW_SIZE_X = Filtro_Size_Riga*30; //20*30=600
+    public static final int WINDOW_SIZE_Y = Filtro_Size_Colonna*30; //30*30= 900
 
     public final static int CELL_SIZE_RIGA = WINDOW_SIZE_X /Filtro_Size_Riga;
-
     public final static int CELL_SIZE_COLONNA = WINDOW_SIZE_Y /Filtro_Size_Colonna;
 
     //costanti che ci fanno capire associando ad un valore un movimento dove il giocatore si sposta

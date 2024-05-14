@@ -20,7 +20,9 @@ public class Game
 
     public static Game getInstance() {return instance;}
 
-    public void setDirection(int direction)  {world.updateDirection(direction);}
+    public void setDirection(int direction)  {
+
+        world.updateDirection(direction);}
 
 
     //viene chiamata dal player controller
