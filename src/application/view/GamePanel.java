@@ -16,14 +16,25 @@ public class GamePanel extends JPanel {
     private final PlayerView playerView = new PlayerView();
 
     private Image backgroundImage;
+    private Image personaggio;
+    private Image bloccoTerra;
+    private Image bloccoMuro;
+
 
     public void setController(ControllerPlayer controllerPlayer) {
         this.addKeyListener(controllerPlayer);
     }
 
     public GamePanel() throws IOException {
-        backgroundImage = ImageIO.read(new File("src/application/resources/background/10.png"));
+        backgroundImage = ImageIO.read(new File("src/application/resources/background/8.png"));
         backgroundImage=backgroundImage.getScaledInstance(Settings.WINDOW_SIZE_Y,Settings.WINDOW_SIZE_X,Image.SCALE_SMOOTH);
+        personaggio = ImageIO.read(new File("src/application/resources/personaggio/prova.png"));
+        personaggio=personaggio.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        bloccoTerra = ImageIO.read(new File("src/application/resources/background/bloccoTerra.jpg"));
+        bloccoTerra=bloccoTerra.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoMuro = ImageIO.read(new File("src/application/resources/background/Muro.png"));
+        bloccoMuro=bloccoMuro.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+
     }
 
 
@@ -33,9 +44,11 @@ public class GamePanel extends JPanel {
     }
 
 
+    boolean trovatoPersonaggio =false;
     @Override
     protected void paintComponent(Graphics g) {
 
+        trovatoPersonaggio=false;
         super.paintComponent(g);
 
         g.drawImage(backgroundImage,0,0,this);
@@ -53,19 +66,25 @@ public class GamePanel extends JPanel {
 
 
                 if(world.isWall(i, j)) {
-                    g.setColor(Color.BLUE);
-                    g.fillRect(colonna, riga, Settings.CELL_SIZE_RIGA, Settings.CELL_SIZE_COLONNA);
+                    g.drawImage(bloccoMuro,colonna,riga,this);
 
                 }
                 else if(world.isPlayer(i, j)) {
-                    g.setColor(Color.WHITE);
-                    g.fillRect(colonna, riga, Settings.CELL_SIZE_RIGA, Settings.CELL_SIZE_COLONNA);
-                    //g.drawImage(playerView.getCurrentImage(), x, y, null);
+
+                    if (!trovatoPersonaggio)
+                    {
+                        g.drawImage(personaggio,colonna,riga,this);
+                        trovatoPersonaggio=true;
+                    }
+
+
+//                    g.setColor(Color.WHITE);
+//                    g.fillRect(colonna, riga, Settings.CELL_SIZE_RIGA, Settings.CELL_SIZE_COLONNA);
+
                 }
                 else if(world.isTerra(i,j))
                 {
-                    g.setColor(Color.GREEN);
-                    g.fillRect(colonna, riga, Settings.CELL_SIZE_RIGA, Settings.CELL_SIZE_COLONNA);
+                    g.drawImage(bloccoTerra,colonna,riga,this);
                 }
             }
         }
