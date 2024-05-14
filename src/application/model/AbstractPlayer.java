@@ -14,8 +14,11 @@ public abstract class AbstractPlayer {
     }
 
 
-    LinkedList<Position> getPosition()
-    {return coordinate;}
+    Position getPosition(int i)
+    {
+        return coordinate.get(i);
+    }
+
 
     protected LinkedList<Position> simulateMove(int direction)
     {
@@ -38,7 +41,13 @@ public abstract class AbstractPlayer {
 
     //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
 
+    protected void move(int direction)
+    {
+        //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world
+        coordinate = simulateMove(direction);
+    }
 
+    abstract void move();
 
     // perche questo simulateMove di player è diverso da simulateplayer di abstract
     abstract LinkedList<Position> simulateMove();

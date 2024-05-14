@@ -15,6 +15,10 @@ public class Player  extends AbstractPlayer{
     }
 
 
+    @Override
+    public void move(){super.move(direction);}
+
+
 
     public void updateDirection(int direction) {
         //aggiorno la direction del player

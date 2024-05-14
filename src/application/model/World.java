@@ -18,7 +18,38 @@ public class World {
 
     //serve per far muovere il player e aggiornare la sua posizione sulla matrice principale
     public void movePlayer() {
-        LinkedList<Position> position = player.simulateMove();
+        //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
+        LinkedList<Position> newPosition = player.simulateMove();
+
+        //devo verificare che le nuove posizioni sia valide
+        int count =0;
+        for (Position p : newPosition)
+        {
+
+            //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
+            if(isValidPosition(p.i(),p.j()))
+            {
+                count++;
+            }
+
+        }
+
+        if (count==2)
+        {
+            //getPosition prende da parametro un intero che se è 0 restituisce la position della testa 1 il corpo
+            //  abbiamo prima controllato che possiamo cambiare posizione e se la possiamo cambiare
+            // prima prendiamo le coordinate precedenti e ci mettiamo il blocco vuoto
+            for (int k=0; k<coordinatePlayer.size();k++)
+            {
+                matrice_Principale[player.getPosition(k).i()][player.getPosition(k).j()] = Block.VUOTO;
+            }
+            player.move();
+            //aggiorniamo nella matrice principale la nuova posizione del personaggio
+            for(int k=0; k<coordinatePlayer.size();k++)
+            {
+                matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
+            }
+        }
     }
 
     enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO};
@@ -75,12 +106,12 @@ public class World {
     }
 
     private boolean isValidPosition(int i, int j) {
-        return i>=0 && i<Settings.World_Size_Riga && j>=0 && j<Settings.World_Size_Colonna;
+        return i>=0 && i<Settings.World_Size_Riga && j>=0 && j<Settings.World_Size_Colonna && !isWall(i,j);
     }
 
 
     public boolean isWall(int i,int j) {return isType(i,j,Block.MURO);}
 
-
+    public boolean isPlayer(int i,int j) {return isType(i,j,Block.PERSONAGGIO);}
 
 }

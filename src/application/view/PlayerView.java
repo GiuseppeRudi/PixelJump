@@ -9,4 +9,10 @@ public class PlayerView {
             //serve l'indice per scegliere a seconda del movimento l'immagine
         }
     }
+
+    public void update()
+    {
+        //serve per creare un animazione
+    }
+
 }
