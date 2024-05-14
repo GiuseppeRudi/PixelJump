@@ -28,16 +28,14 @@ public abstract class AbstractPlayer {
         int corpo_i = coordinate.get(1).i();
         int corpo_j = coordinate.get(1).j();
 
-        // per il momento commetanto serve per controllare se il gioco va in contro a qualcosa
-
         switch (direction) {
             case Settings.MOVE_LEFT -> { testa_j= testa_j-1; corpo_j=corpo_j-1;}
             case Settings.MOVE_RIGHT -> { testa_j= testa_j+1; corpo_j=corpo_j+1;}
-            case Settings.JUMP -> { testa_i= testa_i-2;  corpo_i= corpo_i-2;}
+            case Settings.JUMP -> { testa_i= testa_i-4;  corpo_i= corpo_i-4;}
         }
 
-        System.out.print(testa_i);
-        System.out.println(corpo_i);
+//        System.out.print(testa_i);
+//        System.out.println(corpo_i);
         LinkedList<Position> newCoordinate = new LinkedList<>();
         newCoordinate.add(new Position(testa_i,testa_j));
         newCoordinate.add(new Position(corpo_i,corpo_j));

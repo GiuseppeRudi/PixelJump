@@ -18,7 +18,7 @@ public class ControllerPlayer  extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("ciao");
+//        System.out.println("ciao");
         int direction = switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT -> Settings.MOVE_LEFT;
             case KeyEvent.VK_RIGHT -> Settings.MOVE_RIGHT;
@@ -28,7 +28,7 @@ public class ControllerPlayer  extends KeyAdapter {
             default -> Settings.NOT_MOVING;
         };
 
-        System.out.println(direction);
+//        System.out.println(direction);
 
         if(direction == Settings.EXIT)
             System.exit(0);
