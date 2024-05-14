@@ -123,7 +123,7 @@ public class World {
         //CHIAMO LA FUNZIONE PER AGGIORNARE LA DIREZIONE DEL PLAYER
         player.updateDirection(direction);
 
-        stampamatrice();
+        //stampamatrice();
     }
 
     private boolean isType(int i,int j,Block b)

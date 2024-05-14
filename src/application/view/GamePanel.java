@@ -5,20 +5,25 @@ import application.model.Game;
 import application.model.Settings;
 import application.model.World;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class GamePanel extends JPanel {
 
     private final PlayerView playerView = new PlayerView();
 
+    private Image backgroundImage;
 
     public void setController(ControllerPlayer controllerPlayer) {
         this.addKeyListener(controllerPlayer);
     }
 
-    public GamePanel() {
-        setBackground(Color.BLACK);
+    public GamePanel() throws IOException {
+        backgroundImage = ImageIO.read(new File("src/application/resources/background/10.png"));
+        backgroundImage=backgroundImage.getScaledInstance(Settings.WINDOW_SIZE_Y,Settings.WINDOW_SIZE_X,Image.SCALE_SMOOTH);
     }
 
 
@@ -30,7 +35,11 @@ public class GamePanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+
         super.paintComponent(g);
+
+        g.drawImage(backgroundImage,0,0,this);
+
         World world = Game.getInstance().getWorld();
 
         for(int i = 0; i < Settings.Filtro_Size_Riga; i++) {
