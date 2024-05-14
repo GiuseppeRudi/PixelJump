@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
     }
 
     public GamePanel() throws IOException {
-        backgroundImage = ImageIO.read(new File("src/application/resources/background/8.png"));
+        backgroundImage = ImageIO.read(new File("src/application/resources/background/cielo.jpg"));
         backgroundImage=backgroundImage.getScaledInstance(Settings.WINDOW_SIZE_Y,Settings.WINDOW_SIZE_X,Image.SCALE_SMOOTH);
         personaggio = ImageIO.read(new File("src/application/resources/personaggio/prova.png"));
         personaggio=personaggio.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
