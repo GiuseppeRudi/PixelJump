@@ -10,9 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 
 public class GamePanel extends JPanel {
-
     private final PlayerView playerView = new PlayerView();
 
     private ImmaginiGioco immaginiGioco = new ImmaginiGioco();
@@ -23,10 +23,42 @@ public class GamePanel extends JPanel {
 
     public GamePanel(ImmaginiGioco immaginigioco) throws IOException {this.immaginiGioco = immaginigioco;}
 
+    static boolean startAnimazione = false;
+    int indiceCorrente =0;
+
+
+    private Timer timer ;
+
+    Image[] animazioneDestra = new Image[4];
 
     public void updateDirection(int direction) {
         //il panel aggiorna la direzione del player sulla view
-        playerView.setDirection(direction);
+        //playerView.setDirection(direction);
+
+        System.out.println("sono entrato");
+        startAnimazione= true;
+        animazioneDestra = immaginiGioco.getAnimazioneDestra();
+
+        timer = new Timer(100, e -> {
+
+            if (indiceCorrente < animazioneDestra.length-1) {
+                System.out.println("--SONO IN TIMER--");
+                System.out.println(startAnimazione);
+                System.out.println(indiceCorrente);
+                System.out.println("-------------");
+                this.repaint();
+                indiceCorrente++;
+            } else {
+                ((Timer) e.getSource()).stop();
+                indiceCorrente = 0;
+                startAnimazione = false;
+            }
+
+        });
+
+        System.out.println("timer partito");
+        timer.start();
+
     }
 
     boolean trovatoPersonaggio =false;
@@ -52,9 +84,19 @@ public class GamePanel extends JPanel {
                     g.drawImage(immaginiGioco.getBloccoMuro(),colonna,riga,this);
                 }
                 else if(world.isPlayer(i, j)) {
+                    System.out.println("-- SONO IN PAINT --");
+                    System.out.println(startAnimazione);
+                    System.out.println(indiceCorrente);
+                    System.out.println("-------------");
                     if (!trovatoPersonaggio)
                     {
-                        g.drawImage(immaginiGioco.getPersonaggio(),colonna,riga,this);
+                        if (startAnimazione)
+                        {
+                            g.drawImage(animazioneDestra[indiceCorrente],colonna-10,riga,this);
+                        }
+
+                        if (!startAnimazione)
+                            {g.drawImage(immaginiGioco.getPersonaggio(),colonna,riga,this);}
                         trovatoPersonaggio=true;
                     }
 //                    g.setColor(Color.WHITE);
@@ -79,6 +121,7 @@ public class GamePanel extends JPanel {
         playerView.update();
 
         //ristampa ogni volta il paintcomponent che ristampa la matrice
+
         this.repaint();
         //viene chiamato da Game/controllerPlayer
 

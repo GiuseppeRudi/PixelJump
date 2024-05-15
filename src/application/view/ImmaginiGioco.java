@@ -11,6 +11,8 @@ import java.io.IOException;
 public class ImmaginiGioco {
 
     private Image personaggio;
+
+    private final Image[] animazioneDestra = new Image[4];
     private Image backgroundImage ;
     private Image bloccoTerra;
     private Image bloccoErba;
@@ -32,7 +34,10 @@ public class ImmaginiGioco {
         bloccoSpeciale = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoSpeciale.png"));
         bloccoSpeciale = bloccoSpeciale.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
 
-
+        animazioneDestra[0] = ImageIO.read(new File("src/application/resources/personaggio/muove.png"));
+        animazioneDestra[1] = ImageIO.read(new File("src/application/resources/personaggio/muove.png"));
+        animazioneDestra[2] = ImageIO.read(new File("src/application/resources/personaggio/muove_1.png"));
+        animazioneDestra[3] = ImageIO.read(new File("src/application/resources/personaggio/muove_1.png"));
     }
 
     public Image getPersonaggio() {
@@ -57,5 +62,9 @@ public class ImmaginiGioco {
 
     public Image getBloccoSpeciale() {
         return bloccoSpeciale;
+    }
+
+    public Image[] getAnimazioneDestra() {
+        return animazioneDestra;
     }
 }

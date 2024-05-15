@@ -1,9 +1,12 @@
 package application.model;
 
+import application.view.GamePanel;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 public class World {
+
 
     World() throws IOException {
         coordinatePlayer.add(new Position(15,5)); //la posizione 0 ha la testa
@@ -24,14 +27,16 @@ public class World {
             }
         }
 //        System.out.println(count);
-        if (count==2) {
+        if (count==newPosition.size()) {
             //getPosition prende da parametro un intero che se è 0 restituisce la position della testa 1 il corpo
             //  abbiamo prima controllato che possiamo cambiare posizione e se la possiamo cambiare
             // prima prendiamo le coordinate precedenti e ci mettiamo il blocco vuoto
+
             for (int k=0; k<coordinatePlayer.size();k++)
             {
                 matrice_Principale[player.getPosition(k).i()][player.getPosition(k).j()] = Block.VUOTO;
             }
+
             player.move();
             //qui dopo che si muove metto not moving cosi sta ferma e non va in quella direzione in loop
             updateDirection(Settings.NOT_MOVING);

@@ -39,7 +39,9 @@ public class ControllerPlayer  extends KeyAdapter {
             Game.getInstance().setDirection(direction);
 
             // CON QUESTO AGGIORNO LA VIEW
+
             gamePanel.updateDirection(direction);
+
         }
 
         //ANIMAZIONE NEL CASO DI SALTO AL MOMENTO NON SERVE
