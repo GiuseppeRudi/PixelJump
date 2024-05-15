@@ -19,17 +19,17 @@ public class ImmaginiGioco {
 
     public ImmaginiGioco() throws IOException {
 
-        backgroundImage = ImageIO.read(new File("src/application/resources/background/45908.jpg"));
+        backgroundImage = ImageIO.read(new File("src/application/resources/background/sfondo_livello1.jpg"));
         backgroundImage = backgroundImage.getScaledInstance(Settings.WINDOW_SIZE_Y,Settings.WINDOW_SIZE_X,Image.SCALE_SMOOTH);
         personaggio = ImageIO.read(new File("src/application/resources/personaggio/Steve.png"));
         personaggio = personaggio.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
-        bloccoErba = ImageIO.read(new File("src/application/resources/background/bloccoErba.png"));
+        bloccoErba = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoErba.png"));
         bloccoErba = bloccoErba.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        bloccoTerra = ImageIO.read(new File("src/application/resources/background/bloccoTerra.png"));
+        bloccoTerra = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoTerra.png"));
         bloccoTerra = bloccoTerra.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        bloccoMuro = ImageIO.read(new File("src/application/resources/background/Muro.png"));
+        bloccoMuro = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoMuro.png"));
         bloccoMuro = bloccoMuro.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        bloccoSpeciale = ImageIO.read(new File("src/application/resources/background/bloccoSpeciale.png"));
+        bloccoSpeciale = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoSpeciale.png"));
         bloccoSpeciale = bloccoSpeciale.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
 
 
