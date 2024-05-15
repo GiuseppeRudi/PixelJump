@@ -22,7 +22,7 @@ public class World {
         int count =0;
         for (Position p : newPosition) {
             //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
-            if(isValidPosition(p.i(),p.j()) && !isWall(p.i(),p.j())) {
+            if(isValidPosition(p.i(),p.j()) && !isWall(p.i(),p.j()) && !isSpeciale(p.i(), p.j())) {
                 count++;
             }
         }
