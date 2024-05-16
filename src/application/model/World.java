@@ -51,6 +51,10 @@ public class World {
         }
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO,ERBA,SPECIALE};
     //vuoto == 0 ; terra == 1 ; personaggio == 2 nemico == 3 ; muro == 4
     private final Block[][] matrice_Principale  = new Block[Settings.World_Size_Riga][Settings.World_Size_Colonna];

@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 public class Player  extends AbstractPlayer{
 
+    private int progresso=0;
+
     private LinkedList<Position> coordinatePlayer = new LinkedList<>();
 
     private int direction = Settings.NOT_MOVING;
@@ -16,7 +18,21 @@ public class Player  extends AbstractPlayer{
 
 
     @Override
-    public void move(){super.move(direction);}
+    public void move(){
+        super.move(direction);
+        if (direction==Settings.MOVE_RIGHT && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15)
+        {
+            progresso+= (Settings.Filtro_Size_Colonna+progresso-15);
+        }
+        else if(direction==Settings.MOVE_LEFT && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21)
+        {
+            progresso-= ((Settings.Filtro_Size_Colonna+progresso-21)-super.getPosition(0).j());
+        }
+    }
+
+    public int getProgresso() {
+        return progresso;
+    }
 
     public int getDirection() {
         return direction;

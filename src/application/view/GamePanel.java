@@ -27,7 +27,6 @@ public class GamePanel extends JPanel {
     static boolean startAnimazione = false;
     int indiceCorrente =0;
 
-
     private Timer timer ;
 
     Image[] animazioneDestra = new Image[4];
@@ -90,10 +89,11 @@ public class GamePanel extends JPanel {
 //                    g.setColor(Color.YELLOW);
 //                    g.fillOval(x + Settings.CELL_SIZE/4, y + Settings.CELL_SIZE/4, Settings.CELL_SIZE/2, Settings.CELL_SIZE/2);
 //                }
-                if(world.isWall(i, j)) {
+                if(world.isWall(i, j + world.getPlayer().getProgresso())) {
+
                     g.drawImage(immaginiGioco.getBloccoMuro(),colonna,riga,this);
                 }
-                else if(world.isPlayer(i, j)) {
+                else if(world.isPlayer(i, j + world.getPlayer().getProgresso())) {
                     System.out.println("-- SONO IN PAINT --");
                     System.out.println(startAnimazione);
                     System.out.println(indiceCorrente);
@@ -112,14 +112,14 @@ public class GamePanel extends JPanel {
 //                    g.setColor(Color.WHITE);
 //                    g.fillRect(colonna, riga, Settings.CELL_SIZE_RIGA, Settings.CELL_SIZE_COLONNA);
                 }
-                else if(world.isTerra(i,j))
+                else if(world.isTerra(i,j + world.getPlayer().getProgresso()))
                 {
                     g.drawImage(immaginiGioco.getBloccoTerra(),colonna,riga,this);
                 }
-                else if(world.isErba(i,j)){
+                else if(world.isErba(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoErba(),colonna,riga,this);
                 }
-                else if(world.isSpeciale(i,j)){
+                else if(world.isSpeciale(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoSpeciale(), colonna,riga,this);
                 }
             }
