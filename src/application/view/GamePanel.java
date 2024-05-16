@@ -37,28 +37,36 @@ public class GamePanel extends JPanel {
         //playerView.setDirection(direction);
 
         System.out.println("sono entrato");
-        startAnimazione= true;
-        animazioneDestra = immaginiGioco.getAnimazioneDestra();
+        if (!startAnimazione)
+        {
+            startAnimazione= true;
+            animazioneDestra = immaginiGioco.getAnimazioneDestra();
 
-        timer = new Timer(100, e -> {
 
-            if (indiceCorrente < animazioneDestra.length-1) {
-                System.out.println("--SONO IN TIMER--");
-                System.out.println(startAnimazione);
-                System.out.println(indiceCorrente);
-                System.out.println("-------------");
-                this.repaint();
-                indiceCorrente++;
-            } else {
-                ((Timer) e.getSource()).stop();
-                indiceCorrente = 0;
-                startAnimazione = false;
-            }
+            timer = new Timer(100, e -> {
 
-        });
+                if (indiceCorrente < animazioneDestra.length-1) {
+                    System.out.println("--SONO IN TIMER--");
+                    System.out.println(startAnimazione);
+                    System.out.println(indiceCorrente);
+                    System.out.println("-------------");
+                    this.repaint();
+                    indiceCorrente++;
+                } else {
+                    ((Timer) e.getSource()).stop();
+                    indiceCorrente = 0;
+                    startAnimazione = false;
+                }
 
-        System.out.println("timer partito");
-        timer.start();
+            });
+
+            System.out.println("timer partito");
+            timer.start();
+        }
+
+
+
+
 
     }
 
