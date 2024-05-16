@@ -42,7 +42,7 @@ public class GamePanel extends JPanel {
             animazioneDestra = immaginiGioco.getAnimazioneDestra();
 
 
-            timer = new Timer(100, e -> {
+            timer = new Timer(50, e -> {
 
                 if (indiceCorrente < animazioneDestra.length-1) {
                     System.out.println("--SONO IN TIMER--");
@@ -79,6 +79,9 @@ public class GamePanel extends JPanel {
         g.drawImage(immaginiGioco.getBackgroundImage(),0,0,this);
 
         World world = Game.getInstance().getWorld();
+        System.out.println("-----PROGRESSO-----------");
+        System.out.println(world.getPlayer().getProgresso());
+        System.out.println("-----++++++++++++++-----------");
 //        int coordinateGiocatore = trovaGiocatore();
 
         for(int i = 0; i < Settings.Filtro_Size_Riga; i++) {

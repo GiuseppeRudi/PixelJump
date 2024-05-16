@@ -22,7 +22,7 @@ public class Player  extends AbstractPlayer{
         super.move(direction);
         if (direction==Settings.MOVE_RIGHT && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15)
         {
-            progresso+= (Settings.Filtro_Size_Colonna+progresso-15);
+            progresso+= (super.getPosition(0).j()-(Settings.Filtro_Size_Colonna+progresso-15));
         }
         else if(direction==Settings.MOVE_LEFT && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21)
         {

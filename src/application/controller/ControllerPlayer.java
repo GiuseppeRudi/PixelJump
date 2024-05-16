@@ -15,13 +15,13 @@ public class ControllerPlayer  extends KeyAdapter {
         this.gamePanel = gamePanel;
     }
 
-  //  @Override
+//    @Override
 //    public void keyReleased(KeyEvent e) {
 //        if (e.getKeyCode()==KeyEvent.VK_LEFT || e.getKeyCode()==KeyEvent.VK_RIGHT)
 //        {
 //            Game.getInstance().setDirection(Settings.NOT_MOVING);
 //
-//            gamePanel.updateDirection(Settings.NOT_MOVING);
+//           // gamePanel.updateDirection(Settings.NOT_MOVING);
 //        }
 //    }
 
