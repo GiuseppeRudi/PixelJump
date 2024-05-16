@@ -129,23 +129,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-//    private int trovaGiocatore() {
-//
-//        World world = Game.getInstance().getWorld();
-//
-//        for (int i = 0; i < Settings.World_Size_Riga; i++) {
-//
-//            for (int j = 0; j < Settings.World_Size_Colonna; j++) {
-//
-//                if (world.isPlayer(i, j)) {
-//                    System.out.println("coordinata giocatore");
-//                    System.out.println(j);
-//                    return (j);}
-//            }
-//        }
-//        return 0;
-//    }
-
     public  void update() {
         //
         playerView.update();

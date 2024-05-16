@@ -50,32 +50,32 @@ public abstract class AbstractPlayer {
     {
         //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world
         coordinate = simulateMove(direction);
-//
-//        if(direction!=Settings.NOT_MOVING)
-//        {
-//            if(direction==Settings.JUMP)
-//            {
-//                Sound salta = new Sound("jump.wav");
-//                salta.play();
-//            }
-//            //questo serve poiche quando salti controlliamo se lui atterra su un blocco e a seconda del blocco fa
-//            //coordiante get last prendo le coordinate del corpo che gia sono state controllate e vedo per vedere che blocco ce sotto le gambe
-//            if(Game.getInstance().getWorld().isErba(coordinate.getLast().i() + 1, coordinate.getLast().j()) )
-//            {
-//                Sound cammina = new Sound("grass.wav");
-//                cammina.play();
-//            }
-//            else if(Game.getInstance().getWorld().isWall(coordinate.getLast().i() + 1, coordinate.getLast().j()) )
-//            {
-//                Sound cammina = new Sound("wood.wav");
-//                cammina.play();
-//            }
-//            else if(Game.getInstance().getWorld().isSpeciale(coordinate.getLast().i() + 1, coordinate.getLast().j()) )
-//            {
-//                Sound cammina = new Sound("sand.wav");
-//                cammina.play();
-//            }
-//        }
+
+        if(direction!=Settings.NOT_MOVING)
+        {
+            if(direction==Settings.JUMP)
+            {
+                Sound salta = new Sound("jump.wav");
+                salta.play();
+            }
+            //questo serve poiche quando salti controlliamo se lui atterra su un blocco e a seconda del blocco fa
+            //coordiante get last prendo le coordinate del corpo che gia sono state controllate e vedo per vedere che blocco ce sotto le gambe
+            if(Game.getInstance().getWorld().isErba(coordinate.getLast().i() + 1, coordinate.getLast().j()) )
+            {
+                Sound cammina = new Sound("grass.wav");
+                cammina.play();
+            }
+            else if(Game.getInstance().getWorld().isWall(coordinate.getLast().i() + 1, coordinate.getLast().j()) )
+            {
+                Sound cammina = new Sound("wood.wav");
+                cammina.play();
+            }
+            else if(Game.getInstance().getWorld().isSpeciale(coordinate.getLast().i() + 1, coordinate.getLast().j()) )
+            {
+                Sound cammina = new Sound("sand.wav");
+                cammina.play();
+            }
+        }
     }
 
     abstract void move();
