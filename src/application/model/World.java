@@ -38,8 +38,12 @@ public class World {
             }
 
             player.move();
+
             //qui dopo che si muove metto not moving cosi sta ferma e non va in quella direzione in loop
-            if(player.getDirection()==Settings.JUMP)  updateDirection(Settings.NOT_MOVING);
+            //if (player.getDirection()==Settings.JUMP) updateDirection(Settings.NOT_MOVING);
+
+            updateDirection(Settings.NOT_MOVING);
+
             //aggiorniamo nella matrice principale la nuova posizione del personaggio
             for(int k=0; k<coordinatePlayer.size();k++) {
                 matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;

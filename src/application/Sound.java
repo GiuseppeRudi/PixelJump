@@ -10,7 +10,7 @@ public class Sound {
     private Clip clip;
     public Sound(String name) { //Riceve come parametro il nome di una risorsa .wav da riprodurre.
         try {
-            audioIn = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/resources/" + name)));
+            audioIn = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/resources/audio/" + name)));
             clip = AudioSystem.getClip();
             clip.open(audioIn);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

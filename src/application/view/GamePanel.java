@@ -80,11 +80,11 @@ public class GamePanel extends JPanel {
         g.drawImage(immaginiGioco.getBackgroundImage(),0,0,this);
 
         World world = Game.getInstance().getWorld();
-        int coordinateGiocatore = trovaGiocatore();
+//        int coordinateGiocatore = trovaGiocatore();
 
         for(int i = 0; i < Settings.Filtro_Size_Riga; i++) {
             int riga = i * Settings.CELL_SIZE_RIGA; //coordinate x sulla view
-            for(int j = coordinateGiocatore-5; j < coordinateGiocatore+25; j++) {
+            for(int j = 0; j < Settings.Filtro_Size_Colonna; j++) {
                 int colonna = j * Settings.CELL_SIZE_COLONNA; //coordinate y sulla view
 //                if(world.isCoin(i, j)) {
 //                    g.setColor(Color.YELLOW);
@@ -126,22 +126,22 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private int trovaGiocatore() {
-
-        World world = Game.getInstance().getWorld();
-
-        for (int i = 0; i < Settings.World_Size_Riga; i++) {
-
-            for (int j = 0; j < Settings.World_Size_Colonna; j++) {
-
-                if (world.isPlayer(i, j)) {
-                    System.out.println("coordinata giocatore");
-                    System.out.println(j);
-                    return (j);}
-            }
-        }
-        return 0;
-    }
+//    private int trovaGiocatore() {
+//
+//        World world = Game.getInstance().getWorld();
+//
+//        for (int i = 0; i < Settings.World_Size_Riga; i++) {
+//
+//            for (int j = 0; j < Settings.World_Size_Colonna; j++) {
+//
+//                if (world.isPlayer(i, j)) {
+//                    System.out.println("coordinata giocatore");
+//                    System.out.println(j);
+//                    return (j);}
+//            }
+//        }
+//        return 0;
+//    }
 
     public  void update() {
         //
