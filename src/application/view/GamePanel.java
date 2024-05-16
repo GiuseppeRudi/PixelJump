@@ -35,7 +35,7 @@ public class GamePanel extends JPanel {
         //il panel aggiorna la direzione del player sulla view
         //playerView.setDirection(direction);
 
-        System.out.println("sono entrato");
+        //System.out.println("sono entrato");
         if (!startAnimazione)
         {
             startAnimazione= true;
@@ -45,11 +45,11 @@ public class GamePanel extends JPanel {
             timer = new Timer(50, e -> {
 
                 if (indiceCorrente < animazioneDestra.length-1) {
-                    System.out.println("--SONO IN TIMER--");
-                    System.out.println(startAnimazione);
-                    System.out.println(indiceCorrente);
-                    System.out.println("-------------");
-                    this.repaint();
+//                    System.out.println("--SONO IN TIMER--");
+//                    System.out.println(startAnimazione);
+//                    System.out.println(indiceCorrente);
+//                    System.out.println("-------------");
+                    repaint();
                     indiceCorrente++;
                 } else {
                     ((Timer) e.getSource()).stop();
@@ -59,7 +59,7 @@ public class GamePanel extends JPanel {
 
             });
 
-            System.out.println("timer partito");
+            //System.out.println("timer partito");
             timer.start();
         }
 
@@ -69,6 +69,7 @@ public class GamePanel extends JPanel {
 
     }
 
+    int spostamento_immagine;
     boolean trovatoPersonaggio =false;
     @Override
     protected void paintComponent(Graphics g) {
@@ -79,9 +80,9 @@ public class GamePanel extends JPanel {
         g.drawImage(immaginiGioco.getBackgroundImage(),0,0,this);
 
         World world = Game.getInstance().getWorld();
-        System.out.println("-----PROGRESSO-----------");
-        System.out.println(world.getPlayer().getProgresso());
-        System.out.println("-----++++++++++++++-----------");
+//        System.out.println("-----PROGRESSO-----------");
+//        System.out.println(world.getPlayer().getProgresso());
+//        System.out.println("-----++++++++++++++-----------");
 //        int coordinateGiocatore = trovaGiocatore();
 
         for(int i = 0; i < Settings.Filtro_Size_Riga; i++) {
@@ -97,15 +98,18 @@ public class GamePanel extends JPanel {
                     g.drawImage(immaginiGioco.getBloccoMuro(),colonna,riga,this);
                 }
                 else if(world.isPlayer(i, j + world.getPlayer().getProgresso())) {
-                    System.out.println("-- SONO IN PAINT --");
-                    System.out.println(startAnimazione);
-                    System.out.println(indiceCorrente);
-                    System.out.println("-------------");
+//                    System.out.println("-- SONO IN PAINT --");
+//                    System.out.println(startAnimazione);
+//                    System.out.println(indiceCorrente);
+//                    System.out.println("-------------");
                     if (!trovatoPersonaggio)
                     {
                         if (startAnimazione)
                         {
-                            g.drawImage(animazioneDestra[indiceCorrente],colonna-10,riga,this);
+
+                            spostamento_immagine=-30+(5*indiceCorrente);
+
+                            g.drawImage(animazioneDestra[indiceCorrente],colonna+spostamento_immagine,riga,this);
                         }
 
                         if (!startAnimazione)
