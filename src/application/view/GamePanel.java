@@ -55,7 +55,11 @@ public class GamePanel extends JPanel {
                     ((Timer) e.getSource()).stop();
                     indiceCorrente = 0;
                     startAnimazione = false;
-                    direzionePrecedente=direzione;
+                    if(direzione!=2)
+                    {
+                        direzionePrecedente=direzione;
+                    }
+
                     direzione=0;
                 }
 
