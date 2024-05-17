@@ -21,7 +21,7 @@ public class ControllerPlayer  extends KeyAdapter {
 //        {
 //            Game.getInstance().setDirection(Settings.NOT_MOVING);
 //
-//           // gamePanel.updateDirection(Settings.NOT_MOVING);
+//           gamePanel.updateDirection(Settings.NOT_MOVING);
 //        }
 //    }
 

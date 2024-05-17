@@ -2,16 +2,13 @@ package application.view;
 
 import application.controller.ControllerPlayer;
 import application.model.Game;
-import application.model.Position;
 import application.model.Settings;
 import application.model.World;
+import application.resources.ImageUtil;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.sql.Time;
 
 public class GamePanel extends JPanel {
     private final PlayerView playerView = new PlayerView();
@@ -26,10 +23,12 @@ public class GamePanel extends JPanel {
 
     static boolean startAnimazione = false;
     int indiceCorrente =0;
+    int direzione = 0;
+    int direzionePrecedente =1;
 
     private Timer timer ;
 
-    Image[] animazioneDestra = new Image[4];
+    Image[] animazione = new Image[4];
 
     public void updateDirection(int direction) {
         //il panel aggiorna la direzione del player sulla view
@@ -38,13 +37,14 @@ public class GamePanel extends JPanel {
         //System.out.println("sono entrato");
         if (!startAnimazione)
         {
+            direzione = direction;
             startAnimazione= true;
-            animazioneDestra = immaginiGioco.getAnimazioneDestra();
+            animazione = immaginiGioco.getAnimazioneDestra();
 
 
             timer = new Timer(50, e -> {
 
-                if (indiceCorrente < animazioneDestra.length-1) {
+                if (indiceCorrente < animazione.length-1) {
 //                    System.out.println("--SONO IN TIMER--");
 //                    System.out.println(startAnimazione);
 //                    System.out.println(indiceCorrente);
@@ -55,6 +55,8 @@ public class GamePanel extends JPanel {
                     ((Timer) e.getSource()).stop();
                     indiceCorrente = 0;
                     startAnimazione = false;
+                    direzionePrecedente=direzione;
+                    direzione=0;
                 }
 
             });
@@ -69,7 +71,8 @@ public class GamePanel extends JPanel {
 
     }
 
-    int spostamento_immagine;
+    int spostamento_immagine_destra;
+    int spostamento_immagine_sinistra;
     boolean trovatoPersonaggio =false;
     @Override
     protected void paintComponent(Graphics g) {
@@ -107,13 +110,33 @@ public class GamePanel extends JPanel {
                         if (startAnimazione)
                         {
 
-                            spostamento_immagine=-30+(5*indiceCorrente);
+                            spostamento_immagine_destra=-30+(5*indiceCorrente);
+                            spostamento_immagine_sinistra=+30-(5*indiceCorrente);
 
-                            g.drawImage(animazioneDestra[indiceCorrente],colonna+spostamento_immagine,riga,this);
+                            if(direzione==1)
+                            {
+                                g.drawImage(animazione[indiceCorrente],colonna+spostamento_immagine_destra,riga,this);
+                            }
+                            else if(direzione==-1)
+                            {
+                                g.drawImage(ImageUtil.flipImageHorizontally(animazione[indiceCorrente]),colonna+spostamento_immagine_sinistra,riga,this);
+                            }
+
                         }
 
                         if (!startAnimazione)
-                            {g.drawImage(immaginiGioco.getPersonaggio(),colonna,riga,this);}
+                            {
+                                if (direzionePrecedente==1)
+                                {
+                                    g.drawImage(immaginiGioco.getPersonaggio(),colonna,riga,this);
+                                }
+                                else if(direzionePrecedente==-1)
+                                {
+                                    g.drawImage(ImageUtil.flipImageHorizontally(immaginiGioco.getPersonaggio()),colonna,riga,this);
+                                }
+
+                            }
+
                         trovatoPersonaggio=true;
                     }
 //                    g.setColor(Color.WHITE);
