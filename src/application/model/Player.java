@@ -28,6 +28,7 @@ public class Player  extends AbstractPlayer{
         {
             progresso-= ((Settings.Filtro_Size_Colonna+progresso-21)-super.getPosition(0).j());
         }
+
     }
 
     public int getProgresso() {

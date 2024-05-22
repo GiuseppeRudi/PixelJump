@@ -43,15 +43,16 @@ public class ControllerPlayer  extends KeyAdapter {
             System.exit(0);
             // PER ADESSO CHIUDO TUTTO
 
-        if(direction != Settings.NOT_MOVING ) {
+
+
+//        if(direction != Settings.NOT_MOVING ) {
             // CON QUESTO AGGIORNO IL MDOEL e gli dico a game / world / player di cambiare la direction e tenerla aggiornata
-            Game.getInstance().setDirection(direction);
+        Game.getInstance().setDirection(direction);
 
-            // CON QUESTO AGGIORNO LA VIEW
+        // CON QUESTO AGGIORNO LA VIEW E LE ANIMAZIONI
+        gamePanel.updateDirection(direction);
 
-            gamePanel.updateDirection(direction);
-
-        }
+      //  }
 
         //ANIMAZIONE NEL CASO DI SALTO AL MOMENTO NON SERVE
 //        if(direction == Settings.ANIMATION) {

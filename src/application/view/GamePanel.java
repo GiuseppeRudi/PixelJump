@@ -35,11 +35,12 @@ public class GamePanel extends JPanel {
         //playerView.setDirection(direction);
 
         //System.out.println("sono entrato");
-        if (!startAnimazione)
+        if (!startAnimazione && (direction==Settings.MOVE_RIGHT || direction==Settings.MOVE_LEFT))
         {
             direzione = direction;
             startAnimazione= true;
             animazione = immaginiGioco.getAnimazioneDestra();
+
 
 
             timer = new Timer(50, e -> {
@@ -66,12 +67,10 @@ public class GamePanel extends JPanel {
             });
 
             //System.out.println("timer partito");
+
+
             timer.start();
         }
-
-
-
-
 
     }
 

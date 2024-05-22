@@ -25,7 +25,7 @@ public class GameLoop {
         }
 
         executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(controllerPlayer::update,0,1000/15, TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(controllerPlayer::update,0,500, TimeUnit.MILLISECONDS);
         //creo un thread che gestisce l'esecuzione di gioco e permette di aggiornamre ogni 60 frame per secondo le dinamiche di gioco
     }
 }

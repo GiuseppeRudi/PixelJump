@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 public class World {
 
+    int controllo_simulateMove =0;
 
     World() throws IOException {
         coordinatePlayer.add(new Position(15,5)); //la posizione 0 ha la testa
@@ -93,6 +94,10 @@ public class World {
         matrice_Principale[coordinatePlayer.get(1).i()][coordinatePlayer.get(1).j()]=Block.PERSONAGGIO;
     }
 
+    public Block[][] getMatrice_Principale() {
+        return matrice_Principale;
+    }
+
     public void stampamatrice() {
         for (int i=0; i<matrice_Principale.length;i++) {
             for(int j=0; j<matrice_Principale[i].length;j++) {
@@ -126,5 +131,7 @@ public class World {
     public boolean isTerra(int i, int j) { return isType(i,j,Block.TERRA);}
     public boolean isErba(int i, int j) { return isType(i,j,Block.ERBA);}
     public boolean isSpeciale(int i, int j) { return isType(i,j,Block.SPECIALE);}
+
+    public boolean isBlocco(int i , int j ) { return isTerra(i,j) || isErba(i,j) || isSpeciale(i,j);}
 
 }
