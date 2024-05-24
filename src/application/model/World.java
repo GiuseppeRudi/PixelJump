@@ -23,7 +23,7 @@ public class World {
         int count =0;
         for (Position p : newPosition) {
             //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
-            if(isValidPosition(p.i(),p.j()) && !isWall(p.i(),p.j()) && !isSpeciale(p.i(), p.j())) {
+            if(isValidPosition(p.i(),p.j()) && !isBlocco(p.i(),p.j())) {
                 count++;
             }
         }
@@ -43,8 +43,6 @@ public class World {
             //qui dopo che si muove metto not moving cosi sta ferma e non va in quella direzione in loop
             //if (player.getDirection()==Settings.JUMP) updateDirection(Settings.NOT_MOVING);
 
-            updateDirection(Settings.NOT_MOVING);
-
             //aggiorniamo nella matrice principale la nuova posizione del personaggio
             for(int k=0; k<coordinatePlayer.size();k++) {
                 matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
@@ -56,37 +54,49 @@ public class World {
         return player;
     }
 
-    enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO,ERBA,SPECIALE};
-    //vuoto == 0 ; terra == 1 ; personaggio == 2 nemico == 3 ; muro == 4
+    enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO,ERBA,SPECIALE,TUBO,BARILE,FINE,CASTELLO};
+    //vuoto == 0 ; terra == 1 ; personaggio == 2 nemico == 3 ; muro == 4 ; erba = 5 ; speciale = 5 ect
     private final Block[][] matrice_Principale  = new Block[Settings.World_Size_Riga][Settings.World_Size_Colonna];
     private  LinkedList<Position> coordinatePlayer = new LinkedList<>();
-    private final Player player = new Player(coordinatePlayer); //mette il player in posizione 0,0 , la grandezza della riga
+    private final Player player = new Player(coordinatePlayer,this); //mette il player in posizione 0,0 , la grandezza della riga
     public void inizializzaMatricePrincipale() throws IOException {  //legge il file e quindi la matrice
         leggiFile file = new leggiFile();
-        List<String>  viewPort = file.leggi("src/application/resources/livelli/LivelloProva.txt");
+        List<String>  viewPort = file.leggi("src/application/resources/livelli/Livello1.txt");
 //        System.out.println(viewPort.size());
 //        System.out.println(viewPort.get(0).length());
         for (int i=0; i<Settings.World_Size_Riga; i++) {
             String riga = viewPort.get(i);
             for (int j=0; j<Settings.World_Size_Colonna;j++) {
                 char cella = riga.charAt(j);
-                if (cella=='0'){
+                if (cella=='a'){
                     matrice_Principale[i][j] =Block.VUOTO;
                 }
-                else if (cella=='1') {
+                else if (cella=='b') {
                     matrice_Principale[i][j] =Block.TERRA;
                 }
-                else if (cella=='3') {
+                else if (cella=='d') {
                     matrice_Principale[i][j] =Block.NEMICO;
                 }
-                else if (cella=='4') {
+                else if (cella=='e') {
                     matrice_Principale[i][j] = Block.MURO;
                 }
-                else if (cella=='5'){
+                else if (cella=='f'){
                     matrice_Principale[i][j] = Block.ERBA;
                 }
-                else if (cella=='6'){
+                else if (cella=='g'){
                     matrice_Principale[i][j] = Block.SPECIALE;
+                }
+                else if (cella=='h'){
+                    matrice_Principale[i][j] = Block.TUBO;
+                }
+                else if (cella=='i'){
+                    matrice_Principale[i][j] = Block.BARILE;
+                }
+                else if (cella=='j'){
+                    matrice_Principale[i][j] = Block.FINE;
+                }
+                else if (cella=='k'){
+                    matrice_Principale[i][j] = Block.CASTELLO;
                 }
             }
         }
@@ -119,19 +129,22 @@ public class World {
         return false;
     }
 
-    private boolean isValidPosition(int i, int j) {
+     public boolean isValidPosition(int i, int j) {
         return i>=0 && i<Settings.World_Size_Riga && j>=0 && j<Settings.World_Size_Colonna;
     }
 
 
     public boolean isWall(int i,int j) {return isType(i,j,Block.MURO);}
-
     public boolean isPlayer(int i,int j) {return isType(i,j,Block.PERSONAGGIO);}
-
     public boolean isTerra(int i, int j) { return isType(i,j,Block.TERRA);}
     public boolean isErba(int i, int j) { return isType(i,j,Block.ERBA);}
     public boolean isSpeciale(int i, int j) { return isType(i,j,Block.SPECIALE);}
+    public boolean isFine(int i, int j) { return isType(i,j,Block.FINE);}
+    public boolean isBarile(int i, int j) { return isType(i,j,Block.BARILE);}
+    public boolean isTubo(int i, int j) { return isType(i,j,Block.TUBO);}
+    public boolean isCastello(int i,int j) {return isType(i,j,Block.CASTELLO);}
+    public boolean isBlocco(int i , int j ) { return isWall(i,j) || isErba(i,j) || isSpeciale(i,j) || isTerra(i,j) || isTubo(i,j) || isBarile(i,j) || isFine(i,j) || isCastello(i,j);}
 
-    public boolean isBlocco(int i , int j ) { return isTerra(i,j) || isErba(i,j) || isSpeciale(i,j);}
+
 
 }

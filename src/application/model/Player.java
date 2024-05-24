@@ -1,5 +1,7 @@
 package application.model;
 
+import application.controller.ControllerPlayer;
+
 import java.util.LinkedList;
 
 public class Player  extends AbstractPlayer{
@@ -9,24 +11,68 @@ public class Player  extends AbstractPlayer{
     private LinkedList<Position> coordinatePlayer = new LinkedList<>();
 
     private int direction = Settings.NOT_MOVING;
+    private World world;
 
 
-    public Player(LinkedList<Position> coordinate) { //costruttore player
-        super(coordinate); //richiama la super classe
+    public Player(LinkedList<Position> coordinate,World world) { //costruttore player
+        super(coordinate,world);//richiama la super classe
+        this.world=world;
 
     }
 
+    public static int cont =0;
 
     @Override
     public void move(){
-        super.move(direction);
-        if (direction==Settings.MOVE_RIGHT && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15)
-        {
+        coordinatePlayer=super.move(direction);
+        //SPIEGARE PERCHE COSI NON FUNZIONA
+//        if (direction==Settings.MOVE_RIGHT && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15)
+//        {
+//            progresso+= (super.getPosition(0).j()-(Settings.Filtro_Size_Colonna+progresso-15));
+//        }
+//        else if(direction==Settings.MOVE_LEFT && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21)
+//        {
+//            progresso-= ((Settings.Filtro_Size_Colonna+progresso-21)-super.getPosition(0).j());
+//        }
+        if (ControllerPlayer.getPressed().contains(Settings.MOVE_RIGHT) && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15) {
             progresso+= (super.getPosition(0).j()-(Settings.Filtro_Size_Colonna+progresso-15));
         }
-        else if(direction==Settings.MOVE_LEFT && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21)
-        {
+        else if(ControllerPlayer.getPressed().contains(Settings.MOVE_LEFT) && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21) {
             progresso-= ((Settings.Filtro_Size_Colonna+progresso-21)-super.getPosition(0).j());
+        }
+
+        //Questo controllo serve per verificare che se non stiamo saltando o cadendo e ce un blocco vuoto allora cadiamo
+        if (!isJumping() && !isFalling() && !world.isBlocco(coordinatePlayer.getLast().i()+1,coordinatePlayer.getLast().j())) setFalling(true);
+
+        if(isJumping())
+        {
+            if(cont<3)
+            {
+                //se prima di completare il salto completo trovo un blocco sopra allora finisce il salto e inizia la caduta
+                if(world.isBlocco(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getLast().j()))
+                {
+                    setJumping(false);
+                    setFalling(true);
+                }
+
+                else cont++;
+            }
+            else
+            {
+                setJumping(false);
+                setFalling(true);
+            }
+        }
+
+        if(isFalling())
+        {
+            //se ce un blocco sotto di me , fermo la caduta
+            if(world.isBlocco(coordinatePlayer.getLast().i()+1,coordinatePlayer.getLast().j()))
+            {
+                setFalling(false);
+                cont =0;
+            }
+
         }
 
     }

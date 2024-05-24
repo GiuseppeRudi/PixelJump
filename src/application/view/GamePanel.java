@@ -22,13 +22,18 @@ public class GamePanel extends JPanel {
     public GamePanel(ImmaginiGioco immaginigioco) throws IOException {this.immaginiGioco = immaginigioco;}
 
     static boolean startAnimazione = false;
-    int indiceCorrente =0;
+    static boolean startAnimazioneSalto= false;
+    int indiceMovimento =0;
+    int indiceSalto=0;
+
     int direzione = 0;
     int direzionePrecedente =1;
 
     private Timer timer ;
+    private Timer timerSalto;
 
     Image[] animazione = new Image[4];
+    Image[] animazioneSalto = new Image[4];
 
     public void updateDirection(int direction) {
         //il panel aggiorna la direzione del player sulla view
@@ -39,22 +44,22 @@ public class GamePanel extends JPanel {
         {
             direzione = direction;
             startAnimazione= true;
-            animazione = immaginiGioco.getAnimazioneDestra();
+            animazione = immaginiGioco.getAnimazioneMovimento();
 
 
 
             timer = new Timer(50, e -> {
 
-                if (indiceCorrente < animazione.length-1) {
+                if (indiceMovimento < animazione.length-1) {
 //                    System.out.println("--SONO IN TIMER--");
 //                    System.out.println(startAnimazione);
 //                    System.out.println(indiceCorrente);
 //                    System.out.println("-------------");
                     repaint();
-                    indiceCorrente++;
+                    indiceMovimento++;
                 } else {
                     ((Timer) e.getSource()).stop();
-                    indiceCorrente = 0;
+                    indiceMovimento = 0;
                     startAnimazione = false;
                     if(direzione!=2)
                     {
@@ -72,6 +77,43 @@ public class GamePanel extends JPanel {
             timer.start();
         }
 
+        if (!startAnimazioneSalto && direction==Settings.JUMP)
+        {
+            direzione = direction;
+            startAnimazioneSalto= true;
+            animazioneSalto = immaginiGioco.getAnimazioneSalto();
+
+
+
+            timerSalto = new Timer(50, e -> {
+
+                if (indiceSalto < animazioneSalto.length-1) {
+//                    System.out.println("--SONO IN TIMER--");
+//                    System.out.println(startAnimazione);
+//                    System.out.println(indiceCorrente);
+//                    System.out.println("-------------");
+                    repaint();
+                    indiceSalto++;
+                } else {
+                    ((Timer) e.getSource()).stop();
+                    indiceSalto = 0;
+                    startAnimazioneSalto = false;
+                    if(direzione!=2)
+                    {
+                        direzionePrecedente=direzione;
+                    }
+
+                    direzione=0;
+                }
+
+            });
+
+            //System.out.println("timer partito");
+
+
+            timerSalto.start();
+        }
+
     }
 
     int spostamento_immagine_destra;
@@ -83,9 +125,11 @@ public class GamePanel extends JPanel {
         trovatoPersonaggio=false;
         super.paintComponent(g);
 
-        g.drawImage(immaginiGioco.getBackgroundImage(),0,0,this);
-
         World world = Game.getInstance().getWorld();
+        //questo serve per spostare lo sfondo man mano che il progresso avanza e quindi lo sfondo si muove man mano
+        g.drawImage(immaginiGioco.getBackgroundImage(),-(world.getPlayer().getProgresso()*5),0,this);
+
+
 //        System.out.println("-----PROGRESSO-----------");
 //        System.out.println(world.getPlayer().getProgresso());
 //        System.out.println("-----++++++++++++++-----------");
@@ -113,21 +157,42 @@ public class GamePanel extends JPanel {
                         if (startAnimazione)
                         {
 
-                            spostamento_immagine_destra=-30+(5*indiceCorrente);
-                            spostamento_immagine_sinistra=+30-(5*indiceCorrente);
+                            spostamento_immagine_destra=-30+(5* indiceMovimento);
+                            spostamento_immagine_sinistra=+30-(5* indiceMovimento);
 
                             if(direzione==1)
                             {
-                                g.drawImage(animazione[indiceCorrente],colonna+spostamento_immagine_destra,riga,this);
+                                g.drawImage(animazione[indiceMovimento],colonna+spostamento_immagine_destra,riga,this);
                             }
                             else if(direzione==-1)
                             {
-                                g.drawImage(ImageUtil.flipImageHorizontally(animazione[indiceCorrente]),colonna+spostamento_immagine_sinistra,riga,this);
+                                g.drawImage(ImageUtil.flipImageHorizontally(animazione[indiceMovimento]),colonna+spostamento_immagine_sinistra,riga,this);
                             }
 
                         }
+                        if(startAnimazioneSalto){
 
-                        if (!startAnimazione)
+
+//                        spostamento_immagine_destra=-30+(5*indiceCorrente);
+//                        spostamento_immagine_sinistra=+30-(5*indiceCorrente);
+
+                        if(direzionePrecedente==1)
+                        {
+                            g.drawImage(animazioneSalto[indiceMovimento],colonna,riga,this);
+                        }
+                        else if(direzionePrecedente==-1)
+                        {
+                            g.drawImage(ImageUtil.flipImageHorizontally(animazioneSalto[indiceMovimento]),colonna,riga,this);
+                        }
+
+
+                    }
+                        System.out.println("****************+");
+                        System.out.println(startAnimazione);
+                        System.out.println(startAnimazioneSalto);
+                        System.out.println("****************+");
+
+                        if (!startAnimazione && !startAnimazioneSalto)
                             {
                                 if (direzionePrecedente==1)
                                 {
@@ -154,6 +219,18 @@ public class GamePanel extends JPanel {
                 }
                 else if(world.isSpeciale(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoSpeciale(), colonna,riga,this);
+                }
+                else if(world.isTubo(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoTubo(), colonna, riga, this);
+                }
+                else if(world.isBarile(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoBarile(), colonna, riga, this);
+                }
+                else if(world.isFine(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoFine(), colonna, riga, this);
+                }
+                else if(world.isCastello(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoCastello(), colonna, riga, this);
                 }
             }
         }
