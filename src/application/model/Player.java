@@ -2,6 +2,7 @@ package application.model;
 
 import application.controller.ControllerPlayer;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class Player  extends AbstractPlayer{
@@ -97,7 +98,7 @@ public class Player  extends AbstractPlayer{
 
     //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
     @Override
-    public LinkedList<Position> simulateMove() {
+    public LinkedList<Position> simulateMove()   {
         return super.simulateMove(direction);
     }
 }

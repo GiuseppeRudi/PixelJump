@@ -16,7 +16,7 @@ public class World {
     }
 
     //serve per far muovere il player e aggiornare la sua posizione sulla matrice principale
-    public void movePlayer() {
+    public void movePlayer()   {
         //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
         LinkedList<Position> newPosition = player.simulateMove();
         //devo verificare che le nuove posizioni sia valide
@@ -54,7 +54,13 @@ public class World {
         return player;
     }
 
-    enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO,ERBA,SPECIALE,TUBO,BARILE,FINE,CASTELLO};
+    public void restart()  {
+        coordinatePlayer.add(new Position(15,5)); //la posizione 0 ha la testa
+        coordinatePlayer.add(new Position(16,5)); //la posizione 1 ha il corpo
+
+    }
+
+    enum Block {VUOTO,TERRA,PERSONAGGIO,NEMICO,MURO,ERBA,SPECIALE,TUBO,BARILE,FINE,CASTELLO,MORTE};
     //vuoto == 0 ; terra == 1 ; personaggio == 2 nemico == 3 ; muro == 4 ; erba = 5 ; speciale = 5 ect
     private final Block[][] matrice_Principale  = new Block[Settings.World_Size_Riga][Settings.World_Size_Colonna];
     private  LinkedList<Position> coordinatePlayer = new LinkedList<>();
@@ -97,6 +103,9 @@ public class World {
                 }
                 else if (cella=='k'){
                     matrice_Principale[i][j] = Block.CASTELLO;
+                }
+                else if (cella=='w'){
+                    matrice_Principale[i][j] = Block.MORTE;
                 }
             }
         }
@@ -143,6 +152,7 @@ public class World {
     public boolean isBarile(int i, int j) { return isType(i,j,Block.BARILE);}
     public boolean isTubo(int i, int j) { return isType(i,j,Block.TUBO);}
     public boolean isCastello(int i,int j) {return isType(i,j,Block.CASTELLO);}
+    public boolean isMorte(int i, int j) {return isType(i,j,Block.MORTE);}
     public boolean isBlocco(int i , int j ) { return isWall(i,j) || isErba(i,j) || isSpeciale(i,j) || isTerra(i,j) || isTubo(i,j) || isBarile(i,j) || isFine(i,j) || isCastello(i,j);}
 
 

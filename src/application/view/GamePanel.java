@@ -40,7 +40,7 @@ public class GamePanel extends JPanel {
         //playerView.setDirection(direction);
 
         //System.out.println("sono entrato");
-        if (!startAnimazione && (direction==Settings.MOVE_RIGHT || direction==Settings.MOVE_LEFT))
+        if (!startAnimazione && (direction==Settings.MOVE_RIGHT || direction==Settings.MOVE_LEFT) && !startAnimazioneSalto)
         {
             direzione = direction;
             startAnimazione= true;
@@ -77,7 +77,7 @@ public class GamePanel extends JPanel {
             timer.start();
         }
 
-        if (!startAnimazioneSalto && direction==Settings.JUMP)
+        if (!startAnimazioneSalto && direction==Settings.JUMP && !startAnimazione)
         {
             direzione = direction;
             startAnimazioneSalto= true;

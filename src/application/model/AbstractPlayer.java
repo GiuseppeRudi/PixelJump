@@ -6,6 +6,7 @@ package application.model;
 import application.Sound;
 import application.controller.ControllerPlayer;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 public abstract class AbstractPlayer {
@@ -27,7 +28,7 @@ public abstract class AbstractPlayer {
     }
 
 
-    protected LinkedList<Position> simulateMove(int direction) {
+    protected LinkedList<Position> simulateMove(int direction)   {
 
 
         int testa_i = coordinate.getFirst().i();
@@ -73,8 +74,14 @@ public abstract class AbstractPlayer {
 
 
 
-//        System.out.print(testa_i);
 //        System.out.println(corpo_i);
+//        System.out.println(corpo_j);
+
+        if(world.isMorte(corpo_i,corpo_j))
+        {
+            //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
+            world.restart();
+        }
 
         LinkedList<Position> newCoordinate = new LinkedList<>();
         newCoordinate.add(new Position(testa_i, testa_j));
@@ -88,7 +95,7 @@ public abstract class AbstractPlayer {
 
         //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
 
-    protected LinkedList<Position> move ( int direction) {
+    protected LinkedList<Position> move ( int direction)   {
         //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world
         coordinate = simulateMove(direction);
 
@@ -132,7 +139,7 @@ public abstract class AbstractPlayer {
     abstract void move ();
 
     // perche questo simulateMove di player è diverso da simulateplayer di abstract
-    abstract LinkedList<Position> simulateMove ();
+    abstract LinkedList<Position> simulateMove () throws IOException;
 }
 
 

@@ -26,8 +26,7 @@ public class Game
 
 
     //viene chiamata dal player controller
-    public void update()
-    {
+    public void update()  {
 //        if(world.movePlayer())
 //        {
 //           //qualcosa
