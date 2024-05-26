@@ -21,7 +21,12 @@ public class ImmaginiGioco {
     private Image bloccoTubo;
     private Image bloccoBarile;
     private Image bloccoFine ;
-    private Image bloccoCastello;
+    private Image bloccoPonte;
+    private Image bloccoTeletrasporto;
+    private Image bloccoCuore;
+    private Image bloccoMorte;
+    private Image bloccoMoneta;
+    private Image bloccoPortale;
 
     public ImmaginiGioco() throws IOException {
 
@@ -43,6 +48,18 @@ public class ImmaginiGioco {
         bloccoBarile = bloccoBarile.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         bloccoFine = ImageIO.read(new File("src/application/resources/background/Blocks/fine.png"));
         bloccoFine = bloccoFine.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoCuore = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoCuore.png"));
+        bloccoCuore = bloccoCuore.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoPonte = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoCuore.png"));
+        bloccoPonte = bloccoPonte.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoTeletrasporto = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoCuore.png"));
+        bloccoTeletrasporto = bloccoTeletrasporto.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoMorte = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoCuore.png"));
+        bloccoMorte = bloccoMorte.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoMoneta = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoCuore.png"));
+        bloccoMoneta = bloccoMoneta.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoPortale = ImageIO.read(new File("src/application/resources/background/Blocks/bloccoCuore.png"));
+        bloccoPortale = bloccoPortale.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         //bloccoCastello = ImageIO.read(new File("src/application/resources/background/Blocks/tuboSotto.png"));
         //bloccoCastello = bloccoCastello.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
 
@@ -72,15 +89,12 @@ public class ImmaginiGioco {
     public Image getBloccoErba() {
         return bloccoErba;
     }
-
     public Image getBloccoMuro() {
         return bloccoMuro;
     }
-
     public Image getBloccoSpeciale() {
         return bloccoSpeciale;
     }
-
     public Image[] getAnimazioneMovimento() {
         return animazioneMovimento;
     }
@@ -88,5 +102,82 @@ public class ImmaginiGioco {
     public Image getBloccoBarile() {return bloccoBarile;}
     public Image getBloccoFine() {return bloccoFine;}
     public Image[] getAnimazioneSalto() {return animazioneSalto;}
-    public Image getBloccoCastello() {return bloccoCastello;}
+    public Image getBloccoPonte() {return bloccoPonte;}
+    public Image getBloccoTeletrasporto() {return bloccoTeletrasporto;}
+    public Image getBloccoMorte() {return bloccoMorte;}
+    public Image getBloccoMoneta() {return bloccoMoneta;}
+    public Image getBloccoPortale() {return bloccoPortale;}
+    public Image getBloccoCuore() {return bloccoCuore;}
+
+//    public Image getPersonaggio(int direction) {
+//        if(direction==Settings.MOVE_RIGHT)
+//            return personaggioDes;
+//        return personaggioSin;
+//    }
+//
+//    public Image getBackgroundImage(int liv) {
+//        if(liv==1) return backgroundImage;
+//        else if(liv==2) return backgroundImage2;
+//        return backgroundImage3;
+//    }
+//
+//    public Image getMoneta() {
+//        return moneta;
+//    }
+//
+//    public Image getBloccoTerra(int liv) {
+//        if(liv==1) return bloccoTerra;
+//        else if(liv==2) return bloccoTerra2;
+//        return bloccoTerra3;
+//    }
+//
+//    public Image getBloccoErba() {
+//        return bloccoErba;
+//    }
+//
+//    public Image getBloccoMuro(int liv) {
+//        if(liv==1) return bloccoMuro;
+//        else if(liv==2) return bloccoMuro2;
+//        return bloccoMuro3;
+//    }
+//
+//    public Image getBloccoSpeciale(int liv) {
+//        if(liv==1) return bloccoSpeciale;
+//        return bloccoSpeciale2;
+//    }
+//    public Image getTubo(int liv) {
+//        if(liv==1) return tubo;
+//        else if(liv==2) return tubo2;
+//        return tubo3;
+//    }
+//
+//    public Image getBarile(int liv) {
+//        if(liv==1) return barile;
+//        else if(liv==2) return oro;
+//        return end_frame;
+//    }
+//
+//    public Image getFine(int liv) {
+//        if(liv==1 || liv==2) return fine;
+//        return fine3;
+//    }
+//
+//    public Image getPortale(int liv) {
+//        if(liv==1) return portale;
+//        else if(liv==2) return portale_end;
+//        return ender_egg;
+//    }
+//
+//    public Image getAcqua(int liv) {
+//        if(liv==1) return acqua;
+//        return lava;
+//    }
+//    public Image getPonte(int liv) {
+//        if(liv==2) return ponte2;
+//        return ponte3;
+//    }
+//    public Image getTeletrasporto(int liv) {
+//        if(liv==2) return teletrasporto;
+//        return ender_dragon;
+//    }
 }

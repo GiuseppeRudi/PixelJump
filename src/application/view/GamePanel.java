@@ -2,6 +2,7 @@ package application.view;
 
 import application.controller.ControllerPlayer;
 import application.model.Game;
+import application.model.Position;
 import application.model.Settings;
 import application.model.World;
 import application.resources.ImageUtil;
@@ -9,10 +10,12 @@ import application.resources.ImageUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class GamePanel extends JPanel {
     private final PlayerView playerView = new PlayerView();
 
+    private World world ;
     private ImmaginiGioco immaginiGioco = new ImmaginiGioco();
 
     public void setController(ControllerPlayer controllerPlayer) {
@@ -42,6 +45,7 @@ public class GamePanel extends JPanel {
         //System.out.println("sono entrato");
         if (!startAnimazione && (direction==Settings.MOVE_RIGHT || direction==Settings.MOVE_LEFT) && !startAnimazioneSalto)
         {
+
             direzione = direction;
             startAnimazione= true;
             animazione = immaginiGioco.getAnimazioneMovimento();
@@ -113,7 +117,6 @@ public class GamePanel extends JPanel {
 
             timerSalto.start();
         }
-
     }
 
     int spostamento_immagine_destra;
@@ -125,7 +128,7 @@ public class GamePanel extends JPanel {
         trovatoPersonaggio=false;
         super.paintComponent(g);
 
-        World world = Game.getInstance().getWorld();
+        world = Game.getInstance().getWorld();
         //questo serve per spostare lo sfondo man mano che il progresso avanza e quindi lo sfondo si muove man mano
         g.drawImage(immaginiGioco.getBackgroundImage(),-(world.getPlayer().getProgresso()*5),0,this);
 
@@ -139,10 +142,15 @@ public class GamePanel extends JPanel {
             int riga = i * Settings.CELL_SIZE_RIGA; //coordinate x sulla view
             for(int j = 0; j < Settings.Filtro_Size_Colonna; j++) {
                 int colonna = j * Settings.CELL_SIZE_COLONNA; //coordinate y sulla view
-//                if(world.isCoin(i, j)) {
-//                    g.setColor(Color.YELLOW);
-//                    g.fillOval(x + Settings.CELL_SIZE/4, y + Settings.CELL_SIZE/4, Settings.CELL_SIZE/2, Settings.CELL_SIZE/2);
-//                }
+
+                LinkedList<Position> arrayvita = world.getArrayVita();
+                //System.out.println(world.getPlayer().getVita());
+                for(int f=0;f<world.getPlayer().getVita();f++)
+                {
+
+                    g.drawImage(immaginiGioco.getBloccoCuore(),arrayvita.get(f).j()*Settings.CELL_SIZE_COLONNA,arrayvita.get(f).i()*Settings.CELL_SIZE_RIGA, this);
+                }
+
                 if(world.isWall(i, j + world.getPlayer().getProgresso())) {
 
                     g.drawImage(immaginiGioco.getBloccoMuro(),colonna,riga,this);
@@ -187,10 +195,10 @@ public class GamePanel extends JPanel {
 
 
                     }
-                        System.out.println("****************+");
-                        System.out.println(startAnimazione);
-                        System.out.println(startAnimazioneSalto);
-                        System.out.println("****************+");
+//                        System.out.println("****************+");
+//                        System.out.println(startAnimazione);
+//                        System.out.println(startAnimazioneSalto);
+//                        System.out.println("****************+");
 
                         if (!startAnimazione && !startAnimazioneSalto)
                             {
@@ -229,9 +237,22 @@ public class GamePanel extends JPanel {
                 else if(world.isFine(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoFine(), colonna, riga, this);
                 }
-                else if(world.isCastello(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoCastello(), colonna, riga, this);
+                else if(world.isPortale(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoPortale(), colonna, riga, this);
                 }
+                else if(world.isMorte(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoMorte(), colonna, riga, this);
+                }
+                else if(world.isPonte(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoPonte(), colonna, riga, this);
+                }
+                else if(world.isTeletrasporto(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoTeletrasporto(), colonna, riga, this);
+                }
+                else if(world.isCoin(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoMoneta(), colonna, riga, this);
+                }
+
             }
         }
     }

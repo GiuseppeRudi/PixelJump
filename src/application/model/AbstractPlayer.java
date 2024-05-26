@@ -31,6 +31,7 @@ public abstract class AbstractPlayer {
     protected LinkedList<Position> simulateMove(int direction)   {
 
 
+
         int testa_i = coordinate.getFirst().i();
         int testa_j = coordinate.getFirst().j();
 
@@ -77,11 +78,7 @@ public abstract class AbstractPlayer {
 //        System.out.println(corpo_i);
 //        System.out.println(corpo_j);
 
-        if(world.isMorte(corpo_i,corpo_j))
-        {
-            //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
-            world.restart();
-        }
+
 
         LinkedList<Position> newCoordinate = new LinkedList<>();
         newCoordinate.add(new Position(testa_i, testa_j));
@@ -99,24 +96,35 @@ public abstract class AbstractPlayer {
         //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world
         coordinate = simulateMove(direction);
 
-        if (direction != Settings.NOT_MOVING) {
-            if (direction == Settings.JUMP) {
-                Sound salta = new Sound("jump.wav");
-                salta.play();
-            }
-            //questo serve poiche quando salti controlliamo se lui atterra su un blocco e a seconda del blocco fa
-            //coordiante get last prendo le coordinate del corpo che gia sono state controllate e vedo per vedere che blocco ce sotto le gambe
-            if (Game.getInstance().getWorld().isErba(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
-                Sound cammina = new Sound("grass.wav");
-                cammina.play();
-            } else if (Game.getInstance().getWorld().isWall(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
-                Sound cammina = new Sound("wood.wav");
-                cammina.play();
-            } else if (Game.getInstance().getWorld().isSpeciale(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
-                Sound cammina = new Sound("sand.wav");
-                cammina.play();
-            }
+        if(world.isMorte(coordinate.getLast().i()+1,coordinate.getLast().j()))
+        {
+            //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
+
+            coordinate.clear();
+            coordinate.add(new Position(15,5));
+            coordinate.add(new Position(16,5));
+            world.restart();
+
         }
+
+//        if (direction != Settings.NOT_MOVING) {
+//            if (direction == Settings.JUMP) {
+//                Sound salta = new Sound("jump.wav");
+//                salta.play();
+//            }
+//            //questo serve poiche quando salti controlliamo se lui atterra su un blocco e a seconda del blocco fa
+//            //coordiante get last prendo le coordinate del corpo che gia sono state controllate e vedo per vedere che blocco ce sotto le gambe
+//            if (Game.getInstance().getWorld().isErba(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
+//                Sound cammina = new Sound("grass.wav");
+//                cammina.play();
+//            } else if (Game.getInstance().getWorld().isWall(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
+//                Sound cammina = new Sound("wood.wav");
+//                cammina.play();
+//            } else if (Game.getInstance().getWorld().isSpeciale(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
+//                Sound cammina = new Sound("sand.wav");
+//                cammina.play();
+//            }
+//        }
         return coordinate;
     }
 

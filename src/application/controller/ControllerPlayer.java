@@ -41,17 +41,23 @@ public class ControllerPlayer  extends KeyAdapter {
         //nel key released allora viene rimosso dalla hashmap
         switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT -> {
+
                 direction = Settings.MOVE_LEFT;
                 pressed.add(Settings.MOVE_LEFT);
             }
             case KeyEvent.VK_RIGHT -> {
+
                 direction = Settings.MOVE_RIGHT;
                 pressed.add(Settings.MOVE_RIGHT);
             }
             case KeyEvent.VK_SPACE -> {
+
                 direction = Settings.JUMP;
                 pressed.add(Settings.JUMP);
             }
+            //serve per update direction del game panel
+            //problema che se toccano ogni tasto faceva animazione
+            default -> direction=Settings.NOT_MOVING;
         }
 
         if(direction == Settings.EXIT)

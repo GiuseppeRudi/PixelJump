@@ -9,6 +9,8 @@ public class Player  extends AbstractPlayer{
 
     private int progresso=0;
 
+    int vita = 3;
+
     private LinkedList<Position> coordinatePlayer = new LinkedList<>();
 
     private int direction = Settings.NOT_MOVING;
@@ -26,6 +28,7 @@ public class Player  extends AbstractPlayer{
     @Override
     public void move(){
         coordinatePlayer=super.move(direction);
+
         //SPIEGARE PERCHE COSI NON FUNZIONA
 //        if (direction==Settings.MOVE_RIGHT && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15)
 //        {
@@ -35,7 +38,7 @@ public class Player  extends AbstractPlayer{
 //        {
 //            progresso-= ((Settings.Filtro_Size_Colonna+progresso-21)-super.getPosition(0).j());
 //        }
-        if (ControllerPlayer.getPressed().contains(Settings.MOVE_RIGHT) && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15) {
+        if (ControllerPlayer.getPressed().contains(Settings.MOVE_RIGHT) && progresso<(world.getViewPort().getFirst().length()-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15) {
             progresso+= (super.getPosition(0).j()-(Settings.Filtro_Size_Colonna+progresso-15));
         }
         else if(ControllerPlayer.getPressed().contains(Settings.MOVE_LEFT) && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21) {
@@ -76,10 +79,16 @@ public class Player  extends AbstractPlayer{
 
         }
 
+
+
     }
 
     public int getProgresso() {
         return progresso;
+    }
+
+    public void setProgresso(int progresso) {
+        this.progresso = progresso;
     }
 
     public int getDirection() {
@@ -100,5 +109,13 @@ public class Player  extends AbstractPlayer{
     @Override
     public LinkedList<Position> simulateMove()   {
         return super.simulateMove(direction);
+    }
+
+    public int getVita() {
+        return vita;
+    }
+
+    public void setVita(int vita) {
+        this.vita = vita;
     }
 }

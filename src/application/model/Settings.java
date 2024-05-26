@@ -3,8 +3,8 @@ package application.model;
 public class Settings {
 
 
-    public final static int World_Size_Riga = 20; //grandezza riga della matrice Principale
-    public final static int World_Size_Colonna = 161; //grandezza colonna della matrice Principale
+    public final static int World_Size_Riga_Max = 20; //grandezza riga della matrice Principale
+    public final static int World_Size_Colonna_Max = 300; //grandezza colonna della matrice Principale
 
 
 
