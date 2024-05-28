@@ -155,8 +155,12 @@ public class World {
         return i>=0 && i<viewPort.size() && j>=0 && j<viewPort.getFirst().length();
     }
 
+    //usata per inserire la moneta e inserire blocco gia usato
+    public void setMatrice_Principale(int i,int j,Block block) {
+        matrice_Principale[i][j]=block;
+    }
 
-    public boolean isWall(int i,int j) {return isType(i,j,Block.MURO);}
+    public boolean isWall(int i, int j) {return isType(i,j,Block.MURO);}
     public boolean isPlayer(int i,int j) {return isType(i,j,Block.PERSONAGGIO);}
     public boolean isTerra(int i, int j) { return isType(i,j,Block.TERRA);}
     public boolean isErba(int i, int j) { return isType(i,j,Block.ERBA);}
@@ -166,7 +170,8 @@ public class World {
     public boolean isBarile(int i, int j) { return isType(i,j,Block.BARILE);}
     public boolean isTubo(int i, int j) { return isType(i,j,Block.TUBO);}
     public boolean isMorte(int i, int j) {return isType(i,j,Block.MORTE);}
-    public boolean isBlocco(int i , int j ) { return isWall(i,j) || isErba(i,j) || isSpeciale(i,j) || isTerra(i,j) || isTubo(i,j) || isBarile(i,j) || isFine(i,j);}
+    public boolean isUsato(int i, int j) {return isType(i,j,Block.USATO);}
+    public boolean isBlocco(int i , int j ) { return isWall(i,j) || isErba(i,j) || isSpeciale(i,j) || isTerra(i,j) || isTubo(i,j) || isBarile(i,j) || isFine(i,j) || isUsato(i,j);}
     public boolean isPonte(int i, int j) {return isType(i,j,Block.PONTE);}
     public boolean isPortale(int i, int j) {return isType(i,j,Block.PORTALE);}
     public boolean isTeletrasporto(int i, int j) {return isType(i,j,Block.TELETRASPORTO);}

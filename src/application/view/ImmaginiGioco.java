@@ -47,6 +47,7 @@ public class ImmaginiGioco {
     private Image bloccoTeletrasporto2;
     private Image bloccoTeletrasporto3;
     private Image bloccoLava;
+    private Image bloccoUsato;
 
     public ImmaginiGioco() throws IOException {
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/sfondo_liv1.png"));
@@ -114,6 +115,8 @@ public class ImmaginiGioco {
         bloccoTeletrasporto2 = bloccoTeletrasporto2.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         bloccoTeletrasporto3 = ImageIO.read(new File("src/application/resources/GraphicsManager/Blocks/bloccoTeletrasporto3.png"));
         bloccoTeletrasporto3 = bloccoTeletrasporto3.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoUsato = ImageIO.read(new File("src/application/resources/GraphicsManager/Blocks/bloccoUsato.png"));
+        bloccoUsato = bloccoUsato.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
 
         animazioneMovimento[0] = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/muove.png"));
         animazioneMovimento[1] = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/muove.png"));
@@ -199,5 +202,9 @@ public class ImmaginiGioco {
 
     public Image[] getAnimazioneSalto() {
         return animazioneSalto;
+    }
+
+    public Image getBloccoUsato() {
+        return bloccoUsato;
     }
 }

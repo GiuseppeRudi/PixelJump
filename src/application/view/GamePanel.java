@@ -14,7 +14,7 @@ import java.util.LinkedList;
 
 public class GamePanel extends JPanel {
     private final PlayerView playerView = new PlayerView();
-
+    private Font customFont;
     private World world ;
     private ImmaginiGioco immaginiGioco = new ImmaginiGioco();
 
@@ -22,7 +22,19 @@ public class GamePanel extends JPanel {
         this.addKeyListener(controllerPlayer);
     }
 
-    public GamePanel(ImmaginiGioco immaginigioco) throws IOException {this.immaginiGioco = immaginigioco;}
+    public GamePanel(ImmaginiGioco immaginigioco) throws IOException {
+        this.immaginiGioco = immaginigioco;
+        try {
+            // Assicurati che il percorso al file del font sia corretto.
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("C:\\Users\\giu20\\OneDrive - Università della Calabria\\USER INTERFACE\\Progetto\\src\\application\\resources\\GraphicsManager\\font\\fontMinecraft.ttf")).deriveFont(18f); // Indica la dimensione del font
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            // Registra il font
+            ge.registerFont(customFont);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+            customFont = new Font("Arial", Font.PLAIN, 18); // Usa un font di backup nel caso il caricamento fallisca
+        }
+    }
 
     static boolean startAnimazione = false;
     static boolean startAnimazioneSalto= false;
@@ -120,6 +132,7 @@ public class GamePanel extends JPanel {
     }
 
     int spostamento_immagine_destra;
+    int spostamento_immagine_salto;
     int spostamento_immagine_sinistra;
     boolean trovatoPersonaggio =false;
     @Override
@@ -129,6 +142,8 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
 
         world = Game.getInstance().getWorld();
+
+
         //questo serve per spostare lo sfondo man mano che il progresso avanza e quindi lo sfondo si muove man mano
         g.drawImage(immaginiGioco.getBackgroundImage(world.getLivello()),-(world.getPlayer().getProgresso()*5),0,this);
 
@@ -137,6 +152,21 @@ public class GamePanel extends JPanel {
 //        System.out.println(world.getPlayer().getProgresso());
 //        System.out.println("-----++++++++++++++-----------");
 //        int coordinateGiocatore = trovaGiocatore();
+
+        // Scegliere il font desiderato
+        g.setFont(customFont); // Imposta il font per il disegno del testo
+
+        // Impostare il colore del testo
+        g.setColor(Color.WHITE); // Cambia il colore del testo in blu
+
+        // Disegnare un testo
+        g.drawString(world.getPlayer().getMoneta()+"", 850, 30);  // Disegna "Hello World!" nella posizione x=10, y=20
+        g.drawImage(immaginiGioco.getBloccoMoneta(),870,8, this);
+
+        if (world.getPlayer().getMoneta()>=1)
+        {
+            g.drawString("Obiettivo Raggiunto", 400, 30);  // Disegna "Hello World!" nella posizione x=10, y=20
+        }
 
         for(int i = 0; i < Settings.Filtro_Size_Riga; i++) {
             int riga = i * Settings.CELL_SIZE_RIGA; //coordinate x sulla view
@@ -148,7 +178,7 @@ public class GamePanel extends JPanel {
                 for(int f=0;f<world.getPlayer().getVita();f++)
                 {
 
-                    g.drawImage(immaginiGioco.getBloccoCuore(),arrayvita.get(f).j()*Settings.CELL_SIZE_COLONNA,arrayvita.get(f).i()*Settings.CELL_SIZE_RIGA, this);
+                    g.drawImage(immaginiGioco.getBloccoCuore(),arrayvita.get(f).j()*Settings.CELL_SIZE_COLONNA+3,arrayvita.get(f).i()*Settings.CELL_SIZE_RIGA+8, this);
                 }
 
                 if(world.isWall(i, j + world.getPlayer().getProgresso())) {
@@ -168,6 +198,7 @@ public class GamePanel extends JPanel {
                             spostamento_immagine_destra=-30+(5* indiceMovimento);
                             spostamento_immagine_sinistra=+10-(5* indiceMovimento);
 
+
                             if(direzione==1)
                             {
                                 g.drawImage(animazione[indiceMovimento],colonna+spostamento_immagine_destra,riga,this);
@@ -181,16 +212,15 @@ public class GamePanel extends JPanel {
                         if(startAnimazioneSalto){
 
 
-//                        spostamento_immagine_destra=-30+(5*indiceCorrente);
-//                        spostamento_immagine_sinistra=+30-(5*indiceCorrente);
+                            spostamento_immagine_salto=-10-(5* indiceMovimento);
 
                         if(direzionePrecedente==1)
                         {
-                            g.drawImage(animazioneSalto[indiceMovimento],colonna,riga,this);
+                            g.drawImage(animazioneSalto[indiceMovimento],colonna,riga+spostamento_immagine_salto,this);
                         }
                         else if(direzionePrecedente==-1)
                         {
-                            g.drawImage(ImageUtil.flipImageHorizontally(animazioneSalto[indiceMovimento]),colonna,riga,this);
+                            g.drawImage(ImageUtil.flipImageHorizontally(animazioneSalto[indiceMovimento]),colonna,riga+spostamento_immagine_salto,this);
                         }
 
 
@@ -252,6 +282,11 @@ public class GamePanel extends JPanel {
                 else if(world.isCoin(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoMoneta(), colonna, riga, this);
                 }
+                else if(world.isUsato(i,j + world.getPlayer().getProgresso())){
+                    g.drawImage(immaginiGioco.getBloccoUsato(), colonna, riga, this);
+                }
+
+                System.out.println(world.getPlayer().getMoneta());
 
             }
         }

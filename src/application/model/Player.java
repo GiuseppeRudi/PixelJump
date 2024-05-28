@@ -1,5 +1,6 @@
 package application.model;
 
+import application.Block;
 import application.controller.ControllerPlayer;
 
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.util.LinkedList;
 public class Player  extends AbstractPlayer{
 
     private int progresso=0;
+    private int moneta =0;
+
 
     int vita = 3;
 
@@ -55,6 +58,13 @@ public class Player  extends AbstractPlayer{
                 //se prima di completare il salto completo trovo un blocco sopra allora finisce il salto e inizia la caduta
                 if(world.isBlocco(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getLast().j()))
                 {
+                    if(world.isSpeciale(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getLast().j()))
+                    {
+                        //moneta principale
+                        world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getLast().j(), Block.MONETA);
+                        //blocco gia usato
+                        world.setMatrice_Principale(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getLast().j(), Block.USATO);
+                    }
                     setJumping(false);
                     setFalling(true);
                 }
@@ -118,4 +128,13 @@ public class Player  extends AbstractPlayer{
     public void setVita(int vita) {
         this.vita = vita;
     }
+
+    public int getMoneta() {
+        return moneta;
+    }
+    public void setMoneta()
+    {
+        moneta++;
+    }
+
 }

@@ -95,7 +95,11 @@ public abstract class AbstractPlayer {
     protected LinkedList<Position> move ( int direction)   {
         //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world
         coordinate = simulateMove(direction);
+        if(world.isCoin(coordinate.getLast().i(), coordinate.getLast().j()))
+        {
+            world.getPlayer().setMoneta();
 
+        }
         if(world.isMorte(coordinate.getLast().i()+1,coordinate.getLast().j()))
         {
             //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
