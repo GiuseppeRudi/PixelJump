@@ -9,6 +9,7 @@ import java.util.List;
 public class World {
 
     int controllo_simulateMove =0;
+    int livello = 1;
 
     private  LinkedList<Position> arrayVita = new LinkedList<>();
     private List<String> viewPort;
@@ -72,7 +73,7 @@ public class World {
     private final Player player = new Player(coordinatePlayer,this); //mette il player in posizione 0,0 , la grandezza della riga
     public void inizializzaMatricePrincipale() throws IOException {  //legge il file e quindi la matrice
         leggiFile file = new leggiFile();
-        viewPort = file.leggi("src/application/resources/livelli/Livello2.txt");
+        viewPort = file.leggi("src/application/resources/GraphicsManager/Levels/Livello1.txt");
 //        System.out.println(viewPort.size());
 //        System.out.println(viewPort.get(0).length());
         matrice_Principale= new Block[viewPort.size()][viewPort.getFirst().length()];
@@ -165,7 +166,7 @@ public class World {
     public boolean isBarile(int i, int j) { return isType(i,j,Block.BARILE);}
     public boolean isTubo(int i, int j) { return isType(i,j,Block.TUBO);}
     public boolean isMorte(int i, int j) {return isType(i,j,Block.MORTE);}
-    public boolean isBlocco(int i , int j ) { return isWall(i,j) || isErba(i,j) || isSpeciale(i,j) || isTerra(i,j) || isTubo(i,j) || isBarile(i,j) || isFine(i,j) || isCastello(i,j);}
+    public boolean isBlocco(int i , int j ) { return isWall(i,j) || isErba(i,j) || isSpeciale(i,j) || isTerra(i,j) || isTubo(i,j) || isBarile(i,j) || isFine(i,j);}
     public boolean isPonte(int i, int j) {return isType(i,j,Block.PONTE);}
     public boolean isPortale(int i, int j) {return isType(i,j,Block.PORTALE);}
     public boolean isTeletrasporto(int i, int j) {return isType(i,j,Block.TELETRASPORTO);}
@@ -179,6 +180,10 @@ public class World {
         player.setProgresso(0);
 
 
+    }
+
+    public int getLivello() {
+        return livello;
     }
 
     public List<String> getViewPort() {

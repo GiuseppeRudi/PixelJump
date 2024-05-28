@@ -130,7 +130,7 @@ public class GamePanel extends JPanel {
 
         world = Game.getInstance().getWorld();
         //questo serve per spostare lo sfondo man mano che il progresso avanza e quindi lo sfondo si muove man mano
-        g.drawImage(immaginiGioco.getBackgroundImage(),-(world.getPlayer().getProgresso()*5),0,this);
+        g.drawImage(immaginiGioco.getBackgroundImage(world.getLivello()),-(world.getPlayer().getProgresso()*5),0,this);
 
 
 //        System.out.println("-----PROGRESSO-----------");
@@ -153,7 +153,7 @@ public class GamePanel extends JPanel {
 
                 if(world.isWall(i, j + world.getPlayer().getProgresso())) {
 
-                    g.drawImage(immaginiGioco.getBloccoMuro(),colonna,riga,this);
+                    g.drawImage(immaginiGioco.getBloccoMuro(world.getLivello()),colonna,riga,this);
                 }
                 else if(world.isPlayer(i, j + world.getPlayer().getProgresso())) {
 //                    System.out.println("-- SONO IN PAINT --");
@@ -166,7 +166,7 @@ public class GamePanel extends JPanel {
                         {
 
                             spostamento_immagine_destra=-30+(5* indiceMovimento);
-                            spostamento_immagine_sinistra=+30-(5* indiceMovimento);
+                            spostamento_immagine_sinistra=+10-(5* indiceMovimento);
 
                             if(direzione==1)
                             {
@@ -220,34 +220,34 @@ public class GamePanel extends JPanel {
                 }
                 else if(world.isTerra(i,j + world.getPlayer().getProgresso()))
                 {
-                    g.drawImage(immaginiGioco.getBloccoTerra(),colonna,riga,this);
+                    g.drawImage(immaginiGioco.getBloccoTerra(world.getLivello()),colonna,riga,this);
                 }
                 else if(world.isErba(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoErba(),colonna,riga,this);
                 }
                 else if(world.isSpeciale(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoSpeciale(), colonna,riga,this);
+                    g.drawImage(immaginiGioco.getBloccoSpeciale(world.getLivello()), colonna,riga,this);
                 }
                 else if(world.isTubo(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoTubo(), colonna, riga, this);
+                    g.drawImage(immaginiGioco.getBloccoTubo(world.getLivello()), colonna, riga, this);
                 }
                 else if(world.isBarile(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoBarile(), colonna, riga, this);
+                    g.drawImage(immaginiGioco.getBloccoBarile(world.getLivello()), colonna, riga, this);
                 }
                 else if(world.isFine(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoFine(), colonna, riga, this);
+                    g.drawImage(immaginiGioco.getBloccoFine(world.getLivello()), colonna, riga, this);
                 }
                 else if(world.isPortale(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoPortale(), colonna, riga, this);
+                    g.drawImage(immaginiGioco.getBloccoPortale(world.getLivello()), colonna, riga, this);
                 }
                 else if(world.isMorte(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoMorte(), colonna, riga, this);
+                    g.drawImage(immaginiGioco.getBloccoMorte(world.getLivello()), colonna, riga, this);
                 }
                 else if(world.isPonte(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoPonte(), colonna, riga, this);
+                    g.drawImage(immaginiGioco.getBloccoPonte(world.getLivello()), colonna, riga, this);
                 }
                 else if(world.isTeletrasporto(i,j + world.getPlayer().getProgresso())){
-                    g.drawImage(immaginiGioco.getBloccoTeletrasporto(), colonna, riga, this);
+                    g.drawImage(immaginiGioco.getBloccoTeletrasporto(world.getLivello()), colonna, riga, this);
                 }
                 else if(world.isCoin(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoMoneta(), colonna, riga, this);
