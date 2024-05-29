@@ -28,87 +28,107 @@ public abstract class AbstractPlayer {
     }
 
 
-    protected LinkedList<Position> simulateMove(int direction)   {
-
-
-
-        int testa_i = coordinate.getFirst().i();
-        int testa_j = coordinate.getFirst().j();
-
-        int corpo_i = coordinate.get(1).i();
-        int corpo_j = coordinate.get(1).j();
-
-        if (ControllerPlayer.getPressed().contains(Settings.JUMP)) {
-            if (!isJumping && !isFalling) {
-                //questo serve poiche sto gia cadendo o sto saltando non posso saltare di nuovo
-                isJumping = true;
-            }
-        }
-
-        if(isJumping){
-            testa_i=testa_i - 1;
-            corpo_i = corpo_i - 1;
-        }
-
-        else if(isFalling){
-            testa_i= testa_i + 1;
-            corpo_i = corpo_i + 1;
-        }
-
-        if (ControllerPlayer.getPressed().contains(Settings.MOVE_LEFT)) {
-            if ((!isJumping && !isFalling) || (!world.isBlocco(testa_i, testa_j - 1) && !world.isBlocco(corpo_i, corpo_j - 1) && !world.isBlocco(testa_i - 1, testa_j - 1) && world.isValidPosition(testa_i, testa_j - 1))) {
-
-                testa_j = testa_j - 1;
-                corpo_j = corpo_j - 1;
-            }
-        }
-
-        if (ControllerPlayer.getPressed().contains(Settings.MOVE_RIGHT))  {
-
-            if((!isJumping && !isFalling ) || (!world.isBlocco(testa_i,testa_j+1) && !world.isBlocco(corpo_i,corpo_j+1) && !world.isBlocco(testa_i-1,testa_j+1) && world.isValidPosition(testa_i,testa_j+1))){
-
-                testa_j = testa_j +1;
-                corpo_j = corpo_j + 1;
-            }
-        }
-
-
-
-
-//        System.out.println(corpo_i);
-//        System.out.println(corpo_j);
-
-
+    protected LinkedList<Position> simulateMove(int direction, int tipo)   {
 
         LinkedList<Position> newCoordinate = new LinkedList<>();
-        newCoordinate.add(new Position(testa_i, testa_j));
-        newCoordinate.add(new Position(corpo_i, corpo_j));
 
-//        System.out.println("************************");
-//        System.out.println(newCoordinate.getFirst().i());
-//        System.out.println(newCoordinate.getFirst().j());
-//        System.out.println("************************");
+        if(tipo==1) {
+            int testa_i = coordinate.getFirst().i();
+            int testa_j = coordinate.getFirst().j();
+
+            int corpo_i = coordinate.get(1).i();
+            int corpo_j = coordinate.get(1).j();
+
+            if (ControllerPlayer.getPressed().contains(Settings.JUMP)) {
+                if (!isJumping && !isFalling) {
+                    //questo serve poiche sto gia cadendo o sto saltando non posso saltare di nuovo
+                    isJumping = true;
+                }
+            }
+
+            if (isJumping) {
+                testa_i = testa_i - 1;
+                corpo_i = corpo_i - 1;
+            } else if (isFalling) {
+                testa_i = testa_i + 1;
+                corpo_i = corpo_i + 1;
+            }
+
+            if (ControllerPlayer.getPressed().contains(Settings.MOVE_LEFT)) {
+                if ((!isJumping && !isFalling) || (!world.isBlocco(testa_i, testa_j - 1) && !world.isBlocco(corpo_i, corpo_j - 1) && !world.isBlocco(testa_i - 1, testa_j - 1) && world.isValidPosition(testa_i, testa_j - 1))) {
+
+                    testa_j = testa_j - 1;
+                    corpo_j = corpo_j - 1;
+                }
+            }
+
+            if (ControllerPlayer.getPressed().contains(Settings.MOVE_RIGHT)) {
+
+                if ((!isJumping && !isFalling) || (!world.isBlocco(testa_i, testa_j + 1) && !world.isBlocco(corpo_i, corpo_j + 1) && !world.isBlocco(testa_i - 1, testa_j + 1) && world.isValidPosition(testa_i, testa_j + 1))) {
+
+                    testa_j = testa_j + 1;
+                    corpo_j = corpo_j + 1;
+                }
+            }
+
+
+            //        System.out.println(corpo_i);
+            //        System.out.println(corpo_j);
+
+
+
+            newCoordinate.add(new Position(testa_i, testa_j));
+            newCoordinate.add(new Position(corpo_i, corpo_j));
+        }
+
+        else if(tipo==0)
+        {
+            int corpo_i= coordinate.getFirst().i();
+            int corpo_j= coordinate.getFirst().j();
+            //nemico di un blocco
+            if(coordinate.size()==1)
+            {
+
+//                System.out.println("++++++");
+//                System.out.println(direction);
+//                System.out.println("++++++");
+                if(direction==Settings.MOVE_LEFT)
+                {
+                    corpo_j--;
+                }
+                if(direction==Settings.MOVE_RIGHT)
+                {
+                    corpo_j++;
+                }
+            }
+
+            newCoordinate.add((new Position(corpo_i,corpo_j)));
+        }
+
         return newCoordinate;}
 
         //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
 
-    protected LinkedList<Position> move ( int direction)   {
+    protected LinkedList<Position> move ( int direction, int tipo)   {
         //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world
-        coordinate = simulateMove(direction);
-        if(world.isCoin(coordinate.getLast().i(), coordinate.getLast().j()))
-        {
-            world.getPlayer().setMoneta();
+        coordinate = simulateMove(direction,tipo);
 
-        }
-        if(world.isMorte(coordinate.getLast().i()+1,coordinate.getLast().j()))
-        {
-            //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
+//        if(world.isCoin(coordinate.getLast().i(), coordinate.getLast().j()))
+//        {
+//            world.getPlayer().setMoneta();
+//
+//        }
+        //tipo 1 = personaggio ; tipo = 0 nemici
+        if(tipo==1) {
+            if (world.isMorte(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
+                //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
 
-            coordinate.clear();
-            coordinate.add(new Position(15,5));
-            coordinate.add(new Position(16,5));
-            world.restart();
+                coordinate.clear();
+                coordinate.add(new Position(15, 5));
+                coordinate.add(new Position(16, 5));
+                world.restart();
 
+            }
         }
 
 //        if (direction != Settings.NOT_MOVING) {

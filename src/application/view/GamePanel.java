@@ -285,8 +285,12 @@ public class GamePanel extends JPanel {
                 else if(world.isUsato(i,j + world.getPlayer().getProgresso())){
                     g.drawImage(immaginiGioco.getBloccoUsato(), colonna, riga, this);
                 }
+                else if(world.isNemico(i,j+world.getPlayer().getProgresso()))
+                {
+                    g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
+                }
 
-                System.out.println(world.getPlayer().getMoneta());
+                //System.out.println(world.getPlayer().getMoneta());
 
             }
         }

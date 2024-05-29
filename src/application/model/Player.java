@@ -11,6 +11,8 @@ public class Player  extends AbstractPlayer{
     private int progresso=0;
     private int moneta =0;
 
+    int tipo =1;
+
 
     int vita = 3;
 
@@ -30,7 +32,12 @@ public class Player  extends AbstractPlayer{
 
     @Override
     public void move(){
-        coordinatePlayer=super.move(direction);
+        coordinatePlayer=super.move(direction,tipo);
+
+        if(world.isCoin(coordinatePlayer.getLast().i(), coordinatePlayer.getLast().j()) || world.isCoin(coordinatePlayer.getFirst().i(), coordinatePlayer.getFirst().j()))
+        {
+            world.getPlayer().setMoneta();
+        }
 
         //SPIEGARE PERCHE COSI NON FUNZIONA
 //        if (direction==Settings.MOVE_RIGHT && progresso<(Settings.World_Size_Colonna-Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15)
@@ -118,7 +125,7 @@ public class Player  extends AbstractPlayer{
     //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
     @Override
     public LinkedList<Position> simulateMove()   {
-        return super.simulateMove(direction);
+        return super.simulateMove(direction,tipo);
     }
 
     public int getVita() {
