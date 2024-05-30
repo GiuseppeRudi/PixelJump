@@ -9,7 +9,11 @@ import java.util.Random;
 
 public class Enemy extends  AbstractPlayer implements Runnable {
 
-    int direction=0;
+//    private int ultimoMovimento = 1;
+//    private int passiNellaStessaDirezione = 0;
+//    private Random random = new Random();
+
+    int direction=1;
     int tipo=0;
     private World world;
     private LinkedList<Position> coordinateNemico ;
@@ -32,17 +36,31 @@ public class Enemy extends  AbstractPlayer implements Runnable {
 
     @Override
     public void run() {
-        direction=movimentoRandom();
         world.setCoordinateNemici(coordinateNemico);
         world.moveNemico();
 
     }
 
-    public int movimentoRandom()
-    {
-        Random random = new Random();
-        return random.nextBoolean() ? 1 : -1;
+//    public int movimentoRandom() {
+//        // Decide se cambiare direzione
+//        if (passiNellaStessaDirezione >= 2 + random.nextInt(3)) { // Dopo 2-4 passi nella stessa direzione
+//            ultimoMovimento *= -1; // Cambia direzione
+//            passiNellaStessaDirezione = 0;
+//        } else {
+//            passiNellaStessaDirezione++;
+//        }
+//        return ultimoMovimento;
+//    }
 
+    public void changeMovimento() {
+        if(direction==1)
+        {
+            direction=-1;
+        }
+        else direction=1;
     }
 
+    public int getDirection() {
+        return direction;
+    }
 }

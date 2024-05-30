@@ -44,46 +44,45 @@ public class World {
         inizializzaMatricePrincipale();
 //        threadNemico1.start();
         executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(enemy::run,200,2000, TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(enemy::run,200,500, TimeUnit.MILLISECONDS);
 
     }
 
     //serve per far muovere il player e aggiornare la sua posizione sulla matrice principale
-    public void movePlayer()   {
+    public void movePlayer() {
         //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
         LinkedList<Position> newPosition = player.simulateMove();
+//
+            //devo verificare che le nuove posizioni sia valide
+            int count = 0;
+            for (Position p : newPosition) {
+                //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
+                if (isValidPosition(p.i(), p.j()) && !isBlocco(p.i(), p.j())) {
+                    count++;
 
-
-        //devo verificare che le nuove posizioni sia valide
-        int count =0;
-        for (Position p : newPosition) {
-            //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
-            if(isValidPosition(p.i(),p.j()) && !isBlocco(p.i(),p.j())) {
-                count++;
-
+                }
             }
-        }
 //        System.out.println(count);
-        if (count==newPosition.size()) {
-            //getPosition prende da parametro un intero che se è 0 restituisce la position della testa 1 il corpo
-            //  abbiamo prima controllato che possiamo cambiare posizione e se la possiamo cambiare
-            // prima prendiamo le coordinate precedenti e ci mettiamo il blocco vuoto
+            if (count == newPosition.size()) {
+                //getPosition prende da parametro un intero che se è 0 restituisce la position della testa 1 il corpo
+                //  abbiamo prima controllato che possiamo cambiare posizione e se la possiamo cambiare
+                // prima prendiamo le coordinate precedenti e ci mettiamo il blocco vuoto
 
-            for (int k=0; k<coordinatePlayer.size();k++)
-            {
-                matrice_Principale[player.getPosition(k).i()][player.getPosition(k).j()] = Block.VUOTO;
+                for (int k = 0; k < coordinatePlayer.size(); k++) {
+                    matrice_Principale[player.getPosition(k).i()][player.getPosition(k).j()] = Block.VUOTO;
+                }
+
+                player.move();
+
+                //qui dopo che si muove metto not moving cosi sta ferma e non va in quella direzione in loop
+                //if (player.getDirection()==Settings.JUMP) updateDirection(Settings.NOT_MOVING);
+
+                //aggiorniamo nella matrice principale la nuova posizione del personaggio
+                for (int k = 0; k < coordinatePlayer.size(); k++) {
+                    matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
+                }
             }
 
-            player.move();
-
-            //qui dopo che si muove metto not moving cosi sta ferma e non va in quella direzione in loop
-            //if (player.getDirection()==Settings.JUMP) updateDirection(Settings.NOT_MOVING);
-
-            //aggiorniamo nella matrice principale la nuova posizione del personaggio
-            for(int k=0; k<coordinatePlayer.size();k++) {
-                matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
-            }
-        }
     }
 
     public Player getPlayer() {
@@ -226,20 +225,20 @@ public class World {
         //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
         LinkedList<Position> newPosition = enemy.simulateMove();
 
-        System.out.println(newPosition.getFirst().i());
-        System.out.println(newPosition.getFirst().j());
+//        System.out.println(newPosition.getFirst().i());
+//        System.out.println(newPosition.getFirst().j());
 
         //devo verificare che le nuove posizioni sia valide
         int count =0;
         for (Position p : newPosition) {
             //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
-            if(isValidPosition(p.i(),p.j()) && !isBlocco(p.i(),p.j())) {
+            if(isValidPosition(p.i(),p.j()) && !isBlocco(p.i(),p.j()) && !isMorte(p.i()+1,p.j())) {
                 count++;
 
             }
         }
-        System.out.println(count);
-        System.out.println(newPosition.size());
+//        System.out.println(count);
+//        System.out.println(newPosition.size());
 
 
         if (count==newPosition.size()) {
@@ -249,9 +248,9 @@ public class World {
 
             for (int k=0; k<coordinateNemici.size();k++)
             {
-                System.out.println("4844848484848448");
-                System.out.println(enemy.getPosition(0));
-                System.out.println("484848484448");
+//                System.out.println("4844848484848448");
+//                System.out.println(enemy.getPosition(0));
+//                System.out.println("484848484448");
                 matrice_Principale[enemy.getPosition(k).i()][enemy.getPosition(k).j()] = Block.VUOTO;
             }
 
@@ -265,6 +264,10 @@ public class World {
                 matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.NEMICO;
             }
         }
+        else {
+            enemy.changeMovimento();
+        }
+
         }
 
 
@@ -274,5 +277,9 @@ public class World {
 
     public void setCoordinateNemici(LinkedList<Position> coordinateNemici) {
         this.coordinateNemici = coordinateNemici;
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
     }
 }

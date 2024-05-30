@@ -10,12 +10,15 @@ import application.resources.ImageUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class GamePanel extends JPanel {
     private final PlayerView playerView = new PlayerView();
     private Font customFont;
     private World world ;
+
     private ImmaginiGioco immaginiGioco = new ImmaginiGioco();
 
     public void setController(ControllerPlayer controllerPlayer) {
@@ -143,6 +146,9 @@ public class GamePanel extends JPanel {
 
         world = Game.getInstance().getWorld();
 
+//        System.out.println("+++++++++++++++");
+//        System.out.println(world.getPlayer().getProgresso());
+//        System.out.println("+++++++++++++++");
 
         //questo serve per spostare lo sfondo man mano che il progresso avanza e quindi lo sfondo si muove man mano
         g.drawImage(immaginiGioco.getBackgroundImage(world.getLivello()),-(world.getPlayer().getProgresso()*5),0,this);
@@ -186,67 +192,53 @@ public class GamePanel extends JPanel {
                     g.drawImage(immaginiGioco.getBloccoMuro(world.getLivello()),colonna,riga,this);
                 }
                 else if(world.isPlayer(i, j + world.getPlayer().getProgresso())) {
-//                    System.out.println("-- SONO IN PAINT --");
+                    System.out.println("-- SONO IN PAINT --");
 //                    System.out.println(startAnimazione);
 //                    System.out.println(indiceCorrente);
 //                    System.out.println("-------------");
-                    if (!trovatoPersonaggio)
-                    {
-                        if (startAnimazione)
-                        {
+                    if (!trovatoPersonaggio) {
+                        if (startAnimazione) {
 
-                            spostamento_immagine_destra=-30+(5* indiceMovimento);
-                            spostamento_immagine_sinistra=+10-(5* indiceMovimento);
+                            spostamento_immagine_destra = -30 + (5 * indiceMovimento);
+                            spostamento_immagine_sinistra = +10 - (5 * indiceMovimento);
 
 
-                            if(direzione==1)
-                            {
-                                g.drawImage(animazione[indiceMovimento],colonna+spostamento_immagine_destra,riga,this);
-                            }
-                            else if(direzione==-1)
-                            {
-                                g.drawImage(ImageUtil.flipImageHorizontally(animazione[indiceMovimento]),colonna+spostamento_immagine_sinistra,riga,this);
+                            if (direzione == 1) {
+                                g.drawImage(animazione[indiceMovimento], colonna + spostamento_immagine_destra, riga, this);
+                            } else if (direzione == -1) {
+                                g.drawImage(ImageUtil.flipImageHorizontally(animazione[indiceMovimento]), colonna + spostamento_immagine_sinistra, riga, this);
                             }
 
                         }
-                        if(startAnimazioneSalto){
+                        if (startAnimazioneSalto) {
 
 
-                            spostamento_immagine_salto=-10-(5* indiceMovimento);
+                            spostamento_immagine_salto = -10 - (5 * indiceMovimento);
 
-                        if(direzionePrecedente==1)
-                        {
-                            g.drawImage(animazioneSalto[indiceMovimento],colonna,riga+spostamento_immagine_salto,this);
+                            if (direzionePrecedente == 1) {
+                                g.drawImage(animazioneSalto[indiceMovimento], colonna, riga + spostamento_immagine_salto, this);
+                            } else if (direzionePrecedente == -1) {
+                                g.drawImage(ImageUtil.flipImageHorizontally(animazioneSalto[indiceMovimento]), colonna, riga + spostamento_immagine_salto, this);
+                            }
+
+
                         }
-                        else if(direzionePrecedente==-1)
-                        {
-                            g.drawImage(ImageUtil.flipImageHorizontally(animazioneSalto[indiceMovimento]),colonna,riga+spostamento_immagine_salto,this);
-                        }
-
-
-                    }
 //                        System.out.println("****************+");
 //                        System.out.println(startAnimazione);
 //                        System.out.println(startAnimazioneSalto);
 //                        System.out.println("****************+");
 
-                        if (!startAnimazione && !startAnimazioneSalto)
-                            {
-                                if (direzionePrecedente==1)
-                                {
-                                    g.drawImage(immaginiGioco.getPersonaggio(),colonna,riga,this);
-                                }
-                                else if(direzionePrecedente==-1)
-                                {
-                                    g.drawImage(ImageUtil.flipImageHorizontally(immaginiGioco.getPersonaggio()),colonna,riga,this);
-                                }
-
+                        if (!startAnimazione && !startAnimazioneSalto) {
+                            if (direzionePrecedente == 1) {
+                                g.drawImage(immaginiGioco.getPersonaggio(), colonna, riga, this);
+                            } else if (direzionePrecedente == -1) {
+                                g.drawImage(ImageUtil.flipImageHorizontally(immaginiGioco.getPersonaggio()), colonna, riga, this);
                             }
 
-                        trovatoPersonaggio=true;
+                        }
+
+                        trovatoPersonaggio = true;
                     }
-//                    g.setColor(Color.WHITE);
-//                    g.fillRect(colonna, riga, Settings.CELL_SIZE_RIGA, Settings.CELL_SIZE_COLONNA);
                 }
                 else if(world.isTerra(i,j + world.getPlayer().getProgresso()))
                 {
@@ -287,7 +279,15 @@ public class GamePanel extends JPanel {
                 }
                 else if(world.isNemico(i,j+world.getPlayer().getProgresso()))
                 {
-                    g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
+                    if(world.getEnemy().getDirection()==-1)
+                    {
+                        g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
+
+                    }
+                    else if(world.getEnemy().getDirection()==1)
+                    {
+                        g.drawImage(ImageUtil.flipImageHorizontally(immaginiGioco.getBloccoNemico1()),colonna,riga,this);
+                    }
                 }
 
                 //System.out.println(world.getPlayer().getMoneta());

@@ -22,6 +22,13 @@ public abstract class AbstractPlayer {
         this.world= world;
     }
 
+    public void setCoordinate(LinkedList<Position> coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public LinkedList<Position> getCoordinate() {
+        return coordinate;
+    }
 
     Position getPosition(int i) {
         return coordinate.get(i);
@@ -120,16 +127,55 @@ public abstract class AbstractPlayer {
 //        }
         //tipo 1 = personaggio ; tipo = 0 nemici
         if(tipo==1) {
-            if (world.isMorte(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
+            if (world.isNemico(coordinate.getLast().i(), coordinate.getLast().j())) {
+
+                world.restart();
+                coordinate.set(0, new Position(15, 5));
+                coordinate.set(1, new Position(16, 5));
+            } else if (world.isMorte(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
                 //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
 
-                coordinate.clear();
-                coordinate.add(new Position(15, 5));
-                coordinate.add(new Position(16, 5));
                 world.restart();
+                coordinate.set(0, new Position(15, 5));
+                coordinate.set(1, new Position(16, 5));
 
             }
         }
+        else if(tipo==0)
+        {
+            System.out.println("sono entrato");
+            if(world.isPlayer(coordinate.getFirst().i(),coordinate.getFirst().j()))
+            {
+
+
+                world.restart();
+                LinkedList<Position> coordinatePlayer = new LinkedList<>();
+                coordinatePlayer.add(new Position(15,5));
+                coordinatePlayer.add(new Position(16,5));
+                world.getPlayer().setCoordinate(coordinatePlayer);
+
+            }
+        }
+//            if (world.isMorte(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
+//                //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
+//
+//                coordinate.clear();
+//                coordinate.add(new Position(15, 5));
+//                coordinate.add(new Position(16, 5));
+//                world.restart();
+//
+//            }
+
+//            else if (world.isNemico(coordinate.getLast().i() , coordinate.getLast().j())) {
+//                //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
+//
+//                coordinate.clear();
+//                coordinate.add(new Position(15, 5));
+//                coordinate.add(new Position(16, 5));
+//                world.restart();
+//
+//            }
+
 
 //        if (direction != Settings.NOT_MOVING) {
 //            if (direction == Settings.JUMP) {
