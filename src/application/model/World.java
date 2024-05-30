@@ -17,7 +17,9 @@ public class World {
     int livello = 1;
     private  ScheduledExecutorService executorService = null;
 
-
+    public ScheduledExecutorService getExecutorService() {
+        return executorService;
+    }
 
     private LinkedList<Position> coordinateNemici = new LinkedList<>();
     private  LinkedList<Position> coordinatePlayer = new LinkedList<>();

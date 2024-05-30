@@ -120,7 +120,7 @@ public class ImmaginiGioco {
         bloccoUsato = bloccoUsato.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
 
         //NEMICI
-        bloccoNemico1 = ImageIO.read(new File("src/application/resources/GraphicsManager/Blocks/bloccoNemico1.png"));
+        bloccoNemico1 = ImageIO.read(new File("src/application/resources/GraphicsManager/Enemy/bloccoNemico1.png"));
         bloccoNemico1 = bloccoNemico1.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
 
         animazioneMovimento[0] = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/muove.png"));

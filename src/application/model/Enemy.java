@@ -38,6 +38,7 @@ public class Enemy extends  AbstractPlayer implements Runnable {
     public void run() {
         world.setCoordinateNemici(coordinateNemico);
         world.moveNemico();
+        System.out.println("fine");
 
     }
 
@@ -62,5 +63,12 @@ public class Enemy extends  AbstractPlayer implements Runnable {
 
     public int getDirection() {
         return direction;
+    }
+
+    public void kill() {
+
+        world.getExecutorService().close();
+        world.setMatrice_Principale(super.getCoordinate().getFirst().i(),super.getCoordinate().getFirst().j(),Block.VUOTO);
+
     }
 }

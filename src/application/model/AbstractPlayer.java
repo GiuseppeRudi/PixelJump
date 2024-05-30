@@ -46,12 +46,18 @@ public abstract class AbstractPlayer {
             int corpo_i = coordinate.get(1).i();
             int corpo_j = coordinate.get(1).j();
 
+
+
             if (ControllerPlayer.getPressed().contains(Settings.JUMP)) {
                 if (!isJumping && !isFalling) {
                     //questo serve poiche sto gia cadendo o sto saltando non posso saltare di nuovo
                     isJumping = true;
                 }
             }
+            if(world.isNemico(corpo_i+1,corpo_j))
+            {
+                world.getEnemy().kill();
+                isJumping=true;            }
 
             if (isJumping) {
                 testa_i = testa_i - 1;
