@@ -3,6 +3,7 @@ package application.model;
 //questa classe serve per creare piu player , nemici che utilizzano questo modello
 // generale su cui altri classi che la estendono possono usare
 
+import application.Block;
 import application.Sound;
 import application.controller.ControllerPlayer;
 
@@ -14,10 +15,19 @@ public abstract class AbstractPlayer {
     private boolean isJumping = false;
     private boolean isFalling = false;
 
+    private int indice;
+
     private LinkedList<Position> coordinate;
     protected World world ;
 
     public AbstractPlayer(LinkedList<Position> coordinate,World world) { //super classe di player
+
+        this.coordinate = coordinate;
+        this.world= world;
+    }
+
+    public AbstractPlayer(LinkedList<Position> coordinate,World world,int indice) { //super classe di player
+        this.indice= indice;
         this.coordinate = coordinate;
         this.world= world;
     }
@@ -56,7 +66,8 @@ public abstract class AbstractPlayer {
             }
             if(world.isNemico(corpo_i+1,corpo_j))
             {
-                world.getEnemy().kill();
+                System.out.println("MUORI");
+                kill();
                 isJumping=true;            }
 
             if (isJumping) {
@@ -96,6 +107,9 @@ public abstract class AbstractPlayer {
 
         else if(tipo==0)
         {
+            System.out.println("++++");
+            System.out.println(coordinate);
+            System.out.println("++++");
             int corpo_i= coordinate.getFirst().i();
             int corpo_j= coordinate.getFirst().j();
             //nemico di un blocco
@@ -120,7 +134,13 @@ public abstract class AbstractPlayer {
 
         return newCoordinate;}
 
-        //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
+    private void kill() {
+        world.stopEnemy(indice);
+        world.setMatrice_Principale(getCoordinate().getFirst().i(),getCoordinate().getFirst().j(), Block.VUOTO);
+    }
+
+
+    //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
 
     protected LinkedList<Position> move ( int direction, int tipo)   {
         //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world

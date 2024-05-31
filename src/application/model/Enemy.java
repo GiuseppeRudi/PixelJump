@@ -13,14 +13,19 @@ public class Enemy extends  AbstractPlayer implements Runnable {
 //    private int passiNellaStessaDirezione = 0;
 //    private Random random = new Random();
 
+    static int indice =0;
+
     int direction=1;
     int tipo=0;
     private World world;
     private LinkedList<Position> coordinateNemico ;
     public Enemy(LinkedList<Position> coordinate , World world) {
-        super( coordinate, world);
-        this.coordinateNemico = coordinate;
+        super( coordinate, world,indice);
+        indice++;
         this.world=world;
+        this.coordinateNemico = coordinate;
+        System.out.println(coordinateNemico);
+
     }
 
     @Override
@@ -36,8 +41,9 @@ public class Enemy extends  AbstractPlayer implements Runnable {
 
     @Override
     public void run() {
+        System.out.println(coordinateNemico);
         world.setCoordinateNemici(coordinateNemico);
-        world.moveNemico();
+        world.moveNemico(this);
         System.out.println("fine");
 
     }
@@ -65,10 +71,5 @@ public class Enemy extends  AbstractPlayer implements Runnable {
         return direction;
     }
 
-    public void kill() {
 
-        world.getExecutorService().close();
-        world.setMatrice_Principale(super.getCoordinate().getFirst().i(),super.getCoordinate().getFirst().j(),Block.VUOTO);
-
-    }
 }

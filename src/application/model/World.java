@@ -6,30 +6,32 @@ import application.view.GamePanel;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Executor;
+import java.util.concurrent.*;
 
 
 public class World {
 
-    int livello = 1;
-    private  ScheduledExecutorService executorService = null;
+    private ScheduledFuture<?> futureEnemy;
+    private ScheduledFuture<?> futureEnemy1;
+    private int livello = 1;
+//    private  ScheduledExecutorService executorService = null;
+//    private  ScheduledExecutorService executorService1 = null;
 
     public ScheduledExecutorService getExecutorService() {
         return executorService;
     }
 
     private LinkedList<Position> coordinateNemici = new LinkedList<>();
+    private LinkedList<Position> coordinateNemici1 = new LinkedList<>();
     private  LinkedList<Position> coordinatePlayer = new LinkedList<>();
 
-    private final Player player = new Player(coordinatePlayer,this); //mette il player in posizione 0,0 , la grandezza della riga
-    private final Enemy enemy = new Enemy(coordinateNemici,this); //mette il player in posizione 0,0 , la grandezza della riga
-
+    private final Player player; //mette il player in posizione 0,0 , la grandezza della riga
+    private final Enemy enemy ; //mette il player in posizione 0,0 , la grandezza della riga
+    private final Enemy enemy1 ; //mette il player in posizione 0,0 , la grandezza della riga
     private  LinkedList<Position> arrayVita = new LinkedList<>();
     private List<String> viewPort;
 //    private Thread threadNemico1 = new Thread(enemy);
+    ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
 
 
     public LinkedList<Position> getArrayVita() {
@@ -42,11 +44,19 @@ public class World {
         arrayVita.add(new Position(0,0));
         arrayVita.add(new Position(0,1));
         arrayVita.add(new Position(0,2));
+        coordinateNemici1.add(new Position(16,23));
         coordinateNemici.add(new Position(16,73));
+
         inizializzaMatricePrincipale();
 //        threadNemico1.start();
-        executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(enemy::run,200,500, TimeUnit.MILLISECONDS);
+        enemy1= new Enemy(coordinateNemici1,this);
+        enemy = new Enemy(coordinateNemici,this);
+        player = new Player(coordinatePlayer,this);
+
+//        executorService = Executors.newSingleThreadScheduledExecutor();
+//        executorService.scheduleAtFixedRate(enemy::run,200,500, TimeUnit.MILLISECONDS);
+        futureEnemy=  executorService.scheduleAtFixedRate(enemy, 500, 500, TimeUnit.MILLISECONDS);
+        futureEnemy1= executorService.scheduleAtFixedRate(enemy1, 200, 350, TimeUnit.MILLISECONDS);
 
     }
 
@@ -222,13 +232,13 @@ public class World {
         return viewPort;
     }
 
-    public void moveNemico() {
+    public synchronized void moveNemico(Enemy enemy) {
 
         //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
         LinkedList<Position> newPosition = enemy.simulateMove();
 
-//        System.out.println(newPosition.getFirst().i());
-//        System.out.println(newPosition.getFirst().j());
+        System.out.println(newPosition.getFirst().i());
+        System.out.println(newPosition.getFirst().j());
 
         //devo verificare che le nuove posizioni sia valide
         int count =0;
@@ -281,7 +291,13 @@ public class World {
         this.coordinateNemici = coordinateNemici;
     }
 
-    public Enemy getEnemy() {
+    public Enemy getEnemy(Enemy enemy) {
         return enemy;
+    }
+
+    public void stopEnemy(int indice ) {
+        if (futureEnemy1 != null) {
+            futureEnemy1.cancel(true); // Cancella l'esecuzione futura e interrompe se attualmente in esecuzione.
+        }
     }
 }

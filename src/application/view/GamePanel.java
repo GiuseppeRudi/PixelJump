@@ -192,7 +192,7 @@ public class GamePanel extends JPanel {
                     g.drawImage(immaginiGioco.getBloccoMuro(world.getLivello()),colonna,riga,this);
                 }
                 else if(world.isPlayer(i, j + world.getPlayer().getProgresso())) {
-                    System.out.println("-- SONO IN PAINT --");
+//                    System.out.println("-- SONO IN PAINT --");
 //                    System.out.println(startAnimazione);
 //                    System.out.println(indiceCorrente);
 //                    System.out.println("-------------");
@@ -279,15 +279,16 @@ public class GamePanel extends JPanel {
                 }
                 else if(world.isNemico(i,j+world.getPlayer().getProgresso()))
                 {
-                    if(world.getEnemy().getDirection()==-1)
-                    {
-                        g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
-
-                    }
-                    else if(world.getEnemy().getDirection()==1)
-                    {
-                        g.drawImage(ImageUtil.flipImageHorizontally(immaginiGioco.getBloccoNemico1()),colonna,riga,this);
-                    }
+//                    if(world.getEnemy().getDirection()==-1)
+//                    {
+//                        g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
+//
+//                    }
+//                    else if(world.getEnemy().getDirection()==1)
+//                    {
+//                        g.drawImage(ImageUtil.flipImageHorizontally(immaginiGioco.getBloccoNemico1()),colonna,riga,this);
+//                    }
+                    g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
                 }
 
                 //System.out.println(world.getPlayer().getMoneta());
