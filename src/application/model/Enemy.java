@@ -9,23 +9,24 @@ import java.util.Random;
 
 public class Enemy extends  AbstractPlayer implements Runnable {
 
-//    private int ultimoMovimento = 1;
-//    private int passiNellaStessaDirezione = 0;
-//    private Random random = new Random();
-
-    static int indice =0;
-
     int direction=1;
     int tipo=0;
+    static private int numeroNemici =0;
+    private int idNemico;
     private World world;
     private LinkedList<Position> coordinateNemico ;
     public Enemy(LinkedList<Position> coordinate , World world) {
-        super( coordinate, world,indice);
-        indice++;
+        super( coordinate, world);
+        idNemico= numeroNemici;
+        numeroNemici++;
         this.world=world;
         this.coordinateNemico = coordinate;
-        System.out.println(coordinateNemico);
+//        System.out.println(coordinateNemico);
 
+    }
+
+    public int getIdNemico() {
+        return idNemico;
     }
 
     @Override
@@ -35,16 +36,17 @@ public class Enemy extends  AbstractPlayer implements Runnable {
 
     @Override
     public LinkedList<Position> simulateMove()   {
-        return super.simulateMove(direction,tipo);
+        return  super.simulateMove(direction,tipo);
     }
 
 
     @Override
     public void run() {
-        System.out.println(coordinateNemico);
-        world.setCoordinateNemici(coordinateNemico);
+
+//        System.out.println(coordinateNemico);
+        //world.setCoordinateNemici(coordinateNemico);
         world.moveNemico(this);
-        System.out.println("fine");
+//        System.out.println("fine");
 
     }
 
@@ -71,5 +73,8 @@ public class Enemy extends  AbstractPlayer implements Runnable {
         return direction;
     }
 
-
+//    void kill() {
+//        world.setMatrice_Principale(getCoordinate().getFirst().i(),getCoordinate().getFirst().j(), Block.VUOTO);
+//        world.stopEnemy(idNemico);
+//    }
 }

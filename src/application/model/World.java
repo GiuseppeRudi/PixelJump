@@ -13,6 +13,7 @@ public class World {
 
     private ScheduledFuture<?> futureEnemy;
     private ScheduledFuture<?> futureEnemy1;
+    private ScheduledFuture<?> futureEnemy2;
     private int livello = 1;
 //    private  ScheduledExecutorService executorService = null;
 //    private  ScheduledExecutorService executorService1 = null;
@@ -23,12 +24,18 @@ public class World {
 
     private LinkedList<Position> coordinateNemici = new LinkedList<>();
     private LinkedList<Position> coordinateNemici1 = new LinkedList<>();
+    private LinkedList<Position> coordinateNemico2 = new LinkedList<>();
+
     private  LinkedList<Position> coordinatePlayer = new LinkedList<>();
 
     private final Player player; //mette il player in posizione 0,0 , la grandezza della riga
-    private final Enemy enemy ; //mette il player in posizione 0,0 , la grandezza della riga
-    private final Enemy enemy1 ; //mette il player in posizione 0,0 , la grandezza della riga
+    private final Enemy enemy ;
+    private final Enemy enemy1 ;
+    private final Enemy enemy2 ;
     private  LinkedList<Position> arrayVita = new LinkedList<>();
+
+    private LinkedList<Enemy> arrayNemici = new LinkedList<>();
+    private LinkedList<ScheduledFuture<?>> arrayFuture = new LinkedList<>();
     private List<String> viewPort;
 //    private Thread threadNemico1 = new Thread(enemy);
     ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
@@ -44,19 +51,33 @@ public class World {
         arrayVita.add(new Position(0,0));
         arrayVita.add(new Position(0,1));
         arrayVita.add(new Position(0,2));
-        coordinateNemici1.add(new Position(16,23));
+
         coordinateNemici.add(new Position(16,73));
+        coordinateNemici1.add(new Position(16,23));
+
+        coordinateNemico2.add(new Position(16,50));  //indice 0 corpo
+        coordinateNemico2.add(new Position(15,50));  //indice 1 testa
+
 
         inizializzaMatricePrincipale();
 //        threadNemico1.start();
-        enemy1= new Enemy(coordinateNemici1,this);
         enemy = new Enemy(coordinateNemici,this);
+        enemy1= new Enemy(coordinateNemici1,this);
+        enemy2 = new Enemy(coordinateNemico2,this);
+
+
+        arrayNemici.add(enemy);
+        arrayNemici.add(enemy1);
+        arrayNemici.add(enemy2);
+
         player = new Player(coordinatePlayer,this);
 
-//        executorService = Executors.newSingleThreadScheduledExecutor();
-//        executorService.scheduleAtFixedRate(enemy::run,200,500, TimeUnit.MILLISECONDS);
         futureEnemy=  executorService.scheduleAtFixedRate(enemy, 500, 500, TimeUnit.MILLISECONDS);
-        futureEnemy1= executorService.scheduleAtFixedRate(enemy1, 200, 350, TimeUnit.MILLISECONDS);
+        futureEnemy1= executorService.scheduleAtFixedRate(enemy1, 200, 500, TimeUnit.MILLISECONDS);
+        futureEnemy2= executorService.scheduleAtFixedRate(enemy2, 100, 700, TimeUnit.MILLISECONDS);
+        arrayFuture.add(futureEnemy);
+        arrayFuture.add(futureEnemy1);
+        arrayFuture.add(futureEnemy2);
 
     }
 
@@ -64,6 +85,7 @@ public class World {
     public void movePlayer() {
         //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
         LinkedList<Position> newPosition = player.simulateMove();
+
 //
             //devo verificare che le nuove posizioni sia valide
             int count = 0;
@@ -86,13 +108,19 @@ public class World {
 
                 player.move();
 
+
                 //qui dopo che si muove metto not moving cosi sta ferma e non va in quella direzione in loop
                 //if (player.getDirection()==Settings.JUMP) updateDirection(Settings.NOT_MOVING);
 
                 //aggiorniamo nella matrice principale la nuova posizione del personaggio
+
+
                 for (int k = 0; k < coordinatePlayer.size(); k++) {
                     matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
                 }
+
+
+
             }
 
     }
@@ -237,8 +265,6 @@ public class World {
         //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
         LinkedList<Position> newPosition = enemy.simulateMove();
 
-        System.out.println(newPosition.getFirst().i());
-        System.out.println(newPosition.getFirst().j());
 
         //devo verificare che le nuove posizioni sia valide
         int count =0;
@@ -258,7 +284,7 @@ public class World {
             //  abbiamo prima controllato che possiamo cambiare posizione e se la possiamo cambiare
             // prima prendiamo le coordinate precedenti e ci mettiamo il blocco vuoto
 
-            for (int k=0; k<coordinateNemici.size();k++)
+            for (int k=0; k<enemy.getCoordinate().size();k++)
             {
 //                System.out.println("4844848484848448");
 //                System.out.println(enemy.getPosition(0));
@@ -272,10 +298,11 @@ public class World {
             //if (player.getDirection()==Settings.JUMP) updateDirection(Settings.NOT_MOVING);
 
             //aggiorniamo nella matrice principale la nuova posizione del personaggio
-            for(int k=0; k<coordinateNemici.size();k++) {
+            for(int k=0; k<enemy.getCoordinate().size();k++) {
                 matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.NEMICO;
             }
         }
+        //se la posizione dove vuole andare non va piu bene torna inditro
         else {
             enemy.changeMovimento();
         }
@@ -283,21 +310,28 @@ public class World {
         }
 
 
-    public LinkedList<Position> getCoordinateNemici() {
-        return coordinateNemici;
-    }
+    public void trovaNemico(int nemicoI, int nemicoJ) {
+        //array di nemici
 
-    public void setCoordinateNemici(LinkedList<Position> coordinateNemici) {
-        this.coordinateNemici = coordinateNemici;
-    }
+        for (int i = 0; i < arrayNemici.size(); i++) {
 
-    public Enemy getEnemy(Enemy enemy) {
-        return enemy;
-    }
+            //getlast in quello da 2 blocchi è la testa mentre nel blocco uno getlast e getfirst non fa differenza
+            if(arrayNemici.get(i).getCoordinate().getLast().i()==nemicoI && arrayNemici.get(i).getCoordinate().getLast().j()==nemicoJ)
+            {
 
-    public void stopEnemy(int indice ) {
-        if (futureEnemy1 != null) {
-            futureEnemy1.cancel(true); // Cancella l'esecuzione futura e interrompe se attualmente in esecuzione.
+                if (arrayFuture.get(i) != null) {
+                    arrayFuture.get(i).cancel(true); // Cancella l'esecuzione futura e interrompe se attualmente in esecuzione.
+                }
+
+                for(int j=0 ; j<arrayNemici.get(i).getCoordinate().size();j++)
+                {
+                    this.setMatrice_Principale(arrayNemici.get(i).getCoordinate().get(j).i(),arrayNemici.get(i).getCoordinate().get(j).j(),Block.VUOTO);
+                }
+            }
         }
     }
+
+
+
+
 }

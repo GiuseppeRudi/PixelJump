@@ -49,6 +49,7 @@ public class ImmaginiGioco {
     private Image bloccoLava;
     private Image bloccoUsato;
     private Image bloccoNemico1;
+    private Image bloccoNemico2;
 
     public ImmaginiGioco() throws IOException {
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/sfondo_liv1.png"));
@@ -122,6 +123,8 @@ public class ImmaginiGioco {
         //NEMICI
         bloccoNemico1 = ImageIO.read(new File("src/application/resources/GraphicsManager/Enemy/bloccoNemico1.png"));
         bloccoNemico1 = bloccoNemico1.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        bloccoNemico2 = ImageIO.read(new File("src/application/resources/GraphicsManager/Enemy/bloccoNemico2.png"));
+        bloccoNemico2 = bloccoNemico2.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
 
         animazioneMovimento[0] = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/muove.png"));
         animazioneMovimento[1] = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/muove.png"));
@@ -138,6 +141,11 @@ public class ImmaginiGioco {
         return personaggio;
     }
     public Image getBloccoCuore() {return bloccoCuore;}
+
+    public Image getBloccoNemico2() {
+        return bloccoNemico2;
+    }
+
     public Image getBackgroundImage(int liv) {
         if(liv==1) return backgroundImage;
         else if(liv==2) return backgroundImage2;

@@ -12,6 +12,9 @@ import java.util.LinkedList;
 
 public abstract class AbstractPlayer {
 
+
+
+
     private boolean isJumping = false;
     private boolean isFalling = false;
 
@@ -26,11 +29,6 @@ public abstract class AbstractPlayer {
         this.world= world;
     }
 
-    public AbstractPlayer(LinkedList<Position> coordinate,World world,int indice) { //super classe di player
-        this.indice= indice;
-        this.coordinate = coordinate;
-        this.world= world;
-    }
 
     public void setCoordinate(LinkedList<Position> coordinate) {
         this.coordinate = coordinate;
@@ -47,8 +45,12 @@ public abstract class AbstractPlayer {
 
     protected LinkedList<Position> simulateMove(int direction, int tipo)   {
 
+
+
+
         LinkedList<Position> newCoordinate = new LinkedList<>();
 
+        //PERSONAGGIO
         if(tipo==1) {
             int testa_i = coordinate.getFirst().i();
             int testa_j = coordinate.getFirst().j();
@@ -67,7 +69,7 @@ public abstract class AbstractPlayer {
             if(world.isNemico(corpo_i+1,corpo_j))
             {
                 System.out.println("MUORI");
-                kill();
+                kill(corpo_i+1,corpo_j);
                 isJumping=true;            }
 
             if (isJumping) {
@@ -105,11 +107,14 @@ public abstract class AbstractPlayer {
             newCoordinate.add(new Position(corpo_i, corpo_j));
         }
 
+        //NEMICO
         else if(tipo==0)
         {
-            System.out.println("++++");
-            System.out.println(coordinate);
-            System.out.println("++++");
+//            System.out.println("++++");
+//            System.out.println(coordinate);
+//            System.out.println("++++");
+
+
             int corpo_i= coordinate.getFirst().i();
             int corpo_j= coordinate.getFirst().j();
             //nemico di un blocco
@@ -127,18 +132,46 @@ public abstract class AbstractPlayer {
                 {
                     corpo_j++;
                 }
+
+                newCoordinate.add((new Position(corpo_i,corpo_j)));
             }
 
-            newCoordinate.add((new Position(corpo_i,corpo_j)));
+            else if (coordinate.size()==2)
+            {
+                int testa_i = coordinate.getLast().i();
+                int testa_j = coordinate.getLast().j();
+
+                if(direction==Settings.MOVE_LEFT)
+                {
+                    corpo_j--;
+                    testa_j--;
+                }
+                if(direction==Settings.MOVE_RIGHT)
+                {
+                    corpo_j++;
+                    testa_j++;
+                }
+
+                newCoordinate.add((new Position(corpo_i,corpo_j)));
+                newCoordinate.add((new Position(testa_i,testa_j)));
+
+            }
+
+
         }
+
+
 
         return newCoordinate;}
 
-    private void kill() {
-        world.stopEnemy(indice);
-        world.setMatrice_Principale(getCoordinate().getFirst().i(),getCoordinate().getFirst().j(), Block.VUOTO);
-    }
+    void kill(int nemico_i, int nemico_j) {
+        //il problema che queste sono le coordinate del player e non va bene
+        world.trovaNemico(nemico_i,nemico_j);
 
+//        world.setMatrice_Principale(getCoordinate().getFirst().i(),getCoordinate().getFirst().j(), Block.VUOTO);
+//        // questo non va neanche bnene perche this è il player
+//        world.stopEnemy(world.getEnemy((Enemy) this).getIdNemico());
+    }
 
     //la direzione che ce qui viene presa  da default not moving e che puo essere aggiornata ogni volta che ce un update directions
 
@@ -153,13 +186,18 @@ public abstract class AbstractPlayer {
 //        }
         //tipo 1 = personaggio ; tipo = 0 nemici
         if(tipo==1) {
+
+            //controllo il corpo del player
             if (world.isNemico(coordinate.getLast().i(), coordinate.getLast().j())) {
 
                 world.restart();
                 coordinate.set(0, new Position(15, 5));
                 coordinate.set(1, new Position(16, 5));
-            } else if (world.isMorte(coordinate.getLast().i() + 1, coordinate.getLast().j())) {
+            }
+
+            else if (world.isMorte(coordinate.getLast().i() , coordinate.getLast().j())) {
                 //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
+
 
                 world.restart();
                 coordinate.set(0, new Position(15, 5));
@@ -169,8 +207,8 @@ public abstract class AbstractPlayer {
         }
         else if(tipo==0)
         {
-            System.out.println("sono entrato");
-            if(world.isPlayer(coordinate.getFirst().i(),coordinate.getFirst().j()))
+//            System.out.println("sono entrato");
+            if(world.isPlayer(coordinate.getFirst().i(),coordinate.getFirst().j()) )
             {
 
 
@@ -244,6 +282,8 @@ public abstract class AbstractPlayer {
 
     // perche questo simulateMove di player è diverso da simulateplayer di abstract
     abstract LinkedList<Position> simulateMove () throws IOException;
+
+
 }
 
 

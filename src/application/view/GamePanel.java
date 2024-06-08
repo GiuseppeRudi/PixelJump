@@ -279,6 +279,20 @@ public class GamePanel extends JPanel {
                 }
                 else if(world.isNemico(i,j+world.getPlayer().getProgresso()))
                 {
+                    //se sotto di me ce un blocco nemico allora sono un nemico di 2 celle
+                    if(world.isNemico(i+1,j+world.getPlayer().getProgresso()))
+                    {
+                        g.drawImage(immaginiGioco.getBloccoNemico2(),colonna,riga,this);
+                    }
+
+                    else {
+                        if (!world.isNemico(i-1,j+world.getPlayer().getProgresso()))
+                        {
+                            g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
+                        }
+
+                    }
+
 //                    if(world.getEnemy().getDirection()==-1)
 //                    {
 //                        g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
@@ -288,7 +302,7 @@ public class GamePanel extends JPanel {
 //                    {
 //                        g.drawImage(ImageUtil.flipImageHorizontally(immaginiGioco.getBloccoNemico1()),colonna,riga,this);
 //                    }
-                    g.drawImage(immaginiGioco.getBloccoNemico1(),colonna,riga,this);
+
                 }
 
                 //System.out.println(world.getPlayer().getMoneta());
