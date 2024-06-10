@@ -70,7 +70,7 @@ public class World {
         arrayNemici.add(enemy1);
         arrayNemici.add(enemy2);
 
-        player = new Player(coordinatePlayer,this);
+        player = new Player(coordinatePlayer,arrayNemici,this);
 
         futureEnemy=  executorService.scheduleAtFixedRate(enemy, 500, 500, TimeUnit.MILLISECONDS);
         futureEnemy1= executorService.scheduleAtFixedRate(enemy1, 200, 500, TimeUnit.MILLISECONDS);
@@ -310,28 +310,28 @@ public class World {
         }
 
 
-    public void trovaNemico(int nemicoI, int nemicoJ) {
-        //array di nemici
+//    public void trovaNemico(int nemicoI, int nemicoJ) {
+//        //array di nemici
+//
+//        for (int i = 0; i < arrayNemici.size(); i++) {
+//
+//            //getlast in quello da 2 blocchi è la testa mentre nel blocco uno getlast e getfirst non fa differenza
+//            if(arrayNemici.get(i).getCoordinate().getLast().i()==nemicoI && arrayNemici.get(i).getCoordinate().getLast().j()==nemicoJ)
+//            {
+//
+//                if (arrayFuture.get(i) != null) {
+//                    arrayFuture.get(i).cancel(true); // Cancella l'esecuzione futura e interrompe se attualmente in esecuzione.
+//                }
+//
+//                for(int j=0 ; j<arrayNemici.get(i).getCoordinate().size();j++)
+//                {
+//                    this.setMatrice_Principale(arrayNemici.get(i).getCoordinate().get(j).i(),arrayNemici.get(i).getCoordinate().get(j).j(),Block.VUOTO);
+//                }
+//            }
+//        }
+//    }
 
-        for (int i = 0; i < arrayNemici.size(); i++) {
-
-            //getlast in quello da 2 blocchi è la testa mentre nel blocco uno getlast e getfirst non fa differenza
-            if(arrayNemici.get(i).getCoordinate().getLast().i()==nemicoI && arrayNemici.get(i).getCoordinate().getLast().j()==nemicoJ)
-            {
-
-                if (arrayFuture.get(i) != null) {
-                    arrayFuture.get(i).cancel(true); // Cancella l'esecuzione futura e interrompe se attualmente in esecuzione.
-                }
-
-                for(int j=0 ; j<arrayNemici.get(i).getCoordinate().size();j++)
-                {
-                    this.setMatrice_Principale(arrayNemici.get(i).getCoordinate().get(j).i(),arrayNemici.get(i).getCoordinate().get(j).j(),Block.VUOTO);
-                }
-            }
-        }
+    public LinkedList<ScheduledFuture<?>> getArrayFuture() {
+        return arrayFuture;
     }
-
-
-
-
 }

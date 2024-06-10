@@ -21,12 +21,20 @@ public abstract class AbstractPlayer {
     private int indice;
 
     private LinkedList<Position> coordinate;
+    private LinkedList<Enemy> nemici;
     protected World world ;
 
     public AbstractPlayer(LinkedList<Position> coordinate,World world) { //super classe di player
 
         this.coordinate = coordinate;
         this.world= world;
+    }
+
+    public AbstractPlayer(LinkedList<Position> coordinate,LinkedList<Enemy> nemici,World world) { //super classe di player
+
+        this.coordinate = coordinate;
+        this.world= world;
+        this.nemici= nemici;
     }
 
 
@@ -165,8 +173,25 @@ public abstract class AbstractPlayer {
         return newCoordinate;}
 
     void kill(int nemico_i, int nemico_j) {
+
+        for (int i = 0; i < nemici.size(); i++) {
+
+            //getlast in quello da 2 blocchi è la testa mentre nel blocco uno getlast e getfirst non fa differenza
+            if(nemici.get(i).getCoordinate().getLast().i()==nemico_i && nemici.get(i).getCoordinate().getLast().j()==nemico_j)
+            {
+
+                if (world.getArrayFuture().get(i) != null) {
+                    world.getArrayFuture().get(i).cancel(true); // Cancella l'esecuzione futura e interrompe se attualmente in esecuzione.
+                }
+
+                for(int j=0 ; j<nemici.get(i).getCoordinate().size();j++)
+                {
+                    world.setMatrice_Principale(nemici.get(i).getCoordinate().get(j).i(),nemici.get(i).getCoordinate().get(j).j(),Block.VUOTO);
+                }
+            }
+        }
         //il problema che queste sono le coordinate del player e non va bene
-        world.trovaNemico(nemico_i,nemico_j);
+//        world.trovaNemico(nemico_i,nemico_j);
 
 //        world.setMatrice_Principale(getCoordinate().getFirst().i(),getCoordinate().getFirst().j(), Block.VUOTO);
 //        // questo non va neanche bnene perche this è il player

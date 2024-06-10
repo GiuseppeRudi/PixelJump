@@ -15,7 +15,8 @@ import java.util.LinkedList;
 import java.util.Set;
 
 public class GamePanel extends JPanel {
-    private final PlayerView playerView = new PlayerView();
+
+//    private PlayerView playerView = new PlayerView();
     private Font customFont;
     private World world ;
 
@@ -39,8 +40,8 @@ public class GamePanel extends JPanel {
         }
     }
 
-    static boolean startAnimazione = false;
-    static boolean startAnimazioneSalto= false;
+    boolean startAnimazione = false;
+    boolean startAnimazioneSalto= false;
     int indiceMovimento =0;
     int indiceSalto=0;
 
@@ -55,9 +56,9 @@ public class GamePanel extends JPanel {
 
     public void updateDirection(int direction) {
         //il panel aggiorna la direzione del player sulla view
-        //playerView.setDirection(direction);
+//        playerView.setDirection(direction);
 
-        //System.out.println("sono entrato");
+        System.out.println("sono entrato");
         if (!startAnimazione && (direction==Settings.MOVE_RIGHT || direction==Settings.MOVE_LEFT) && !startAnimazioneSalto)
         {
 
@@ -312,13 +313,8 @@ public class GamePanel extends JPanel {
     }
 
     public  void update() {
-        //
-        playerView.update();
-
-        //ristampa ogni volta il paintcomponent che ristampa la matrice
-
         this.repaint();
         //viene chiamato da Game/controllerPlayer
-
     }
+
 }

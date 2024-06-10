@@ -7,6 +7,7 @@ import application.view.GamePanel;
 import application.view.ImmaginiGioco;
 
 
+
 import java.io.IOException;
 
 public class main {
@@ -21,6 +22,7 @@ public class main {
 
         ImmaginiGioco immaginigioco = new ImmaginiGioco();
         GamePanel gamePanel = new GamePanel(immaginigioco);
+
         ControllerPlayer controllerPlayer = new ControllerPlayer(gamePanel);
         gamePanel.setController(controllerPlayer);
         GameFrame frame = new GameFrame(gamePanel);

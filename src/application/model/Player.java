@@ -17,15 +17,17 @@ public class Player  extends AbstractPlayer{
     int vita = 3;
 
     private LinkedList<Position> coordinatePlayer = new LinkedList<>();
+//    private LinkedList<Enemy> arrayNemici = new LinkedList<>();
 
     private int direction = Settings.NOT_MOVING;
     private World world;
 
 
-    public Player(LinkedList<Position> coordinate,World world) { //costruttore player
-        super(coordinate,world);//richiama la super classe
+    public Player(LinkedList<Position> coordinate,LinkedList<Enemy> nemici ,World world) { //costruttore player
+        super(coordinate,nemici,world);//richiama la super classe
         this.world=world;
-
+        //nel caso si volesse eliminare abstactplayer
+//        this.arrayNemici= nemici;
     }
 
     public static int cont =0;
