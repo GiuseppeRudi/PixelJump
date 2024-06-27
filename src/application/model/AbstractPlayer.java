@@ -180,6 +180,7 @@ public abstract class AbstractPlayer {
             if(nemici.get(i).getCoordinate().getLast().i()==nemico_i && nemici.get(i).getCoordinate().getLast().j()==nemico_j)
             {
 
+
                 if (world.getArrayFuture().get(i) != null) {
                     world.getArrayFuture().get(i).cancel(true); // Cancella l'esecuzione futura e interrompe se attualmente in esecuzione.
                 }
@@ -232,8 +233,9 @@ public abstract class AbstractPlayer {
         }
         else if(tipo==0)
         {
+
 //            System.out.println("sono entrato");
-            if(world.isPlayer(coordinate.getFirst().i(),coordinate.getFirst().j()) )
+            if(world.isPlayer(coordinate.getLast().i(),coordinate.getLast().j()) )
             {
 
 
