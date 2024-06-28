@@ -1,17 +1,15 @@
 package application;
 
-import application.controller.ControllerPlayer;
+import application.controller.Controller;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class GameLoop {
-    private final ControllerPlayer controllerPlayer;
+    private final Controller controllerPlayer;
 
-
-    public GameLoop(ControllerPlayer controllerPlayer) {
+    public GameLoop(Controller controllerPlayer) {
         this.controllerPlayer = controllerPlayer;
     }
 
@@ -19,14 +17,11 @@ public class GameLoop {
 
     public void inizioGioco()
     {
-        if(executorService !=null)
-        {
-            return;
-        }
+        if(executorService !=null) return;
 
         executorService = Executors.newSingleThreadScheduledExecutor();
 
-        executorService.scheduleAtFixedRate(controllerPlayer::update,0,1000/60, TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(controllerPlayer::update,0,66, TimeUnit.MILLISECONDS);
         //creo un thread che gestisce l'esecuzione di gioco e permette di aggiornamre ogni 60 frame per secondo le dinamiche di gioco
     }
 }
