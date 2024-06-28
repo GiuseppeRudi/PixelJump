@@ -152,7 +152,7 @@ public class World {
     public void inizializzaMatricePrincipale(){  //legge il file e quindi la matrice
         file file = new file();
         try{
-            viewPort = file.leggi("src/application/resources/livelli/Livello"+liv+".txt");
+            viewPort = file.leggi("src/application/resources/GraphicsManager/Levels/Livello"+liv+".txt");
         } catch (IOException e){
             e.printStackTrace();
         }
