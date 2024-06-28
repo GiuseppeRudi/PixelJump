@@ -243,7 +243,7 @@ public class ImmaginiGioco {
     }
 
     public void setPersonaggio(String p) throws IOException {
-        personaggioDes= ImageIO.read(new File("src/application/resources/personaggio/"+p+".png"));
+        personaggioDes= ImageIO.read(new File("src/application/resources/GraphicsManager/Player/"+p+".png"));
         personaggioDes = personaggioDes.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
         personaggioSin=ImageUtil.flipImageHorizontally(personaggioDes);
     }
