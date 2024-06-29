@@ -490,11 +490,27 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-
+        drawAbilityIcons(g2d);
         drawProgress(g2d,world.getPlayer().getProgresso());
         drawCoins(g2d,world.getPlayer().getCoins());
         drawLives(g2d,world.getPlayer().getLives());
         drawLevel(g2d,world.getLiv());
+    }
+    private void drawAbilityIcons(Graphics2D g2d){
+        if(world.getPlayer().getVelocita()){
+            g2d.drawImage(immaginiGioco.getFlash(),15,80,this);
+            Alt=Alt.deriveFont(25.0f);
+            g2d.setFont(Alt);
+            g2d.setColor(Color.WHITE);
+            g2d.drawString(world.getPlayer().getVelC()*66/100+"", 80, 120);
+        }
+        else if(world.getPlayer().getLentezza()){
+            g2d.drawImage(immaginiGioco.getTartaruga(),15,80,this);
+            Alt=Alt.deriveFont(25.0f);
+            g2d.setFont(Alt);
+            g2d.setColor(Color.WHITE);
+            g2d.drawString(world.getPlayer().getLenC()*66/100+"", 80, 120);
+        }
     }
     private void drawLevel(Graphics2D g2d,int liv) {
         g2d.setFont(Alt);

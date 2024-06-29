@@ -49,57 +49,67 @@ public class World {
     }
     //serve per far muovere il player e aggiornare la sua posizione sulla matrice principale
     public synchronized void movePlayer() {
-        //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
-        newPosition = player.simulateMove();
+        if(velP%ab==0) {
+            //restituisce a seconda del movimento le nuove posizione della testa e del corpo del giocatore
+            newPosition = player.simulateMove();
 
-        //devo verificare che le nuove posizioni sia valide
-        int count =0;
-        for (Position p : newPosition) {
-            //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
-//            System.out.println(p.i()+" "+p.j());
-            if(isValidPosition(p.i(),p.j()) && !isBlocco(p.i(),p.j())) {
-                count++;
+            //devo verificare che le nuove posizioni sia valide
+            int count = 0;
+            for (Position p : newPosition) {
+                //is valid position controlliamo sia il range del mondo e sia se andiamo contro muro,oggetti
+                //            System.out.println(p.i()+" "+p.j());
+                if (isValidPosition(p.i(), p.j()) && !isBlocco(p.i(), p.j())) {
+                    count++;
+                }
             }
-        }
-//        System.out.println(count);
-        if (count==newPosition.size()) {
-            telCheck();
-            //getPosition prende da parametro un intero che se è 0 restituisce la position della testa 1 il corpo
-            //  abbiamo prima controllato che possiamo cambiare posizione e se la possiamo cambiare
-            // prima prendiamo le coordinate precedenti e ci mettiamo il blocco vuoto
-            for (int k = 0; k < coordinatePlayer.size(); k++) {
-                matrice_Principale[player.getPosition(k).i()][player.getPosition(k).j()] = Block.VUOTO;
-            }
-            player.move();
-            //aggiorniamo nella matrice principale la nuova posizione del personaggio
+            //        System.out.println(count);
+            if (count == newPosition.size()) {
+                telCheck();
+                //getPosition prende da parametro un intero che se è 0 restituisce la position della testa 1 il corpo
+                //  abbiamo prima controllato che possiamo cambiare posizione e se la possiamo cambiare
+                // prima prendiamo le coordinate precedenti e ci mettiamo il blocco vuoto
+                for (int k = 0; k < coordinatePlayer.size(); k++) {
+                    matrice_Principale[player.getPosition(k).i()][player.getPosition(k).j()] = Block.VUOTO;
+                }
+                player.move();
+                //aggiorniamo nella matrice principale la nuova posizione del personaggio
 
-            if(!morte){
-                for(int k=0; k<coordinatePlayer.size();k++) {
-                    if(matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()]==Block.MONETA){
-                        Sound coin = new Sound("coin.wav");
-                        coin.play();
+                if (!morte) {
+                    for (int k = 0; k < coordinatePlayer.size(); k++) {
+                        if (matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] == Block.MONETA) {
+                            Sound coin = new Sound("coin.wav");
+                            coin.play();
+                        }
+                        matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
                     }
-                    matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
-                }
-            }
-            else{
-                morte=false;
-                for(int k=0; k<coordinatePlayer.size();k++) {
-                    matrice_Principale[player.getCoordinatePlayer().get(k).i()][player.getCoordinatePlayer().get(k).j()] = Block.PERSONAGGIO;
+                } else {
+                    morte = false;
+                    for (int k = 0; k < coordinatePlayer.size(); k++) {
+                        matrice_Principale[player.getCoordinatePlayer().get(k).i()][player.getCoordinatePlayer().get(k).j()] = Block.PERSONAGGIO;
+                    }
                 }
             }
         }
+        velP+=1;
     }
+    private int velP=0;
+    private int velN=0;
+    private int ab=2;
 
+    public void setAb(int ab) {
+        this.ab = ab;
+    }
     public synchronized void moveNemici(){
-        for(Object o: nemici){
-            if(o instanceof MiniZombie){
-                ((MiniZombie) o).move();
-            }
-            else if(o instanceof Creeper){
-                ((Creeper) o).move();
+        if(velN%2==0) {
+            for (Object o : nemici) {
+                if (o instanceof MiniZombie) {
+                    ((MiniZombie) o).move();
+                } else if (o instanceof Creeper) {
+                    ((Creeper) o).move();
+                }
             }
         }
+        velN+=1;
     }
     private void telCheck() {
         if (viewPort.get(newPosition.getFirst().i()).charAt(newPosition.getFirst().j())=='n' && viewPort.get(newPosition.getLast().i()).charAt(newPosition.getLast().j())=='n'){

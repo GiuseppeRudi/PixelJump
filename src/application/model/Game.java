@@ -35,8 +35,8 @@ public class Game
     public void setDirection(int direction)  { world.updateDirection(direction);}
 
     //viene chiamata dal player controller
-    private int vel=0;
-    private int ab=2;
+
+
     public void update(){
 
 //        if(world.movePlayer())
@@ -44,45 +44,45 @@ public class Game
 //           //qualcosa
 //        }
         //AL MOMENTO SENZA IF PERCHE LE MONETE NON CI SERVONO
-        if(vel%ab==0) {
-            if (gameStatus == GameStatus.IN_GAME) {
-                if (world.getPlayer().getProgresso() != (world.getViewPort().getFirst().length() - Settings.Filtro_Size_Colonna)) {
+
+        if (gameStatus == GameStatus.IN_GAME) {
+            if (world.getPlayer().getProgresso() != (world.getViewPort().getFirst().length() - Settings.Filtro_Size_Colonna)) {
+                world.movePlayer();
+                world.moveNemici();
+                world.getPlayer().checkAbilities();
+                //System.out.println(world.getPlayer().getVelC()+" "+world.getPlayer().getLenC()+" "+world.getPlayer().getVelocita()+" "+world.getPlayer().getLentezza());
+            } else if (world.getPlayer().getCoordinatePlayer().getFirst().j() < world.getViewPort().getFirst().length() - 9) {
+                if (passo == -1) {
+                    passo = 0;
+                    Controller.getPressed().clear();
+                }
+                if (world.getPlayer().isFalling() || world.getPlayer().isJumping()) {
                     world.movePlayer();
-                    world.moveNemici();
-                } else if (world.getPlayer().getCoordinatePlayer().getFirst().j() < world.getViewPort().getFirst().length() - 9) {
-                    if (passo == -1) {
-                        passo = 0;
-                        Controller.getPressed().clear();
-                    }
-                    if (world.getPlayer().isFalling() || world.getPlayer().isJumping()) {
-                        world.movePlayer();
-                    } else {
-                        if (passo % 3 == 0) {
-                            setDirection(Settings.MOVE_RIGHT);
-                            Controller.getPressed().add(Settings.MOVE_RIGHT);
-                            world.movePlayer();
-                            Controller.getPressed().remove(Settings.MOVE_RIGHT);
-                        }
-                        passo++;
-                    }
                 } else {
-                    if (GamePanel.getSoundtrack() != null) {
-                        GamePanel.getSoundtrack().pause();
-                        GamePanel.setSoundtrack(null);
+                    if (passo % 3 == 0) {
+                        setDirection(Settings.MOVE_RIGHT);
+                        Controller.getPressed().add(Settings.MOVE_RIGHT);
+                        world.movePlayer();
+                        Controller.getPressed().remove(Settings.MOVE_RIGHT);
                     }
-                    if (!cont) {
-                        cont = true;
-                        setGameStatus(GameStatus.WIN);
-                    }
-                    passo = -1;
-                    if (gameStatus == GameStatus.IN_GAME && world.getLiv() < 3) {
-                        cont = false;
-                        world = new World(world.getLiv() + 1, world.getPlayer().getLives());
-                    }
+                    passo++;
+                }
+            } else {
+                if (GamePanel.getSoundtrack() != null) {
+                    GamePanel.getSoundtrack().pause();
+                    GamePanel.setSoundtrack(null);
+                }
+                if (!cont) {
+                    cont = true;
+                    setGameStatus(GameStatus.WIN);
+                }
+                passo = -1;
+                if (gameStatus == GameStatus.IN_GAME && world.getLiv() < 3) {
+                    cont = false;
+                    world = new World(world.getLiv() + 1, world.getPlayer().getLives());
                 }
             }
         }
-        vel+=1;
     }
     private boolean cont=false;
     public World getWorld() { return world;}

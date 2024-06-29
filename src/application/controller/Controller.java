@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.GameLoop;
 import application.GameStatus;
 import application.audio.Sound;
 import application.model.Game;
@@ -7,8 +8,7 @@ import application.model.Settings;
 import application.view.GamePanel;
 
 import java.awt.event.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Controller implements KeyListener, MouseListener {
 
@@ -27,29 +27,34 @@ public class Controller implements KeyListener, MouseListener {
 
     @Override
     public void keyTyped(KeyEvent e) {}
+    private int tipo=0;
+    public void setTipo(int tipo){
+        this.tipo=tipo;
+    }
+    private final int[][] comandi= {{KeyEvent.VK_LEFT, KeyEvent.VK_A}, {KeyEvent.VK_RIGHT, KeyEvent.VK_D}, {KeyEvent.VK_SPACE, KeyEvent.VK_SPACE}, {KeyEvent.VK_ESCAPE, KeyEvent.VK_ESCAPE}};
 
     @Override
     public void keyPressed(KeyEvent e) {
         GameStatus status = Game.getInstance().getGameStatus();
         if(status==GameStatus.IN_GAME) {
             if(gamePanel.getWorld().getPlayer().getProgresso()!=(gamePanel.getWorld().getViewPort().getFirst().length()-Settings.Filtro_Size_Colonna)) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT -> {
-                        direction = Settings.MOVE_LEFT;
-                        pressed.add(Settings.MOVE_LEFT);
-                    }
-                    case KeyEvent.VK_RIGHT -> {
-                        direction = Settings.MOVE_RIGHT;
-                        pressed.add(Settings.MOVE_RIGHT);
-                    }
-                    case KeyEvent.VK_SPACE -> {
-                        direction = Settings.JUMP;
-                        pressed.add(Settings.JUMP);
-                    }
-
-                    case KeyEvent.VK_ESCAPE -> direction = Settings.PAUSE;
-                    default -> direction = Settings.NOT_MOVING;
+                if(e.getKeyCode()==comandi[0][tipo]){
+                    direction = Settings.MOVE_LEFT;
+                    pressed.add(Settings.MOVE_LEFT);
                 }
+                else if(e.getKeyCode()==comandi[1][tipo]) {
+                    direction = Settings.MOVE_RIGHT;
+                    pressed.add(Settings.MOVE_RIGHT);
+                }
+                else if(e.getKeyCode()==comandi[2][tipo]) {
+                    direction = Settings.JUMP;
+                    pressed.add(Settings.JUMP);
+                }
+                else if(e.getKeyCode()==comandi[3][tipo]) {
+                    direction = Settings.PAUSE;
+                }
+                else direction = Settings.NOT_MOVING;
+
                 if (direction == Settings.PAUSE)
                     Game.getInstance().setGameStatus(GameStatus.PAUSE);
                 // PER ADESSO CHIUDO TUTTO

@@ -14,6 +14,15 @@ public class GameLoop {
     }
 
     private ScheduledExecutorService executorService = null;
+//    private static int ab=100;
+//
+//    public static void setAb(int ab) {
+//        GameLoop.ab = ab;
+//    }
+//
+//    public static int getAb() {
+//        return ab;
+//    }
 
     public void inizioGioco()
     {

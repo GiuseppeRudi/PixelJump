@@ -135,20 +135,31 @@ public abstract class AbstractPlayer {
         return coordinate;
     }
     public void killPlayer(){
-        if(lives==1) {
-            Sound morte = new Sound("death.wav");
-            morte.play();
+        if(!world.getPlayer().getScudo()) {
+            if(world.getPlayer().getVelocita()){
+                world.getPlayer().setVelocita(false);
+                world.getPlayer().setVelC(150);
+                world.setAb(2);
+            } else if(world.getPlayer().getLentezza()){
+                world.getPlayer().setLentezza(false);
+                world.getPlayer().setLenC(150);
+                world.setAb(2);
+            }
+            if (lives == 1) {
+                Sound morte = new Sound("death.wav");
+                morte.play();
+            } else {
+                Sound morte = new Sound("damage.wav");
+                morte.play();
+            }
+            coordinate.set(0, world.getPlayerStartPosition(world.getLiv()).getFirst());
+            coordinate.set(1, world.getPlayerStartPosition(world.getLiv()).getLast());
+            progresso = 0;
+            if (lives > 0) lives--;
+            world.updateDirection(Settings.MOVE_RIGHT);
+            world.setMorte(true);
         }
-        else{
-            Sound morte = new Sound("damage.wav");
-            morte.play();
-        }
-        coordinate.set(0,world.getPlayerStartPosition(world.getLiv()).getFirst());
-        coordinate.set(1,world.getPlayerStartPosition(world.getLiv()).getLast());
-        progresso=0;
-        if(lives>0) lives--;
-        world.updateDirection(Settings.MOVE_RIGHT);
-        world.setMorte(true);
+        else world.getPlayer().setScudo(false);
     }
     abstract void move();
     // perche questo simulateMove di player è diverso da simulateplayer di abstract

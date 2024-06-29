@@ -1,6 +1,7 @@
 package application.model;
 
 import application.Block;
+import application.GameLoop;
 import application.audio.Sound;
 import application.controller.Controller;
 
@@ -35,8 +36,8 @@ public class Player extends AbstractPlayer{
         return coins;
     }
     public static int cont=0;
-    private int velC=0;
-    private int lenC=0;
+    private int velC=150;
+    private int lenC=150;
     private boolean velocita=false;
     private boolean scudo=false;
 
@@ -45,6 +46,39 @@ public class Player extends AbstractPlayer{
     }
 
     private boolean lentezza=false;
+
+    public boolean getVelocita() {
+        return velocita;
+    }
+
+    public boolean getLentezza() {
+        return lentezza;
+    }
+
+    public void setVelocita(boolean velocita) {
+        this.velocita = velocita;
+    }
+
+    public void setLentezza(boolean lentezza) {
+        this.lentezza = lentezza;
+    }
+
+    public int getVelC() {
+        return velC;
+    }
+
+    public int getLenC() {
+        return lenC;
+    }
+
+    public void setVelC(int velC) {
+        this.velC = velC;
+    }
+
+    public void setLenC(int lenC) {
+        this.lenC = lenC;
+    }
+
     private Sound cammina;
     private Sound sbatte;
     private Sound coin;
@@ -60,17 +94,19 @@ public class Player extends AbstractPlayer{
         else if(world.isVelocita(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isVelocita(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
             if(lentezza){
                 lentezza=false;
-                lenC=0;
+                lenC=150;
             }
             velocita=true;
+            world.setAb(1);
         }
         else if(world.isScudo(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isScudo(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())) scudo=true;
         else if(world.isLentezza(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isLentezza(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
             if(velocita){
                 velocita=false;
-                velC=0;
+                velC=150;
             }
             lentezza=true;
+            world.setAb(4);
         }
         else if(world.isVita(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isVita(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
             if(getLives()!=4) setLives(getLives()+1);
@@ -80,21 +116,23 @@ public class Player extends AbstractPlayer{
         else if(Controller.getPressed().contains(Settings.MOVE_LEFT) && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21) progresso-=((Settings.Filtro_Size_Colonna+progresso-21)-super.getPosition(0).j());
         makeSounds();
         checkJump();
-        checkAbilities();
+
     }
-    private void checkAbilities(){
+    public void checkAbilities(){
         if(velocita){
-            velC++;
-            if(velC>=150){
+            velC--;
+            if(velC<=0){
                 velocita=false;
-                velC=0;
+                velC=150;
+                world.setAb(2);
             }
         }
         else if(lentezza){
-            lenC++;
-            if(lenC>=150){
+            lenC--;
+            if(lenC<=0){
                 lentezza=false;
-                lenC=0;
+                lenC=150;
+                world.setAb(2);
             }
         }
     }
@@ -192,15 +230,12 @@ public class Player extends AbstractPlayer{
     }
     private void generateRandomBlock(){
         Random r=new Random();
-        int n=r.nextInt(0,5);
-        System.out.println(n);
-        switch (n){
-            case 0 ->world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.MONETA);
-            case 1 ->world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.VELOCITA);
-            case 2 ->world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.SCUDO);
-            case 3 ->world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.LENTEZZA);
-            case 4 ->world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.VITA);
-        }
+        int n=r.nextInt(0,10);
+        if(n<=5) world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.MONETA);
+        else if(n==6) world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.VELOCITA);
+        else if(n==7) world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.SCUDO);
+        else if(n==8) world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.LENTEZZA);
+        else world.setMatrice_Principale(coordinatePlayer.getFirst().i()-2,coordinatePlayer.getFirst().j(), Block.VITA);
     }
     public int getProgresso() {
         return progresso;
@@ -222,4 +257,7 @@ public class Player extends AbstractPlayer{
         return super.simulateMove(direction);
     }
 
+    public void setScudo(boolean b) {
+        scudo=b;
+    }
 }

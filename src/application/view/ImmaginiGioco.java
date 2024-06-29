@@ -70,6 +70,8 @@ public class ImmaginiGioco {
     private Image scudoDX;
     private Image scudoSX;
     private Image scudo;
+    private Image tartaruga;
+    private Image flash;
     public ImmaginiGioco() throws IOException {
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/sfondo_liv1.png"));
         backgroundImage = backgroundImage.getScaledInstance(6240,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
@@ -188,7 +190,20 @@ public class ImmaginiGioco {
         scudoSX=ImageUtil.flipImageHorizontally(scudoDX);
         scudo = ImageIO.read(new File("src/application/resources/abilità/scudo.png"));
         scudo = scudo.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tartaruga = ImageIO.read(new File("src/application/resources/icone/tartaruga.png"));
+        tartaruga = tartaruga.getScaledInstance(Settings.CELL_SIZE_RIGA*2,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        flash = ImageIO.read(new File("src/application/resources/icone/flash.png"));
+        flash = flash.getScaledInstance(Settings.CELL_SIZE_RIGA*2,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
     }
+
+    public Image getTartaruga() {
+        return tartaruga;
+    }
+
+    public Image getFlash() {
+        return flash;
+    }
+
     public Image getScudoIcon(){
         return scudo;
     }
