@@ -134,17 +134,20 @@ public abstract class AbstractPlayer {
         }
         return coordinate;
     }
+    public void resetAbilities(){
+        if(world.getPlayer().getVelocita()){
+            world.getPlayer().setVelocita(false);
+            world.getPlayer().setVelC(150);
+            world.setAb(2);
+        } else if(world.getPlayer().getLentezza()){
+            world.getPlayer().setLentezza(false);
+            world.getPlayer().setLenC(150);
+            world.setAb(2);
+        }
+    }
     public void killPlayer(){
         if(!world.getPlayer().getScudo()) {
-            if(world.getPlayer().getVelocita()){
-                world.getPlayer().setVelocita(false);
-                world.getPlayer().setVelC(150);
-                world.setAb(2);
-            } else if(world.getPlayer().getLentezza()){
-                world.getPlayer().setLentezza(false);
-                world.getPlayer().setLenC(150);
-                world.setAb(2);
-            }
+            resetAbilities();
             if (lives == 1) {
                 Sound morte = new Sound("death.wav");
                 morte.play();

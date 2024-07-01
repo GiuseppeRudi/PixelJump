@@ -77,9 +77,9 @@ public class Controller implements KeyListener, MouseListener {
     public void keyReleased(KeyEvent e) {
         GameStatus status = Game.getInstance().getGameStatus();
         if (status == GameStatus.IN_GAME || status ==GameStatus.PAUSE) {
-            if (e.getKeyCode() == KeyEvent.VK_LEFT) pressed.remove(Settings.MOVE_LEFT);
-            else if (e.getKeyCode() == KeyEvent.VK_RIGHT) pressed.remove(Settings.MOVE_RIGHT);
-            else if (e.getKeyCode() == KeyEvent.VK_SPACE) pressed.remove(Settings.JUMP);
+            if (e.getKeyCode()==comandi[0][tipo]) pressed.remove(Settings.MOVE_LEFT);
+            else if (e.getKeyCode()==comandi[1][tipo]) pressed.remove(Settings.MOVE_RIGHT);
+            else if (e.getKeyCode()==comandi[2][tipo]) pressed.remove(Settings.JUMP);
         }
     }
 

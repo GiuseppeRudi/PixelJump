@@ -111,6 +111,30 @@ public class World {
         }
         velN+=1;
     }
+    private int remove=1;
+    private int add=1;
+    private int blockToRemove=69;
+    private int blockToAdd=72;
+    private int blockCount=0;
+    public void moveBlocks(){
+        if(blockCount%4==0) {
+            if(matrice_Principale[17][blockToRemove]==Block.PERSONAGGIO){
+                player.move(add);
+            }
+            matrice_Principale[17][blockToRemove] = Block.VUOTO;
+            matrice_Principale[17][blockToAdd] = Block.TERRA;
+            blockToAdd+=add;
+            blockToRemove+=remove;
+            if(blockToAdd==74 || blockToAdd==66){
+                int temp=blockToRemove;
+                blockToRemove=blockToAdd;
+                blockToAdd=temp;
+                remove=-remove;
+                add=-add;
+            }
+        }
+        blockCount++;
+    }
     private void telCheck() {
         if (viewPort.get(newPosition.getFirst().i()).charAt(newPosition.getFirst().j())=='n' && viewPort.get(newPosition.getLast().i()).charAt(newPosition.getLast().j())=='n'){
             if(newPosition.getFirst().j()==126 && (player.getPosition(0).j()!=126 || player.getPosition(0).i()!=15)) {

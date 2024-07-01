@@ -190,9 +190,9 @@ public class GamePanel extends JPanel {
         Win=Alt.deriveFont(50.0f);
         g2d.setFont(Win);
         g2d.drawString("Level "+world.getLiv()+" completed",170,200);
-        g2d.drawImage(immaginiGioco.getPulsante(),100,400,this);
+        g2d.drawImage(ImmaginiGioco.getPulsante(),100,400,this);
         if(world.getLiv()!=3) {
-            g2d.drawImage(immaginiGioco.getPulsante(),560,400,this);
+            g2d.drawImage(ImmaginiGioco.getPulsante(),560,400,this);
             for (Function item: winScreen.getScreenFunctions()) {
                 drawWinScreenButtons(item, g2d);
             }
@@ -210,18 +210,19 @@ public class GamePanel extends JPanel {
         item.setDimension(new Dimension(width, height));
         item.setLocation(new Point(item.getLocation().x, item.getLocation().y));
         g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
-        if(getMousePosition()!=null) {
-            clickWinScreenButton(item,g2d);
-        }
+        clickWinScreenButton(item,g2d);
     }
 
     private void clickWinScreenButton(Function item, Graphics2D g2d) {
         Dimension dimension = item.getDimension();
         Point location = item.getLocation();
-        boolean inX = location.x <= getMousePosition().x && location.x + dimension.width >= getMousePosition().x;
-        boolean inY=location.y >= getMousePosition().y && location.y - dimension.height <= getMousePosition().y;
-        if (inX && inY) {
-            createTextHover(g2d,location,dimension);
+        Point mousePosition=getMousePosition();
+        if(mousePosition!=null) {
+            boolean inX = location.x <= mousePosition.x && location.x + dimension.width >= mousePosition.x;
+            boolean inY = location.y >= mousePosition.y && location.y - dimension.height <= mousePosition.y;
+            if (inX && inY) {
+                createTextHover(g2d, location, dimension);
+            }
         }
     }
 
@@ -243,16 +244,17 @@ public class GamePanel extends JPanel {
         item.setLocation(new Point(item.getLocation().x, item.getLocation().y));
         g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
 
-        if(getMousePosition()!=null) {
-            clickPauseScreenButton(item,g2d);
-        }
+        clickPauseScreenButton(item,g2d);
     }
     private void clickPauseScreenButton(Function item,Graphics2D g2d){
         Dimension dimension = item.getDimension();
         Point location = item.getLocation();
-        boolean inX = location.x <= getMousePosition().x && location.x + dimension.width >= getMousePosition().x;
-        boolean inY = location.y >= getMousePosition().y && location.y - dimension.height <= getMousePosition().y;
-        if (inX && inY) createTextHover(g2d,location,dimension);
+        Point mousePosition=getMousePosition();
+        if(mousePosition!=null) {
+            boolean inX = location.x <= mousePosition.x && location.x + dimension.width >= mousePosition.x;
+            boolean inY = location.y >= mousePosition.y && location.y - dimension.height <= mousePosition.y;
+            if (inX && inY) createTextHover(g2d, location, dimension);
+        }
     }
     private void drawChooseSkin(Graphics2D g2d) {
         g2d.drawImage(immaginiGioco.getSkin_screen(),0,0,this);
@@ -282,24 +284,25 @@ public class GamePanel extends JPanel {
             g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
         else g2d.drawImage((Image) item.getObject(), item.getLocation().x, item.getLocation().y,this);
 
-        if(getMousePosition()!=null) {
-            clickSkinScreenButton(item,g2d);
-        }
+        clickSkinScreenButton(item,g2d);
     }
 
     private void clickSkinScreenButton(Function item, Graphics2D g2d) {
         Dimension dimension = item.getDimension();
         Point location = item.getLocation();
-        boolean inX = location.x <= getMousePosition().x && location.x + dimension.width >= getMousePosition().x;
-        boolean inY;
-        if (item.getObject() instanceof String)
-            inY = location.y >= getMousePosition().y && location.y - dimension.height <= getMousePosition().y;
-        else inY = location.y <= getMousePosition().y && location.y + dimension.height >= getMousePosition().y;
-        if (inX && inY) {
-            if (item.getObject() instanceof Image) {
-                createImageHover(g2d,location,dimension);
-            } else {
-                createTextHover(g2d,location,dimension);
+        Point mousePosition=getMousePosition();
+        if(mousePosition!=null) {
+            boolean inX = location.x <= mousePosition.x && location.x + dimension.width >= mousePosition.x;
+            boolean inY;
+            if (item.getObject() instanceof String)
+                inY = location.y >= mousePosition.y && location.y - dimension.height <= mousePosition.y;
+            else inY = location.y <= mousePosition.y && location.y + dimension.height >= mousePosition.y;
+            if (inX && inY) {
+                if (item.getObject() instanceof Image) {
+                    createImageHover(g2d, location, dimension);
+                } else {
+                    createTextHover(g2d, location, dimension);
+                }
             }
         }
     }
@@ -347,37 +350,38 @@ public class GamePanel extends JPanel {
             g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
         else g2d.drawImage((Image) item.getObject(), item.getLocation().x, item.getLocation().y,this);
 
-        if(getMousePosition()!=null) {
-            clickMainScreenButton(item,g2d);
-        }
+        clickMainScreenButton(item,g2d);
     }
 
     private void clickMainScreenButton(Function item,Graphics2D g2d) {
         Dimension dimension = item.getDimension();
         Point location = item.getLocation();
-        boolean inX = location.x <= getMousePosition().x && location.x + dimension.width >= getMousePosition().x;
-        boolean inY;
-        if (item.getObject() instanceof String)
-            inY = location.y >= getMousePosition().y && location.y - dimension.height <= getMousePosition().y;
-        else inY = location.y <= getMousePosition().y && location.y + dimension.height >= getMousePosition().y;
+        Point mousePosition=getMousePosition();
+        if(mousePosition!=null) {
+            boolean inX = location.x <= mousePosition.x && location.x + dimension.width >= mousePosition.x;
+            boolean inY;
+            if (item.getObject() instanceof String)
+                inY = location.y >= mousePosition.y && location.y - dimension.height <= mousePosition.y;
+            else inY = location.y <= mousePosition.y && location.y + dimension.height >= mousePosition.y;
 
-        if (inX && inY) {
-            if (item.getObject() instanceof Image) {
-                createImageHover(g2d,location,dimension);
-            } else {
-                createTextHover(g2d,location,dimension);
+            if (inX && inY) {
+                if (item.getObject() instanceof Image) {
+                    createImageHover(g2d, location, dimension);
+                } else {
+                    createTextHover(g2d, location, dimension);
+                }
             }
         }
     }
 
-    private void createTextHover(Graphics2D g2d, Point l, Dimension d){
+    private synchronized void createTextHover(Graphics2D g2d, Point l, Dimension d){
         g2d.fillRect(l.x, l.y, d.width, 2);
         g2d.fillRect(l.x-2, l.y- d.height+2, 2, d.height);
         g2d.fillRect(l.x, l.y- d.height+2, d.width, 2);
         g2d.fillRect(l.x+ d.width, l.y- d.height+2, 2, d.height);
     }
 
-    private void createImageHover(Graphics2D g2d,Point l,Dimension d){
+    private synchronized void createImageHover(Graphics2D g2d,Point l,Dimension d){
         g2d.fillRect(l.x, l.y, d.width, 2);
         g2d.fillRect(l.x, l.y, 2, d.height);
         g2d.fillRect(l.x + d.height - 2, l.y, 2, d.height);
@@ -449,7 +453,7 @@ public class GamePanel extends JPanel {
                     g2d.drawImage(immaginiGioco.getPonte(world.getLiv()), x,y,this);
                 }
                 else if(world.isPlayer(i, j+world.getPlayer().getProgresso())) {
-                    if (world.isPlayer(i-1, j+world.getPlayer().getProgresso())) {
+                    if (world.isPlayer(i-1, j+world.getPlayer().getProgresso()) && !drawedPlayer) {
                         if(Controller.getPressed().contains(Settings.MOVE_RIGHT))
                             if(world.getPlayer().getScudo()){
                                 g2d.drawImage(immaginiGioco.getScudo(Settings.MOVE_RIGHT),x,y-Settings.CELL_SIZE_RIGA,this);
@@ -466,6 +470,7 @@ public class GamePanel extends JPanel {
                             }
                             else g2d.drawImage(immaginiGioco.getPersonaggio(world.getPlayer().getPreDirection()), x, y - Settings.CELL_SIZE_RIGA, this);
                         }
+                        drawedPlayer=true;
                     }
                 }
                 else if(world.isMiniZombie(i, j+world.getPlayer().getProgresso())){
@@ -490,12 +495,14 @@ public class GamePanel extends JPanel {
                 }
             }
         }
+        drawedPlayer=false;
         drawAbilityIcons(g2d);
         drawProgress(g2d,world.getPlayer().getProgresso());
         drawCoins(g2d,world.getPlayer().getCoins());
         drawLives(g2d,world.getPlayer().getLives());
         drawLevel(g2d,world.getLiv());
     }
+    private boolean drawedPlayer=false;
     private void drawAbilityIcons(Graphics2D g2d){
         if(world.getPlayer().getVelocita()){
             g2d.drawImage(immaginiGioco.getFlash(),15,80,this);

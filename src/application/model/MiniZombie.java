@@ -31,7 +31,7 @@ public class MiniZombie{
         if (world.isPlayer(i, j + direction)) {
             world.getPlayer().killPlayer();
         }
-        if(passo%3==0) {
+        if(passo%3==0 && world.isBlocco(i + 1, j + direction) && !world.isBlocco(i, j + direction)) {
             world.setMatrice_Principale(i, j, Block.VUOTO);
             world.setMatrice_Principale(i, j + direction, Block.MINIZOMBIE);
             coordinate.set(0, new Position(i, j + direction));

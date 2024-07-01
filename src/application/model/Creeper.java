@@ -34,7 +34,7 @@ public class Creeper {
         if (world.isPlayer(testa_i, testa_j + direction) || world.isPlayer(corpo_i, corpo_j + direction)) {
             world.getPlayer().killPlayer();
         }
-        if(passo%4==0) {
+        if(passo%4==0 && world.isBlocco(corpo_i + 1, corpo_j + direction) && !world.isBlocco(testa_i, testa_j + direction) && !world.isBlocco(corpo_i, corpo_j + direction)) {
             world.setMatrice_Principale(testa_i, testa_j, Block.VUOTO);
             world.setMatrice_Principale(corpo_i, corpo_j, Block.VUOTO);
             world.setMatrice_Principale(testa_i, testa_j + direction, Block.CREEPER);

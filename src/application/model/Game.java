@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Game
 {
-    private World world = new World(1,4);
+    private World world = new World(3,4);
 
     private Game() throws IOException {this.gameStatus=GameStatus.START_SCREEN;}
     private static final Game instance;
@@ -47,8 +47,11 @@ public class Game
 
         if (gameStatus == GameStatus.IN_GAME) {
             if (world.getPlayer().getProgresso() != (world.getViewPort().getFirst().length() - Settings.Filtro_Size_Colonna)) {
-                world.movePlayer();
+                if(world.getLiv()==3){
+                    world.moveBlocks();
+                }
                 world.moveNemici();
+                world.movePlayer();
                 world.getPlayer().checkAbilities();
                 //System.out.println(world.getPlayer().getVelC()+" "+world.getPlayer().getLenC()+" "+world.getPlayer().getVelocita()+" "+world.getPlayer().getLentezza());
             } else if (world.getPlayer().getCoordinatePlayer().getFirst().j() < world.getViewPort().getFirst().length() - 9) {
@@ -79,6 +82,7 @@ public class Game
                 passo = -1;
                 if (gameStatus == GameStatus.IN_GAME && world.getLiv() < 3) {
                     cont = false;
+                    world.getPlayer().resetAbilities();
                     world = new World(world.getLiv() + 1, world.getPlayer().getLives());
                 }
             }
