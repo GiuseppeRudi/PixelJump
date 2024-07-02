@@ -4,6 +4,7 @@ package application.model;
 // generale su cui altri classi che la estendono possono usare
 
 import application.Block;
+import application.GameStatus;
 import application.audio.Sound;
 import application.controller.Controller;
 
@@ -155,10 +156,13 @@ public abstract class AbstractPlayer {
                 Sound morte = new Sound("damage.wav");
                 morte.play();
             }
+            world.setMatrice_Principale(coordinate.getFirst().i(),coordinate.getFirst().j(),Block.VUOTO);
+            world.setMatrice_Principale(coordinate.getLast().i(),coordinate.getLast().j(),Block.VUOTO);
             coordinate.set(0, world.getPlayerStartPosition(world.getLiv()).getFirst());
             coordinate.set(1, world.getPlayerStartPosition(world.getLiv()).getLast());
             progresso = 0;
             if (lives > 0) lives--;
+            if (lives==0) Game.getInstance().setGameStatus(GameStatus.GAME_OVER);
             world.updateDirection(Settings.MOVE_RIGHT);
             world.setMorte(true);
         }

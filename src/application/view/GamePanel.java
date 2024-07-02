@@ -22,6 +22,7 @@ public class GamePanel extends JPanel {
     private Font Win;
     private Font Skin;
     private Font Pause;
+    private Font Lose;
 
     public void setController(Controller controllerPlayer) {
         this.addMouseListener(controllerPlayer);
@@ -31,6 +32,7 @@ public class GamePanel extends JPanel {
     private WinScreen winScreen;
     private SkinScreen skinScreen;
     private PauseScreen pauseScreen;
+    private LoseScreen loseScreen;
     private Map<Object, GameStatus> contenutoMap;
     public GamePanel(ImmaginiGioco immaginigioco, LevelProgress progress){
         this.immaginiGioco = immaginigioco;
@@ -41,6 +43,7 @@ public class GamePanel extends JPanel {
         winScreen=new WinScreen();
         skinScreen=new SkinScreen();
         pauseScreen=new PauseScreen();
+        loseScreen=new LoseScreen();
         Alt=loadFont("Alt");
         Reg=loadFont("Reg");
         Start=loadFont("Start");
@@ -62,6 +65,7 @@ public class GamePanel extends JPanel {
         contenutoMap.put("Livello Successivo", GameStatus.IN_GAME);
         contenutoMap.put(ImmaginiGioco.getSteve(), GameStatus.STEVE);
         contenutoMap.put(ImmaginiGioco.getAlex(), GameStatus.ALEX);
+        contenutoMap.put("Ricomincia", GameStatus.IN_GAME);
     }
 
     private Font loadFont(String t){
@@ -107,6 +111,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         GameStatus gameStatus=Game.getInstance().getGameStatus();
+        //System.out.println(gameStatus);
         if(gameStatus == GameStatus.START_SCREEN){
             drawStartScreen(g2d);
             if(soundtrack==null) {
@@ -122,9 +127,6 @@ public class GamePanel extends JPanel {
         }
         else if(gameStatus == GameStatus.COMMANDS_SCREEN){
             drawCommands(g2d);
-        }
-        else if(gameStatus == GameStatus.GAME_OVER){
-            drawGameOver(g2d);
         }
         else if(gameStatus == GameStatus.CHOOSE_SKIN || gameStatus == GameStatus.STEVE || gameStatus == GameStatus.ALEX){
             drawChooseSkin(g2d);
@@ -178,6 +180,10 @@ public class GamePanel extends JPanel {
                     soundtrack.play();
                 }
             }
+            else if(gameStatus == GameStatus.GAME_OVER){
+                drawGameOver(g2d);
+                Controller.getPressed().clear();
+            }
         }
         g2d.dispose();
     }
@@ -194,120 +200,35 @@ public class GamePanel extends JPanel {
         if(world.getLiv()!=3) {
             g2d.drawImage(ImmaginiGioco.getPulsante(),560,400,this);
             for (Function item: winScreen.getScreenFunctions()) {
-                drawWinScreenButtons(item, g2d);
+                drawButtons(item, g2d,Start.deriveFont(20.0f),Color.WHITE);
             }
         }
-        else drawWinScreenButtons(winScreen.getScreenFunctions()[0], g2d);
-    }
-
-    private void drawWinScreenButtons(Function item, Graphics2D g2d) {
-        g2d.setColor(Color.WHITE);
-        Win=Start.deriveFont(20.0f);
-        g2d.setFont(Win);
-        int width,height;
-        width = g2d.getFontMetrics().stringWidth((String) item.getObject());
-        height = g2d.getFontMetrics().getHeight();
-        item.setDimension(new Dimension(width, height));
-        item.setLocation(new Point(item.getLocation().x, item.getLocation().y));
-        g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
-        clickWinScreenButton(item,g2d);
-    }
-
-    private void clickWinScreenButton(Function item, Graphics2D g2d) {
-        Dimension dimension = item.getDimension();
-        Point location = item.getLocation();
-        Point mousePosition=getMousePosition();
-        if(mousePosition!=null) {
-            boolean inX = location.x <= mousePosition.x && location.x + dimension.width >= mousePosition.x;
-            boolean inY = location.y >= mousePosition.y && location.y - dimension.height <= mousePosition.y;
-            if (inX && inY) {
-                createTextHover(g2d, location, dimension);
-            }
-        }
+        else drawButtons(winScreen.getScreenFunctions()[0], g2d,Start.deriveFont(20.0f),Color.WHITE);
     }
 
     private void drawPause(Graphics2D g2d) {
         g2d.drawImage(ImmaginiGioco.getPulsante(),(Settings.WINDOW_SIZE_X- ImmaginiGioco.getPulsante().getWidth(this))/2,400,this);
         g2d.drawImage(immaginiGioco.getPausa(),(Settings.WINDOW_SIZE_X-immaginiGioco.getPausa().getWidth(this))/2,(Settings.WINDOW_SIZE_Y-immaginiGioco.getPausa().getHeight(this))/2,this);
         for(Function item : pauseScreen.getScreenFunctions()) {
-            drawPauseScreenButton(item,g2d);
-        }
-    }
-    private void drawPauseScreenButton(Function item,Graphics2D g2d){
-        g2d.setColor(Color.WHITE);
-        Pause=Start.deriveFont(20.0f);
-        g2d.setFont(Pause);
-        int width,height;
-        width = g2d.getFontMetrics().stringWidth((String) item.getObject());
-        height = g2d.getFontMetrics().getHeight();
-        item.setDimension(new Dimension(width, height));
-        item.setLocation(new Point(item.getLocation().x, item.getLocation().y));
-        g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
-
-        clickPauseScreenButton(item,g2d);
-    }
-    private void clickPauseScreenButton(Function item,Graphics2D g2d){
-        Dimension dimension = item.getDimension();
-        Point location = item.getLocation();
-        Point mousePosition=getMousePosition();
-        if(mousePosition!=null) {
-            boolean inX = location.x <= mousePosition.x && location.x + dimension.width >= mousePosition.x;
-            boolean inY = location.y >= mousePosition.y && location.y - dimension.height <= mousePosition.y;
-            if (inX && inY) createTextHover(g2d, location, dimension);
+            drawButtons(item,g2d,Start.deriveFont(20.0f),Color.WHITE);
         }
     }
     private void drawChooseSkin(Graphics2D g2d) {
         g2d.drawImage(immaginiGioco.getSkin_screen(),0,0,this);
         g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
         for(Function item : skinScreen.getScreenFunctions()) {
-            drawSkinScreenButton(item,g2d);
-        }
-    }
-
-    private void drawSkinScreenButton(Function item, Graphics2D g2d) {
-        g2d.setColor(Color.WHITE);
-        Skin=Start.deriveFont(25.0f);
-        g2d.setFont(Skin);
-        int width,height;
-        if(item.getObject() instanceof String) {
-            width = g2d.getFontMetrics().stringWidth((String) item.getObject());
-            height = g2d.getFontMetrics().getHeight();
-        }
-        else{
-            width = ((Image) item.getObject()).getWidth(this);
-            height = ((Image) item.getObject()).getHeight(this);
-        }
-        item.setDimension(new Dimension(width, height));
-        item.setLocation(new Point(item.getLocation().x, item.getLocation().y));
-
-        if(item.getObject() instanceof String)
-            g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
-        else g2d.drawImage((Image) item.getObject(), item.getLocation().x, item.getLocation().y,this);
-
-        clickSkinScreenButton(item,g2d);
-    }
-
-    private void clickSkinScreenButton(Function item, Graphics2D g2d) {
-        Dimension dimension = item.getDimension();
-        Point location = item.getLocation();
-        Point mousePosition=getMousePosition();
-        if(mousePosition!=null) {
-            boolean inX = location.x <= mousePosition.x && location.x + dimension.width >= mousePosition.x;
-            boolean inY;
-            if (item.getObject() instanceof String)
-                inY = location.y >= mousePosition.y && location.y - dimension.height <= mousePosition.y;
-            else inY = location.y <= mousePosition.y && location.y + dimension.height >= mousePosition.y;
-            if (inX && inY) {
-                if (item.getObject() instanceof Image) {
-                    createImageHover(g2d, location, dimension);
-                } else {
-                    createTextHover(g2d, location, dimension);
-                }
-            }
+            drawButtons(item,g2d,Start.deriveFont(25.0f),Color.WHITE);
         }
     }
 
     private void drawGameOver(Graphics2D g2d) {
+        g2d.drawImage(immaginiGioco.getLose_screen(),0,0,this);
+        g2d.drawImage(immaginiGioco.getSkull(),(Settings.WINDOW_SIZE_X-183)/2,175,this);
+        g2d.drawImage(ImmaginiGioco.getPulsante(),100,400,this);
+        g2d.drawImage(ImmaginiGioco.getPulsante(),560,400,this);
+        for (Function item: loseScreen.getScreenFunctions()) {
+            drawButtons(item, g2d,Start.deriveFont(20.0f),Color.WHITE);
+        }
     }
 
     private void drawCommands(Graphics2D g2d) {
@@ -327,12 +248,12 @@ public class GamePanel extends JPanel {
         g2d.drawImage(immaginiGioco.getStart_screen(),0,0,this);
         g2d.drawImage(immaginiGioco.getTitolo(),180,60,this);
         for(Function item : startScreen.getScreenFunctions()) {
-            drawMainScreenButtons(item,g2d,Start);
+            drawButtons(item,g2d,Start,Color.WHITE);
         }
     }
 
-    private void drawMainScreenButtons(Function item, Graphics2D g2d, Font font) {
-        g2d.setColor(Color.WHITE);
+    private void drawButtons(Function item, Graphics2D g2d, Font font, Color c) {
+        g2d.setColor(c);
         g2d.setFont(font);
         int width,height;
         if(item.getObject() instanceof String) {
@@ -350,10 +271,10 @@ public class GamePanel extends JPanel {
             g2d.drawString((String) item.getObject(), item.getLocation().x, item.getLocation().y);
         else g2d.drawImage((Image) item.getObject(), item.getLocation().x, item.getLocation().y,this);
 
-        clickMainScreenButton(item,g2d);
+        clickButton(item,g2d);
     }
 
-    private void clickMainScreenButton(Function item,Graphics2D g2d) {
+    private void clickButton(Function item,Graphics2D g2d) {
         Dimension dimension = item.getDimension();
         Point location = item.getLocation();
         Point mousePosition=getMousePosition();
@@ -374,14 +295,14 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private synchronized void createTextHover(Graphics2D g2d, Point l, Dimension d){
+    private void createTextHover(Graphics2D g2d, Point l, Dimension d){
         g2d.fillRect(l.x, l.y, d.width, 2);
         g2d.fillRect(l.x-2, l.y- d.height+2, 2, d.height);
         g2d.fillRect(l.x, l.y- d.height+2, d.width, 2);
         g2d.fillRect(l.x+ d.width, l.y- d.height+2, 2, d.height);
     }
 
-    private synchronized void createImageHover(Graphics2D g2d,Point l,Dimension d){
+    private void createImageHover(Graphics2D g2d,Point l,Dimension d){
         g2d.fillRect(l.x, l.y, d.width, 2);
         g2d.fillRect(l.x, l.y, 2, d.height);
         g2d.fillRect(l.x + d.height - 2, l.y, 2, d.height);
@@ -487,8 +408,30 @@ public class GamePanel extends JPanel {
                     for(Object o: world.getNemici()){
                         if(o instanceof Creeper){
                             if (((Creeper) o).getCoordinate().getFirst().i()==i && ((Creeper) o).getCoordinate().getFirst().j()==j+world.getPlayer().getProgresso()){
-                                g2d.drawImage(immaginiGioco.getCreeper(((Creeper) o).getDirection()),x,y,this);
+                                g2d.drawImage(immaginiGioco.getCreeper(((Creeper) o).getDirection(),((Creeper) o).getEsplosione()),x,y,this);
                                 break;
+                            }
+                        }
+                    }
+                }
+                else if(world.isSkeleton(i, j+world.getPlayer().getProgresso()) && world.isSkeleton(i+1, j+world.getPlayer().getProgresso())){
+                    for(Object o: world.getNemici()){
+                        if(o instanceof Skeleton){
+                            if (((Skeleton) o).getCoordinate().getFirst().i()==i && ((Skeleton) o).getCoordinate().getFirst().j()==j+world.getPlayer().getProgresso()){
+                                g2d.drawImage(immaginiGioco.getSkeleton(((Skeleton) o).getDirection()),x,y,this);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(world.isFreccia(i, j+world.getPlayer().getProgresso())){
+                    for(Object o: world.getNemici()){
+                        if(o instanceof Skeleton){
+                            for(Arrow a: ((Skeleton) o).getArrows()){
+                                if(Objects.equals(a.getPos(), new Position(i, j + world.getPlayer().getProgresso()))){
+                                    g2d.drawImage(immaginiGioco.getFreccia(a.getDir()),x,y,this);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -564,6 +507,7 @@ public class GamePanel extends JPanel {
 
     }
     private Object path;
+    Sound click = new Sound("click.wav");
     public void select() {
         if(Game.getInstance().getGameStatus().equals(GameStatus.START_SCREEN))
             path = startScreen.select(getMousePosition());
@@ -576,8 +520,12 @@ public class GamePanel extends JPanel {
         else if (Game.getInstance().getGameStatus().equals(GameStatus.PAUSE)){
             path = pauseScreen.select(getMousePosition());
         }
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.GAME_OVER)){
+            path = loseScreen.select(getMousePosition());
+        }
         System.out.println(path);
         if (path != null) {
+            click.play();
             if(soundtrack!=null) {
                 GameStatus preGS=Game.getInstance().getGameStatus();
                 GameStatus aftGS=contenutoMap.get(path);
@@ -590,6 +538,9 @@ public class GamePanel extends JPanel {
                 System.exit(1);
             }
             else Game.getInstance().setGameStatus(contenutoMap.get(path));
+            if(path=="Ricomincia"){
+                Game.getInstance().setWorld(new World(world.getLiv(), 4));
+            }
             path=null;
         }
     }

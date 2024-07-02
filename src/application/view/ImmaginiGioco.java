@@ -72,6 +72,14 @@ public class ImmaginiGioco {
     private Image scudo;
     private Image tartaruga;
     private Image flash;
+    private Image skeletonDX;
+    private Image skeletonSX;
+    private Image frecciaDX;
+    private Image frecciaSX;
+    private Image creeperActDX;
+    private Image creeperActSX;
+    private Image lose_screen;
+    private Image skull;
     public ImmaginiGioco() throws IOException {
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/sfondo_liv1.png"));
         backgroundImage = backgroundImage.getScaledInstance(6240,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
@@ -180,6 +188,9 @@ public class ImmaginiGioco {
         creeperDX = ImageIO.read(new File("src/application/resources/nemici/creeper.png"));
         creeperDX = creeperDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
         creeperSX=ImageUtil.flipImageHorizontally(creeperDX);
+        creeperActDX = ImageIO.read(new File("src/application/resources/nemici/creeperAct.png"));
+        creeperActDX = creeperActDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        creeperActSX=ImageUtil.flipImageHorizontally(creeperActDX);
         //velocita= new ImageIcon("src/application/resources/abilità/velocita.gif");
         velocita = ImageIO.read(new File("src/application/resources/abilità/velocita.gif"));
         velocita = velocita.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
@@ -194,8 +205,39 @@ public class ImmaginiGioco {
         tartaruga = tartaruga.getScaledInstance(Settings.CELL_SIZE_RIGA*2,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
         flash = ImageIO.read(new File("src/application/resources/icone/flash.png"));
         flash = flash.getScaledInstance(Settings.CELL_SIZE_RIGA*2,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        skeletonDX = ImageIO.read(new File("src/application/resources/nemici/skeleton.png"));
+        skeletonDX = skeletonDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        skeletonSX=ImageUtil.flipImageHorizontally(skeletonDX);
+        frecciaDX = ImageIO.read(new File("src/application/resources/nemici/freccia.png"));
+        frecciaDX = frecciaDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        frecciaSX=ImageUtil.flipImageHorizontally(frecciaDX);
+        lose_screen = ImageIO.read(new File("src/application/resources/GraphicsManager/blood.png"));
+        lose_screen = lose_screen.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
+        skull = ImageIO.read(new File("src/application/resources/GraphicsManager/skull.png"));
+        skull = skull.getScaledInstance(Settings.CELL_SIZE_RIGA*5,Settings.CELL_SIZE_COLONNA*5,Image.SCALE_SMOOTH);
+
     }
 
+    public Image getSkull() {
+        return skull;
+    }
+
+    public Image getLose_screen() {
+        return lose_screen;
+    }
+
+    public Image getFreccia(int direction){
+        if(direction==1){
+            return frecciaDX;
+        }
+        return frecciaSX;
+    }
+    public Image getSkeleton(int direction){
+        if(direction==1){
+            return skeletonDX;
+        }
+        return skeletonSX;
+    }
     public Image getTartaruga() {
         return tartaruga;
     }
@@ -226,10 +268,12 @@ public class ImmaginiGioco {
         }
         return minizombieSX;
     }
-    public Image getCreeper(int direction){
+    public Image getCreeper(int direction, int esplosione){
         if(direction==1){
+            if(esplosione>0) return creeperActDX;
             return creeperDX;
         }
+        if(esplosione>0) return creeperActSX;
         return creeperSX;
     }
     public Image getPausa() {return pausa;}

@@ -220,11 +220,20 @@ public class Player extends AbstractPlayer{
                             toBeRemoved.add(o);
                         }
                     }
+                    else if(o instanceof Skeleton){
+                        if (((Skeleton) o).getCoordinate().getFirst().i() == coordinatePlayer.getLast().i() + 1 && ((Skeleton) o).getCoordinate().getFirst().j() == coordinatePlayer.getLast().j()){
+//                            ((Skeleton) o).kill();
+                            toBeRemoved.add(o);
+                        }
+                    }
                 }
                 world.removeEnemy(toBeRemoved);
                 setFalling(false);
                 setJumping(true);
                 cont=1;
+            }
+            else if(world.isFreccia(coordinatePlayer.getLast().i()+1,coordinatePlayer.getLast().j())){
+                killPlayer();
             }
         }
     }

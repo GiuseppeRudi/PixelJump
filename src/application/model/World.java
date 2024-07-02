@@ -2,13 +2,14 @@ package application.model;
 
 import application.Block;
 import application.audio.Sound;
+import application.controller.Controller;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 public class World {
 
-    World(int liv, int lives){
+    public World(int liv, int lives){
         this.liv=liv;
         player.setLives(lives);
         coordinatePlayer.add(getPlayerStartPosition(liv).getFirst());
@@ -106,30 +107,36 @@ public class World {
                     ((MiniZombie) o).move();
                 } else if (o instanceof Creeper) {
                     ((Creeper) o).move();
+                } else if (o instanceof Skeleton) {
+                    ((Skeleton) o).move();
                 }
             }
         }
         velN+=1;
     }
-    private int remove=1;
     private int add=1;
     private int blockToRemove=69;
     private int blockToAdd=72;
     private int blockCount=0;
+    private int moved=0;
     public void moveBlocks(){
         if(blockCount%4==0) {
-            if(matrice_Principale[17][blockToRemove]==Block.PERSONAGGIO){
-                player.move(add);
+            if(moved!=0){
+                moved=0;
+                Controller.getPressed().remove(add);
+            }
+            if(matrice_Principale[17][blockToAdd]==Block.PERSONAGGIO){
+                Controller.getPressed().add(add);
+                moved=add;
             }
             matrice_Principale[17][blockToRemove] = Block.VUOTO;
             matrice_Principale[17][blockToAdd] = Block.TERRA;
             blockToAdd+=add;
-            blockToRemove+=remove;
+            blockToRemove+=add;
             if(blockToAdd==74 || blockToAdd==66){
                 int temp=blockToRemove;
                 blockToRemove=blockToAdd;
                 blockToAdd=temp;
-                remove=-remove;
                 add=-add;
             }
         }
@@ -233,9 +240,6 @@ public class World {
                 else if (cella=='m'){
                     matrice_Principale[i][j] = Block.MORTE;
                 }
-                else if (cella=='n'){
-                    matrice_Principale[i][j] = Block.TELETRASPORTO;
-                }
                 else if (cella=='o'){
                     matrice_Principale[i][j] = Block.MINIZOMBIE;
                     LinkedList<Position> l = new LinkedList<>();
@@ -250,6 +254,14 @@ public class World {
                     l.add(new Position(i+1,j));
                     Creeper c=new Creeper(l,this);
                     nemici.add(c);
+                }
+                else if (cella=='r' && viewPort.get(i+1).charAt(j)=='r'){
+                    matrice_Principale[i][j] = Block.SKELETON;
+                    LinkedList<Position> l = new LinkedList<>();
+                    l.add(new Position(i,j));
+                    l.add(new Position(i+1,j));
+                    Skeleton s=new Skeleton(l,this);
+                    nemici.add(s);
                 }
             }
         }
@@ -267,6 +279,10 @@ public class World {
             else if(o instanceof Creeper){
                 matrice_Principale[((Creeper) o).getCoordinate().getFirst().i()][((Creeper) o).getCoordinate().getFirst().j()]=Block.VUOTO;
                 matrice_Principale[((Creeper) o).getCoordinate().getLast().i()][((Creeper) o).getCoordinate().getLast().j()]=Block.VUOTO;
+            }
+            else if(o instanceof Skeleton){
+                matrice_Principale[((Skeleton) o).getCoordinate().getFirst().i()][((Skeleton) o).getCoordinate().getFirst().j()]=Block.VUOTO;
+                matrice_Principale[((Skeleton) o).getCoordinate().getLast().i()][((Skeleton) o).getCoordinate().getLast().j()]=Block.VUOTO;
             }
             nemici.remove(o);
         }
@@ -310,11 +326,13 @@ public class World {
     public boolean isUsato(int i, int j) { return isType(i,j,Block.USATO);}
     public boolean isMiniZombie(int i, int j) { return isType(i,j,Block.MINIZOMBIE);}
     public boolean isCreeper(int i, int j) { return isType(i,j,Block.CREEPER);}
+    public boolean isSkeleton(int i, int j) { return isType(i,j,Block.SKELETON);}
     public boolean isVelocita(int i, int j) { return isType(i,j,Block.VELOCITA);}
     public boolean isScudo(int i, int j) { return isType(i,j,Block.SCUDO);}
     public boolean isLentezza(int i, int j) { return isType(i,j,Block.LENTEZZA);}
     public boolean isVita(int i, int j) { return isType(i,j,Block.VITA);}
-    public boolean isNemico(int i, int j){ return isMiniZombie(i,j) || isCreeper(i,j);}
+    public boolean isNemico(int i, int j) { return isMiniZombie(i,j) || isCreeper(i,j) || isSkeleton(i,j);}
+    public boolean isFreccia(int i, int j) { return isType(i,j,Block.FRECCIA);}
     //public boolean isTeletrasporto(int i, int j) { return isType(i,j,Block.TELETRASPORTO);}
     public boolean isBlocco(int i, int j){return isWall(i,j) || isErba(i,j) || isTerra(i,j) || isSpeciale(i,j) || isTubo(i,j) || isBarile(i,j) || isPonte(i,j) || isUsato(i,j);}
 

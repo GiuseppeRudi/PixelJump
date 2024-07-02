@@ -76,7 +76,7 @@ public class Controller implements KeyListener, MouseListener {
     @Override
     public void keyReleased(KeyEvent e) {
         GameStatus status = Game.getInstance().getGameStatus();
-        if (status == GameStatus.IN_GAME || status ==GameStatus.PAUSE) {
+        if (status == GameStatus.IN_GAME || status == GameStatus.PAUSE || status == GameStatus.WIN) {
             if (e.getKeyCode()==comandi[0][tipo]) pressed.remove(Settings.MOVE_LEFT);
             else if (e.getKeyCode()==comandi[1][tipo]) pressed.remove(Settings.MOVE_RIGHT);
             else if (e.getKeyCode()==comandi[2][tipo]) pressed.remove(Settings.JUMP);
@@ -91,10 +91,8 @@ public class Controller implements KeyListener, MouseListener {
         //questo serve per aggiornare la view
         gamePanel.update();
     }
-    Sound click = new Sound("click.wav");
     @Override
     public void mouseClicked(MouseEvent e) {
-        click.play();
         //GameStatus status = Game.getInstance().getGameStatus();
         gamePanel.select();
     }
