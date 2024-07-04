@@ -83,6 +83,7 @@ public class Player extends AbstractPlayer{
     private Sound sbatte;
     private Sound coin;
     private Sound tel;
+    private Sound abilita;
     @Override
     public void move(){
         if(Controller.getPressed().contains(Settings.JUMP) && Game.getInstance().getWorld().isBlocco(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j()) && cont==0){
@@ -90,26 +91,50 @@ public class Player extends AbstractPlayer{
             salta.play();
         }
         coordinatePlayer=super.move(direction);
-        if(world.isCoin(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isCoin(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())) coins++;
+        if(world.isCoin(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isCoin(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
+            coin = new Sound("coin.wav");
+            coin.play();
+            coins++;
+            if(coins==5){
+                coins=0;
+                if(lives<4) lives++;
+            }
+        }
         else if(world.isVelocita(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isVelocita(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
+            abilita = new Sound("speed.wav");
+            abilita.play();
             if(lentezza){
                 lentezza=false;
                 lenC=150;
             }
             velocita=true;
+            if(velC!=150) velC=150;
             world.setAb(1);
         }
-        else if(world.isScudo(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isScudo(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())) scudo=true;
+        else if(world.isScudo(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isScudo(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
+            abilita = new Sound("shield.wav");
+            abilita.play();
+            abilita.incrementVolume();
+            scudo=true;
+        }
         else if(world.isLentezza(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isLentezza(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
+            abilita = new Sound("slowness.wav");
+            abilita.play();
             if(velocita){
                 velocita=false;
                 velC=150;
             }
             lentezza=true;
+            if(lenC!=150) lenC=150;
             world.setAb(4);
         }
         else if(world.isVita(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isVita(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
-            if(getLives()!=4) setLives(getLives()+1);
+
+            if(getLives()!=4){
+                abilita = new Sound("life.wav");
+                abilita.play();
+                setLives(getLives()+1);
+            }
         }
         if(direction!=Settings.NOT_MOVING && direction!=Settings.JUMP) preDirection=direction;
         if(Controller.getPressed().contains(Settings.MOVE_RIGHT) && progresso<(world.getViewPort().getFirst().length() -Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15) progresso+=(super.getPosition(0).j()-(Settings.Filtro_Size_Colonna+progresso-15));
@@ -137,42 +162,32 @@ public class Player extends AbstractPlayer{
         }
     }
     private void makeSounds() {
-        if(!Controller.getPressed().isEmpty() || isFalling() || isJumping()) {
+        if(!Controller.getPressed().isEmpty() || isFalling() /*|| isJumping()*/) {
             if(world.getViewPort().get(coordinatePlayer.getLast().i()).charAt(coordinatePlayer.getLast().j())=='n' && world.getViewPort().get(coordinatePlayer.getFirst().i()).charAt(coordinatePlayer.getFirst().j())=='n'){
                 tel = new Sound("tel.wav");
                 tel.play();
             }
-            if (Game.getInstance().getWorld().isErba(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
+            if (world.isErba(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
                 cammina = new Sound("grass.wav");
                 cammina.play();
-            } else if (Game.getInstance().getWorld().isTerra(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
+            } else if (world.isTerra(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
                 cammina = new Sound("dirt.wav");
                 cammina.play();
-            } else if (Game.getInstance().getWorld().isWall(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
+            } else if (world.isWall(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
                 cammina = new Sound("wood.wav");
                 cammina.play();
-            } else if (Game.getInstance().getWorld().isSpeciale(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
+            } else if (world.isSpeciale(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
                 cammina = new Sound("sand.wav");
                 cammina.play();
-            } else if(Game.getInstance().getWorld().isTubo(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
+            } else if(world.isTubo(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
                 cammina = new Sound("tubo.wav");
                 cammina.play();
-            } else if(Game.getInstance().getWorld().isBarile(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
+            } else if(world.isBarile(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
                 cammina = new Sound("barrel.wav");
                 cammina.play();
-            } else if(Game.getInstance().getWorld().isPonte(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
+            } else if(world.isPonte(coordinatePlayer.getLast().i() + 1, coordinatePlayer.getLast().j())) {
                 cammina = new Sound("wood.wav");
                 cammina.play();
-            }
-            if (Game.getInstance().getWorld().isBlocco(coordinatePlayer.getFirst().i() - 1, coordinatePlayer.getFirst().j())){
-                if(isJumping()) {
-                    sbatte = new Sound("hit.wav");
-                    sbatte.play();
-                }
-                if(Game.getInstance().getWorld().isSpeciale(coordinatePlayer.getFirst().i() - 1, coordinatePlayer.getFirst().j())){
-                    coin = new Sound("coin.wav");
-                    coin.play();
-                }
             }
         }
     }
@@ -182,11 +197,17 @@ public class Player extends AbstractPlayer{
         if(isJumping()){
             if(cont<3){
                 if(world.getViewPort().get(coordinatePlayer.getFirst().i()-1).charAt(coordinatePlayer.getFirst().j())=='q' && !world.isUsato(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getFirst().j())) {
+                    abilita = new Sound("ability.wav");
+                    abilita.play();
                     world.setMatrice_Principale(coordinatePlayer.getFirst().i() - 1, coordinatePlayer.getFirst().j(), Block.USATO);
                     generateRandomBlock();
                 }
                 if(world.isBlocco(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getFirst().j())){
+                    sbatte = new Sound("hit.wav");
+                    sbatte.play();
                     if(world.isSpeciale(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getFirst().j())){
+                        abilita = new Sound("ability.wav");
+                        abilita.play();
                         world.setMatrice_Principale(coordinatePlayer.getFirst().i()-1,coordinatePlayer.getFirst().j(), Block.USATO);
                         generateRandomBlock();
                     }
@@ -234,6 +255,7 @@ public class Player extends AbstractPlayer{
             }
             else if(world.isFreccia(coordinatePlayer.getLast().i()+1,coordinatePlayer.getLast().j())){
                 killPlayer();
+                setFalling(false);
             }
         }
     }

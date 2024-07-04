@@ -77,10 +77,6 @@ public class World {
 
                 if (!morte) {
                     for (int k = 0; k < coordinatePlayer.size(); k++) {
-                        if (matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] == Block.MONETA) {
-                            Sound coin = new Sound("coin.wav");
-                            coin.play();
-                        }
                         matrice_Principale[newPosition.get(k).i()][newPosition.get(k).j()] = Block.PERSONAGGIO;
                     }
                 } else {
@@ -110,6 +106,7 @@ public class World {
                 } else if (o instanceof Skeleton) {
                     ((Skeleton) o).move();
                 }
+                if(morte) break;
             }
         }
         velN+=1;
@@ -265,8 +262,8 @@ public class World {
                 }
             }
         }
-        matrice_Principale[coordinatePlayer.getFirst().i()][coordinatePlayer.getFirst().j()]=Block.PERSONAGGIO;
-        matrice_Principale[coordinatePlayer.get(1).i()][coordinatePlayer.get(1).j()]=Block.PERSONAGGIO;
+        //matrice_Principale[coordinatePlayer.getFirst().i()][coordinatePlayer.getFirst().j()]=Block.PERSONAGGIO;
+        //matrice_Principale[coordinatePlayer.get(1).i()][coordinatePlayer.get(1).j()]=Block.PERSONAGGIO;
     }
     public void removeEnemy(LinkedList<Object> l){
         if(l == null)

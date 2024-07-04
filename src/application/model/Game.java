@@ -6,9 +6,8 @@ import application.view.GamePanel;
 
 import java.io.IOException;
 
-public class Game
-{
-    private World world = new World(1,1);
+public class Game {
+    private World world;
 
     private Game() throws IOException {this.gameStatus=GameStatus.START_SCREEN;}
     private static final Game instance;
@@ -38,13 +37,6 @@ public class Game
 
 
     public void update(){
-
-//        if(world.movePlayer())
-//        {
-//           //qualcosa
-//        }
-        //AL MOMENTO SENZA IF PERCHE LE MONETE NON CI SERVONO
-
         if (gameStatus == GameStatus.IN_GAME) {
             if (world.getPlayer().getProgresso() != (world.getViewPort().getFirst().length() - Settings.Filtro_Size_Colonna)) {
                 world.moveNemici();
@@ -78,12 +70,14 @@ public class Game
                 if (!cont) {
                     cont = true;
                     setGameStatus(GameStatus.WIN);
+                    if(world.getLiv()==1) GamePanel.setLock2(false);
+                    else if(world.getLiv()==2) GamePanel.setLock3(false);
                 }
                 passo = -1;
                 if (gameStatus == GameStatus.IN_GAME && world.getLiv() < 3) {
                     cont = false;
                     world.getPlayer().resetAbilities();
-                    world = new World(world.getLiv() + 1, world.getPlayer().getLives());
+                    world = new World(world.getLiv() + 1, 3);
                 }
             }
         }

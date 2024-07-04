@@ -20,10 +20,8 @@ public class GamePanel extends JPanel {
     private Font Reg;
     private Font Start;
     private Font Win;
-    private Font Skin;
-    private Font Pause;
-    private Font Lose;
-
+    private Font Map;
+    private Font Com;
     public void setController(Controller controllerPlayer) {
         this.addMouseListener(controllerPlayer);
         this.addKeyListener(controllerPlayer);
@@ -33,17 +31,15 @@ public class GamePanel extends JPanel {
     private SkinScreen skinScreen;
     private PauseScreen pauseScreen;
     private LoseScreen loseScreen;
+    private MapScreen mapScreen;
+    private ComScreen comScreen;
     private Map<Object, GameStatus> contenutoMap;
     public GamePanel(ImmaginiGioco immaginigioco, LevelProgress progress){
         this.immaginiGioco = immaginigioco;
         this.progress=progress;
         contenutoMap = new HashMap<>();
         addInMap();
-        startScreen=new MainScreen();
-        winScreen=new WinScreen();
-        skinScreen=new SkinScreen();
-        pauseScreen=new PauseScreen();
-        loseScreen=new LoseScreen();
+        inizializzaSchermi();
         Alt=loadFont("Alt");
         Reg=loadFont("Reg");
         Start=loadFont("Start");
@@ -52,20 +48,42 @@ public class GamePanel extends JPanel {
         ge.registerFont(Reg);
         ge.registerFont(Start);
     }
+    public static void setLock2(boolean lock2) {
+        GamePanel.lock2 = lock2;
+    }
+
+    public static void setLock3(boolean lock3) {
+        GamePanel.lock3 = lock3;
+    }
+
+    public static boolean getLock2() {
+        return lock2;
+    }
+
+    public static boolean getLock3() {
+        return lock3;
+    }
+    private static boolean lock2=true;
+    private static boolean lock3=true;
 
     private void addInMap() {
-        contenutoMap.put("Gioca",GameStatus.IN_GAME);
+        contenutoMap.put("Gioca",GameStatus.MAP_SELECTION);
         contenutoMap.put("Indietro",GameStatus.START_SCREEN);
         contenutoMap.put("Scegli skin", GameStatus.CHOOSE_SKIN);
-        contenutoMap.put("Obiettivi", GameStatus.ACHIEVEMENT);
+        contenutoMap.put("Aiuto", GameStatus.HELP);
         contenutoMap.put("Comandi", GameStatus.COMMANDS_SCREEN);
-        contenutoMap.put(ImmaginiGioco.getLingue(), GameStatus.LANGUAGES);
+        contenutoMap.put(ImmaginiGioco.getCopyright(), GameStatus.COPYRIGHT);
         contenutoMap.put(ImmaginiGioco.getRiconoscimenti(), GameStatus.ABOUT_SCREEN);
         contenutoMap.put("Menu Principale", GameStatus.START_SCREEN);
         contenutoMap.put("Livello Successivo", GameStatus.IN_GAME);
         contenutoMap.put(ImmaginiGioco.getSteve(), GameStatus.STEVE);
         contenutoMap.put(ImmaginiGioco.getAlex(), GameStatus.ALEX);
         contenutoMap.put("Ricomincia", GameStatus.IN_GAME);
+        contenutoMap.put(ImmaginiGioco.getMap1(false),GameStatus.IN_GAME);
+        contenutoMap.put(ImmaginiGioco.getMap2(false),GameStatus.IN_GAME);
+        contenutoMap.put(ImmaginiGioco.getMap3(false),GameStatus.IN_GAME);
+        contenutoMap.put(ImmaginiGioco.getMap2(true),GameStatus.MAP_SELECTION);
+        contenutoMap.put(ImmaginiGioco.getMap3(true),GameStatus.MAP_SELECTION);
     }
 
     private Font loadFont(String t){
@@ -82,10 +100,10 @@ public class GamePanel extends JPanel {
             return new Font("Verdana", Font.PLAIN, 12);
         }
     }
-    public void updateDirection(int direction) {
-        //il panel aggiorna la direzione del player sulla view
-        //playerView.setDirection(direction,immaginiGioco,this);
-    }
+//    public void updateDirection(int direction) {
+//        //il panel aggiorna la direzione del player sulla view
+//        //playerView.setDirection(direction,immaginiGioco,this);
+//    }
     private World world;
 
     public World getWorld() {
@@ -105,12 +123,21 @@ public class GamePanel extends JPanel {
     public static void setSoundtrack(Sound soundtrack) {
         GamePanel.soundtrack = soundtrack;
     }
+    private void inizializzaSchermi(){
+        startScreen=new MainScreen();
+        winScreen=new WinScreen();
+        skinScreen=new SkinScreen();
+        pauseScreen=new PauseScreen();
+        loseScreen=new LoseScreen();
+        comScreen=new ComScreen();
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         GameStatus gameStatus=Game.getInstance().getGameStatus();
+        //System.out.println(lock2+" "+lock3);
         //System.out.println(gameStatus);
         if(gameStatus == GameStatus.START_SCREEN){
             drawStartScreen(g2d);
@@ -160,11 +187,11 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-        else if(gameStatus == GameStatus.ACHIEVEMENT){
-            drawAchievement(g2d);
+        else if(gameStatus == GameStatus.HELP){
+            drawHelp(g2d);
         }
-        else if(gameStatus == GameStatus.LANGUAGES){
-            drawLanguages(g2d);
+        else if(gameStatus == GameStatus.COPYRIGHT){
+            drawCopyright(g2d);
         }
         else{
             drawMap(g2d);
@@ -232,16 +259,56 @@ public class GamePanel extends JPanel {
     }
 
     private void drawCommands(Graphics2D g2d) {
+        g2d.drawImage(immaginiGioco.getMapBG(),0,0,this);
+        g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
+        g2d.setColor(Color.BLACK);
+        Com=Alt.deriveFont(50.0f);
+        g2d.setFont(Com);
+        g2d.drawString("Scelta",(Settings.WINDOW_SIZE_X-200)/2,75);
+        g2d.drawString("Configurazione Tasti",(Settings.WINDOW_SIZE_X-625)/2,150);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("Scelta",(Settings.WINDOW_SIZE_X-220)/2,65);
+        g2d.drawString("Configurazione Tasti",(Settings.WINDOW_SIZE_X-645)/2,140);
+        Com=Start.deriveFont(20.0f);
+        g2d.setFont(Com);
+        if(Controller.getTipo()==0) g2d.drawString("Stai usando la configurazione Freccette",(Settings.WINDOW_SIZE_X-480)/2,500);
+        else g2d.drawString("Stai usando la configurazione WASD",(Settings.WINDOW_SIZE_X-423)/2,500);
+        for (Function item: comScreen.getScreenFunctions()) {
+            drawButtons(item, g2d,Start.deriveFont(25.0f),Color.WHITE);
+        }
     }
 
     private void drawAbout(Graphics2D g2d) {
 
     }
-    private void drawLanguages(Graphics2D g2d) {
+    private void drawCopyright(Graphics2D g2d) {
     }
-    private void drawAchievement(Graphics2D g2d) {
+    private void drawHelp(Graphics2D g2d) {
     }
     private void drawMapSelection(Graphics2D g2d) {
+        g2d.setColor(Color.BLACK);
+        g2d.drawImage(immaginiGioco.getMapBG(),0,0,this);
+        g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
+        Map=Reg.deriveFont(25.0f);
+        g2d.setFont(Map);
+        g2d.drawString("Livello 1",100+(300-130)/2,325);
+        g2d.drawString("Livello 2",500+(300-130)/2,325);
+        g2d.drawString("Livello 3",((Settings.WINDOW_SIZE_X-ImmaginiGioco.getMap3(true).getWidth(this))/2)+(300-130)/2,573);
+        Map=Reg.deriveFont(50.0f);
+        g2d.setFont(Map);
+        g2d.drawString("Mappe",(Settings.WINDOW_SIZE_X-170)/2,75);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("Mappe",(Settings.WINDOW_SIZE_X-185)/2,68);
+        Map=Alt.deriveFont(25.0f);
+        g2d.setFont(Map);
+        g2d.drawString("Livello 1",100+(300-140)/2,320);
+        g2d.drawString("Livello 2",500+(300-140)/2,320);
+        g2d.drawString("Livello 3",((Settings.WINDOW_SIZE_X-ImmaginiGioco.getMap3(true).getWidth(this))/2)+(300-140)/2,568);
+        for(Function item : mapScreen.getScreenFunctions()) {
+            drawButtons(item,g2d,Start.deriveFont(25.0f),Color.WHITE);
+        }
+        if(lock2) g2d.drawImage(immaginiGioco.getLock(),500+(300-90)/2,100+(180-90)/2,this);
+        if(lock3) g2d.drawImage(immaginiGioco.getLock(),((Settings.WINDOW_SIZE_X-ImmaginiGioco.getMap3(true).getWidth(this))/2)+(300-90)/2,350+(180-90)/2,this);
     }
 
     private void drawStartScreen(Graphics2D g2d) {
@@ -296,17 +363,17 @@ public class GamePanel extends JPanel {
     }
 
     private void createTextHover(Graphics2D g2d, Point l, Dimension d){
-        g2d.fillRect(l.x, l.y, d.width, 2);
+        g2d.fillRect(l.x, l.y, d.width, 2); //Sopra
         g2d.fillRect(l.x-2, l.y- d.height+2, 2, d.height);
         g2d.fillRect(l.x, l.y- d.height+2, d.width, 2);
         g2d.fillRect(l.x+ d.width, l.y- d.height+2, 2, d.height);
     }
 
     private void createImageHover(Graphics2D g2d,Point l,Dimension d){
-        g2d.fillRect(l.x, l.y, d.width, 2);
-        g2d.fillRect(l.x, l.y, 2, d.height);
-        g2d.fillRect(l.x + d.height - 2, l.y, 2, d.height);
-        g2d.fillRect(l.x, l.y + d.height - 2, d.width, 2);
+        g2d.fillRect(l.x, l.y, d.width, 2); //Sopra
+        g2d.fillRect(l.x, l.y, 2, d.height); //Sinistra
+        g2d.fillRect(l.x + d.width - 2, l.y, 2, d.height); //Destra
+        g2d.fillRect(l.x, l.y + d.height - 2, d.width, 2); //Sotto
     }
 
     private void drawMap(Graphics2D g2d){
@@ -360,9 +427,15 @@ public class GamePanel extends JPanel {
                 }
                 else if(world.isTubo(i,j + world.getPlayer().getProgresso())){
 
-                    if(!world.isTubo(i-1,j + world.getPlayer().getProgresso()))
-                        g2d.drawImage(immaginiGioco.getTubo_sopra(world.getLiv()), x, y, this);
-                    else g2d.drawImage(immaginiGioco.getTubo_sotto(world.getLiv()), x, y, this);
+                    if(!world.isTubo(i-1,j + world.getPlayer().getProgresso())){
+                        if(!world.isTubo(i,j - 1 + world.getPlayer().getProgresso()))
+                            g2d.drawImage(immaginiGioco.getTubo_sopra(world.getLiv(),-1), x, y, this);
+                        else g2d.drawImage(immaginiGioco.getTubo_sopra(world.getLiv(),1), x, y, this);
+                    }
+                    else if(world.isTubo(i-1,j + world.getPlayer().getProgresso()))
+                        if(!world.isTubo(i,j - 1 + world.getPlayer().getProgresso()))
+                            g2d.drawImage(immaginiGioco.getTubo_sotto(world.getLiv(),-1), x+5, y, this);
+                        else g2d.drawImage(immaginiGioco.getTubo_sotto(world.getLiv(),1), x, y, this);
                 }
                 else if(world.isBarile(i,j+world.getPlayer().getProgresso())){
                     g2d.drawImage(immaginiGioco.getBarile(world.getLiv()), x,y,this);
@@ -374,20 +447,20 @@ public class GamePanel extends JPanel {
                     g2d.drawImage(immaginiGioco.getPonte(world.getLiv()), x,y,this);
                 }
                 else if(world.isPlayer(i, j+world.getPlayer().getProgresso())) {
-                    if (world.isPlayer(i-1, j+world.getPlayer().getProgresso()) && !drawedPlayer) {
+                    if (world.isPlayer(i-1, j+world.getPlayer().getProgresso()) && !drawedPlayer && world.getPlayer().getCoordinatePlayer().getFirst().equals(new Position(i-1, j + world.getPlayer().getProgresso())) && world.getPlayer().getCoordinatePlayer().getLast().equals(new Position(i, j + world.getPlayer().getProgresso()))) {
                         if(Controller.getPressed().contains(Settings.MOVE_RIGHT))
                             if(world.getPlayer().getScudo()){
-                                g2d.drawImage(immaginiGioco.getScudo(Settings.MOVE_RIGHT),x,y-Settings.CELL_SIZE_RIGA,this);
+                                g2d.drawImage(immaginiGioco.getScudo(Settings.MOVE_RIGHT,personaggio),x,y-Settings.CELL_SIZE_RIGA,this);
                             }
                             else g2d.drawImage(immaginiGioco.getPersonaggio(Settings.MOVE_RIGHT),x,y-Settings.CELL_SIZE_RIGA,this);
                         else if(Controller.getPressed().contains(Settings.MOVE_LEFT))
                             if(world.getPlayer().getScudo()){
-                                g2d.drawImage(immaginiGioco.getScudo(Settings.MOVE_LEFT),x,y-Settings.CELL_SIZE_RIGA,this);
+                                g2d.drawImage(immaginiGioco.getScudo(Settings.MOVE_LEFT,personaggio),x,y-Settings.CELL_SIZE_RIGA,this);
                             }
                             else g2d.drawImage(immaginiGioco.getPersonaggio(Settings.MOVE_LEFT),x,y-Settings.CELL_SIZE_RIGA,this);
                         else {
                             if(world.getPlayer().getScudo()){
-                                g2d.drawImage(immaginiGioco.getScudo(world.getPlayer().getPreDirection()),x,y-Settings.CELL_SIZE_RIGA,this);
+                                g2d.drawImage(immaginiGioco.getScudo(world.getPlayer().getPreDirection(),personaggio),x,y-Settings.CELL_SIZE_RIGA,this);
                             }
                             else g2d.drawImage(immaginiGioco.getPersonaggio(world.getPlayer().getPreDirection()), x, y - Settings.CELL_SIZE_RIGA, this);
                         }
@@ -463,6 +536,7 @@ public class GamePanel extends JPanel {
         }
     }
     private void drawLevel(Graphics2D g2d,int liv) {
+        Alt=Alt.deriveFont(22.0f);
         g2d.setFont(Alt);
         g2d.drawString("Level "+liv, 40, 560);
     }
@@ -523,6 +597,12 @@ public class GamePanel extends JPanel {
         else if (Game.getInstance().getGameStatus().equals(GameStatus.GAME_OVER)){
             path = loseScreen.select(getMousePosition());
         }
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.MAP_SELECTION)){
+            path = mapScreen.select(getMousePosition());
+        }
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.COMMANDS_SCREEN)){
+            path = comScreen.select(getMousePosition());
+        }
         System.out.println(path);
         if (path != null) {
             click.play();
@@ -537,10 +617,30 @@ public class GamePanel extends JPanel {
             if(path=="Esci"){
                 System.exit(1);
             }
-            else Game.getInstance().setGameStatus(contenutoMap.get(path));
-            if(path=="Ricomincia"){
-                Game.getInstance().setWorld(new World(world.getLiv(), 4));
+            else if(path=="Ricomincia"){
+                Game.getInstance().setWorld(new World(1, 3));
+                if(!lock2) lock2=true;
+                if(!lock3) lock3=true;
             }
+            else if (path=="Gioca"){
+                mapScreen=new MapScreen();
+            }
+            if(path==ImmaginiGioco.getMap1(false)){
+                Game.getInstance().setWorld(new World(1,3));
+            }
+            else if(path==ImmaginiGioco.getMap2(false)){
+                Game.getInstance().setWorld(new World(2,3));
+            }
+            else if(path==ImmaginiGioco.getMap3(false)){
+                Game.getInstance().setWorld(new World(3,3));
+            }
+            else if(path==ImmaginiGioco.getWASD()){
+                if(Controller.getTipo()==0) Controller.setTipo(1);
+            }
+            else if(path==ImmaginiGioco.getFreccette()){
+                if(Controller.getTipo()==1) Controller.setTipo(0);
+            }
+            if(path!=ImmaginiGioco.getWASD() && path!=ImmaginiGioco.getFreccette()) Game.getInstance().setGameStatus(contenutoMap.get(path));
             path=null;
         }
     }

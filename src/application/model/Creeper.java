@@ -45,7 +45,7 @@ public class Creeper {
             }
             else if(esplosione>0) esplosione=0;
         }
-        if(esplosione>20){
+        if(esplosione>10){
             world.getPlayer().killPlayer();
 //            LinkedList<Object> l=new LinkedList<>();
 //            l.add(this);

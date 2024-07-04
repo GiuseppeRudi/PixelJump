@@ -158,6 +158,8 @@ public abstract class AbstractPlayer {
             }
             world.setMatrice_Principale(coordinate.getFirst().i(),coordinate.getFirst().j(),Block.VUOTO);
             world.setMatrice_Principale(coordinate.getLast().i(),coordinate.getLast().j(),Block.VUOTO);
+            setFalling(false);
+            setJumping(false);
             coordinate.set(0, world.getPlayerStartPosition(world.getLiv()).getFirst());
             coordinate.set(1, world.getPlayerStartPosition(world.getLiv()).getLast());
             progresso = 0;

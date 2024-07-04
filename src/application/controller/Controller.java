@@ -27,9 +27,14 @@ public class Controller implements KeyListener, MouseListener {
 
     @Override
     public void keyTyped(KeyEvent e) {}
-    private int tipo=0;
-    public void setTipo(int tipo){
-        this.tipo=tipo;
+    private static int tipo=0;
+
+    public static int getTipo() {
+        return tipo;
+    }
+
+    public static void setTipo(int tipo){
+        Controller.tipo =tipo;
     }
     private final int[][] comandi= {{KeyEvent.VK_LEFT, KeyEvent.VK_A}, {KeyEvent.VK_RIGHT, KeyEvent.VK_D}, {KeyEvent.VK_SPACE, KeyEvent.VK_SPACE}, {KeyEvent.VK_ESCAPE, KeyEvent.VK_ESCAPE}};
 
@@ -63,7 +68,7 @@ public class Controller implements KeyListener, MouseListener {
                     Game.getInstance().setDirection(direction);
 
                     // CON QUESTO AGGIORNO LA VIEW
-                    gamePanel.updateDirection(direction);
+//                    gamePanel.updateDirection(direction);
                 }
 
             }

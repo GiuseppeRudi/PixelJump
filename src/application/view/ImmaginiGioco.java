@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ImmaginiGioco {
     private Image personaggioDes;
@@ -19,7 +20,7 @@ public class ImmaginiGioco {
     private Image bloccoErba;
     private Image bloccoMuro;
     private Image bloccoSpeciale;
-    private Image tubo;
+
     private Image barile;
     private Image fine;
     private Image fine3;
@@ -34,8 +35,12 @@ public class ImmaginiGioco {
     private Image bloccoMuro2;
     private Image bloccoMuro3;
     private Image bloccoSpeciale2;
-    private Image tubo2;
-    private Image tubo3;
+    private Image tubo1_sopDX;
+    private Image tubo2_sopDX;
+    private Image tubo3_sopDX;
+    private Image tubo1_sotDX;
+    private Image tubo2_sotDX;
+    private Image tubo3_sotDX;
     private Image oro;
     private Image lava;
     private Image ender_dragon;
@@ -48,11 +53,14 @@ public class ImmaginiGioco {
     private Image skin_screen;
     private Image usato;
     private Image vita;
-    private Image tubo3_sotto;
-    private Image tubo1_sotto;
-    private Image tubo2_sotto;
+    private Image tubo3_sopSX;
+    private Image tubo1_sopSX;
+    private Image tubo2_sopSX;
+    private Image tubo3_sotSX;
+    private Image tubo1_sotSX;
+    private Image tubo2_sotSX;
     private static Image riconoscimenti;
-    private static Image lingue;
+    private static Image copyright;
     private Image titolo;
     private static Image pulsante;
     private Image skin_button;
@@ -67,8 +75,10 @@ public class ImmaginiGioco {
     private Image creeperSX;
     private Image velocita;
     private Image lentezza;
-    private Image scudoDX;
-    private Image scudoSX;
+    private Image scudoSteveDX;
+    private Image scudoSteveSX;
+    private Image scudoAlexDX;
+    private Image scudoAlexSX;
     private Image scudo;
     private Image tartaruga;
     private Image flash;
@@ -80,6 +90,16 @@ public class ImmaginiGioco {
     private Image creeperActSX;
     private Image lose_screen;
     private Image skull;
+    private static Image map1;
+    private static Image map2;
+    private static Image map3;
+    private static Image map1no;
+    private static Image map2no;
+    private static Image map3no;
+    private Image mapBG;
+    private Image lock;
+    private static Image WASD;
+    private static Image freccette;
     public ImmaginiGioco() throws IOException {
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/sfondo_liv1.png"));
         backgroundImage = backgroundImage.getScaledInstance(6240,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
@@ -98,16 +118,30 @@ public class ImmaginiGioco {
         bloccoMuro = bloccoMuro.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         bloccoSpeciale = ImageIO.read(new File("src/application/resources/blocks/bloccoSpeciale.png"));
         bloccoSpeciale = bloccoSpeciale.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        tubo = ImageIO.read(new File("src/application/resources/blocks/tubo.png"));
-        tubo = tubo.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        tubo3 = ImageIO.read(new File("src/application/resources/blocks/tubo3.png"));
-        tubo3 = tubo3.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        tubo3_sotto = ImageIO.read(new File("src/application/resources/blocks/tubo3_sotto.png"));
-        tubo3_sotto = tubo3_sotto.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        tubo2_sotto = ImageIO.read(new File("src/application/resources/blocks/tubo2_sotto.png"));
-        tubo2_sotto = tubo2_sotto.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        tubo1_sotto = ImageIO.read(new File("src/application/resources/blocks/tubo1_sotto.png"));
-        tubo1_sotto = tubo1_sotto.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo1_sopSX = ImageIO.read(new File("src/application/resources/blocks/tubo1_sopSX.png"));
+        tubo1_sopSX = tubo1_sopSX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo2_sopSX = ImageIO.read(new File("src/application/resources/blocks/tubo2_sopSX.png"));
+        tubo2_sopSX = tubo2_sopSX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo3_sopSX = ImageIO.read(new File("src/application/resources/blocks/tubo3_sopSX.png"));
+        tubo3_sopSX = tubo3_sopSX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo3_sotSX = ImageIO.read(new File("src/application/resources/blocks/tubo3_sotSX.png"));
+        tubo3_sotSX = tubo3_sotSX.getScaledInstance(Settings.CELL_SIZE_RIGA-5,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo2_sotSX = ImageIO.read(new File("src/application/resources/blocks/tubo2_sotSX.png"));
+        tubo2_sotSX = tubo2_sotSX.getScaledInstance(Settings.CELL_SIZE_RIGA-5,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo1_sotSX = ImageIO.read(new File("src/application/resources/blocks/tubo1_sotSX.png"));
+        tubo1_sotSX = tubo1_sotSX.getScaledInstance(Settings.CELL_SIZE_RIGA-5,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo1_sopDX = ImageIO.read(new File("src/application/resources/blocks/tubo1_sopDX.png"));
+        tubo1_sopDX = tubo1_sopDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo2_sopDX = ImageIO.read(new File("src/application/resources/blocks/tubo2_sopDX.png"));
+        tubo2_sopDX = tubo2_sopDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo3_sopDX = ImageIO.read(new File("src/application/resources/blocks/tubo3_sopDX.png"));
+        tubo3_sopDX = tubo3_sopDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo3_sotDX = ImageIO.read(new File("src/application/resources/blocks/tubo3_sotDX.png"));
+        tubo3_sotDX = tubo3_sotDX.getScaledInstance(Settings.CELL_SIZE_RIGA-5,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo2_sotDX = ImageIO.read(new File("src/application/resources/blocks/tubo2_sotDX.png"));
+        tubo2_sotDX = tubo2_sotDX.getScaledInstance(Settings.CELL_SIZE_RIGA-5,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        tubo1_sotDX = ImageIO.read(new File("src/application/resources/blocks/tubo1_sotDX.png"));
+        tubo1_sotDX = tubo1_sotDX.getScaledInstance(Settings.CELL_SIZE_RIGA-5,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         barile = ImageIO.read(new File("src/application/resources/blocks/barile.png"));
         barile = barile.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         fine = ImageIO.read(new File("src/application/resources/blocks/fine.png"));
@@ -138,8 +172,6 @@ public class ImmaginiGioco {
         bloccoMuro3 = bloccoMuro3.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         bloccoSpeciale2 = ImageIO.read(new File("src/application/resources/blocks/bloccoSpeciale2.png"));
         bloccoSpeciale2 = bloccoSpeciale2.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        tubo2 = ImageIO.read(new File("src/application/resources/blocks/tubo2.png"));
-        tubo2 = tubo2.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         oro = ImageIO.read(new File("src/application/resources/blocks/oro.png"));
         oro = oro.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         lava = ImageIO.read(new File("src/application/resources/blocks/lava.jpg"));
@@ -162,8 +194,8 @@ public class ImmaginiGioco {
         vita = vita.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         riconoscimenti = ImageIO.read(new File("src/application/resources/riconoscimenti.png"));
         riconoscimenti = riconoscimenti.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        lingue = ImageIO.read(new File("src/application/resources/lingue.png"));
-        lingue = lingue.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
+        copyright = ImageIO.read(new File("src/application/resources/copyright.png"));
+        copyright = copyright.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         titolo = ImageIO.read(new File("src/application/resources/titolo.png"));
         titolo = titolo.getScaledInstance(Settings.CELL_SIZE_RIGA*18,Settings.CELL_SIZE_COLONNA*4,Image.SCALE_SMOOTH);
         skin_screen = ImageIO.read(new File("src/application/resources/GraphicsManager/skin_change.png"));
@@ -196,9 +228,12 @@ public class ImmaginiGioco {
         velocita = velocita.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         lentezza = ImageIO.read(new File("src/application/resources/abilità/lentezza.png"));
         lentezza = lentezza.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
-        scudoDX = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/steveScudo.png"));
-        scudoDX = scudoDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
-        scudoSX=ImageUtil.flipImageHorizontally(scudoDX);
+        scudoSteveDX = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/steveScudo.png"));
+        scudoSteveDX = scudoSteveDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        scudoSteveSX=ImageUtil.flipImageHorizontally(scudoSteveDX);
+        scudoAlexDX = ImageIO.read(new File("src/application/resources/GraphicsManager/Player/alexScudo.png"));
+        scudoAlexDX = scudoAlexDX.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        scudoAlexSX=ImageUtil.flipImageHorizontally(scudoAlexDX);
         scudo = ImageIO.read(new File("src/application/resources/abilità/scudo.png"));
         scudo = scudo.getScaledInstance(Settings.CELL_SIZE_RIGA,Settings.CELL_SIZE_COLONNA,Image.SCALE_SMOOTH);
         tartaruga = ImageIO.read(new File("src/application/resources/icone/tartaruga.png"));
@@ -215,7 +250,57 @@ public class ImmaginiGioco {
         lose_screen = lose_screen.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
         skull = ImageIO.read(new File("src/application/resources/GraphicsManager/skull.png"));
         skull = skull.getScaledInstance(Settings.CELL_SIZE_RIGA*5,Settings.CELL_SIZE_COLONNA*5,Image.SCALE_SMOOTH);
+        map1 = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/liv1.png"));
+        map1 = map1.getScaledInstance(Settings.CELL_SIZE_RIGA*10,Settings.CELL_SIZE_COLONNA*6,Image.SCALE_SMOOTH);
+        map2 = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/liv2.png"));
+        map2 = map2.getScaledInstance(Settings.CELL_SIZE_RIGA*10,Settings.CELL_SIZE_COLONNA*6,Image.SCALE_SMOOTH);
+        map3 = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/liv3.png"));
+        map3 = map3.getScaledInstance(Settings.CELL_SIZE_RIGA*10,Settings.CELL_SIZE_COLONNA*6,Image.SCALE_SMOOTH);
+        map1no = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/liv1no.png"));
+        map1no = map1no.getScaledInstance(Settings.CELL_SIZE_RIGA*10,Settings.CELL_SIZE_COLONNA*6,Image.SCALE_SMOOTH);
+        map2no = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/liv2no.png"));
+        map2no = map2no.getScaledInstance(Settings.CELL_SIZE_RIGA*10,Settings.CELL_SIZE_COLONNA*6,Image.SCALE_SMOOTH);
+        map3no = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/liv3no.png"));
+        map3no = map3no.getScaledInstance(Settings.CELL_SIZE_RIGA*10,Settings.CELL_SIZE_COLONNA*6,Image.SCALE_SMOOTH);
+        mapBG = ImageIO.read(new File("src/application/resources/GraphicsManager/BackgroundImage/mapBG.png"));
+        mapBG = mapBG.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
+        lock = ImageIO.read(new File("src/application/resources/GraphicsManager/lock.png"));
+        lock = lock.getScaledInstance(Settings.CELL_SIZE_RIGA*3,Settings.CELL_SIZE_COLONNA*3,Image.SCALE_SMOOTH);
+        WASD = ImageIO.read(new File("src/application/resources/GraphicsManager/wasd.png"));
+        WASD = WASD.getScaledInstance(Settings.CELL_SIZE_RIGA*7,Settings.CELL_SIZE_COLONNA*7,Image.SCALE_SMOOTH);
+        freccette = ImageIO.read(new File("src/application/resources/GraphicsManager/freccette.png"));
+        freccette = freccette.getScaledInstance(Settings.CELL_SIZE_RIGA*7,Settings.CELL_SIZE_COLONNA*7,Image.SCALE_SMOOTH);
+    }
 
+    public static Image getWASD() {
+        return WASD;
+    }
+
+    public static Image getFreccette() {
+        return freccette;
+    }
+
+    public Image getLock() {
+        return lock;
+    }
+
+    public Image getMapBG() {
+        return mapBG;
+    }
+
+    public static Image getMap1(boolean lock) {
+        if(lock) return map1no;
+        return map1;
+    }
+
+    public static Image getMap2(boolean lock) {
+        if(lock) return map2no;
+        return map2;
+    }
+
+    public static Image getMap3(boolean lock) {
+        if(lock) return map3no;
+        return map3;
     }
 
     public Image getSkull() {
@@ -249,9 +334,15 @@ public class ImmaginiGioco {
     public Image getScudoIcon(){
         return scudo;
     }
-    public Image getScudo(int direction) {
-        if(direction==Settings.MOVE_RIGHT) return scudoDX;
-        return scudoSX;
+    public Image getScudo(int direction, String p) {
+        if(direction==Settings.MOVE_RIGHT) {
+            if(p.equals("steve"))
+                return scudoSteveDX;
+            return scudoAlexDX;
+        }
+        if(p.equals("steve"))
+            return scudoSteveSX;
+        return scudoAlexSX;
     }
 
     public Image getLentezza() {
@@ -320,8 +411,8 @@ public class ImmaginiGioco {
         return riconoscimenti;
     }
 
-    public static Image getLingue() {
-        return lingue;
+    public static Image getCopyright() {
+        return copyright;
     }
 
     public Image getBackgroundImage(int liv) {
@@ -356,15 +447,29 @@ public class ImmaginiGioco {
         if(liv==1) return bloccoSpeciale;
         return bloccoSpeciale2;
     }
-    public Image getTubo_sopra(int liv) {
-        if(liv==1) return tubo;
-        else if(liv==2) return tubo2;
-        return tubo3;
+    public Image getTubo_sopra(int liv,int dir) {
+        if(liv==1){
+            if(dir==-1) return tubo1_sopSX;
+            return tubo1_sopDX;
+        }
+        else if(liv==2){
+            if(dir==-1) return tubo2_sopSX;
+            return tubo2_sopDX;
+        }
+        if(dir==-1) return tubo3_sopSX;
+        return tubo3_sopDX;
     }
-    public Image getTubo_sotto(int liv) {
-        if(liv==1) return tubo1_sotto;
-        else if(liv==2) return tubo2_sotto;
-        return tubo3_sotto;
+    public Image getTubo_sotto(int liv,int dir) {
+        if(liv==1){
+            if(dir==-1) return tubo1_sotSX;
+            return tubo1_sotDX;
+        }
+        else if(liv==2){
+            if(dir==-1) return tubo2_sotSX;
+            return tubo2_sotDX;
+        }
+        if(dir==-1) return tubo3_sotSX;
+        return tubo3_sotDX;
     }
 
     public Image getBarile(int liv) {
