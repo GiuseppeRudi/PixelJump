@@ -100,7 +100,10 @@ public class ImmaginiGioco {
     private Image lock;
     private static Image WASD;
     private static Image freccette;
+    private Image minecraftBackground;
     public ImmaginiGioco() throws IOException {
+        minecraftBackground = ImageIO.read(new File("src/application/resources/minecraft_background.png"));
+        minecraftBackground = minecraftBackground.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/sfondo_liv1.png"));
         backgroundImage = backgroundImage.getScaledInstance(6240,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
         backgroundImage2 = ImageIO.read(new File("src/application/resources/GraphicsManager/sfondo_liv2.png"));
@@ -405,6 +408,10 @@ public class ImmaginiGioco {
 
     public Image getTitolo() {
         return titolo;
+    }
+
+    public Image getMinecraftBackground() {
+        return minecraftBackground;
     }
 
     public static Image getRiconoscimenti() {

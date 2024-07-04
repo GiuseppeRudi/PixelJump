@@ -22,6 +22,7 @@ public class GamePanel extends JPanel {
     private Font Win;
     private Font Map;
     private Font Com;
+    private Font Dev;
     public void setController(Controller controllerPlayer) {
         this.addMouseListener(controllerPlayer);
         this.addKeyListener(controllerPlayer);
@@ -34,6 +35,7 @@ public class GamePanel extends JPanel {
     private MapScreen mapScreen;
     private ComScreen comScreen;
     private Map<Object, GameStatus> contenutoMap;
+    private AboutScreen aboutScreen;
     public GamePanel(ImmaginiGioco immaginigioco, LevelProgress progress){
         this.immaginiGioco = immaginigioco;
         this.progress=progress;
@@ -43,6 +45,7 @@ public class GamePanel extends JPanel {
         Alt=loadFont("Alt");
         Reg=loadFont("Reg");
         Start=loadFont("Start");
+        Dev=loadFont("Playground");
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         ge.registerFont(Alt);
         ge.registerFont(Reg);
@@ -130,6 +133,7 @@ public class GamePanel extends JPanel {
         pauseScreen=new PauseScreen();
         loseScreen=new LoseScreen();
         comScreen=new ComScreen();
+        aboutScreen=new AboutScreen();
     }
 
     @Override
@@ -278,9 +282,26 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void drawAbout(Graphics2D g2d) {
 
-    }
+        private void drawAbout(Graphics2D g2d) {
+            g2d.drawImage(immaginiGioco.getMinecraftBackground(),0,0,this);
+            g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
+            g2d.setColor(Color.WHITE);
+            Alt=Alt.deriveFont(55.0f);
+            g2d.setFont(Alt);
+            g2d.drawString("sviluppato da", 210, 160);
+            Dev=Dev.deriveFont(40.0f);
+            g2d.setFont(Dev);
+            g2d.drawString("Francesco Cristiano", 260, 230);
+            g2d.drawString("Giuseppe Rudi", 260, 280);
+            g2d.drawString("Simone Cozza", 260, 330);
+            g2d.drawString("Mirko Sonotaca", 260, 380);
+            Alt=Alt.deriveFont(35.0f);
+            g2d.setFont(Alt);
+            g2d.drawString("per user interface design", 160,450);
+            drawButtons(aboutScreen.getScreenFunctions()[0],g2d,Start.deriveFont(25.0f),Color.WHITE );
+        }
+
     private void drawCopyright(Graphics2D g2d) {
     }
     private void drawHelp(Graphics2D g2d) {
@@ -600,8 +621,12 @@ public class GamePanel extends JPanel {
         else if (Game.getInstance().getGameStatus().equals(GameStatus.MAP_SELECTION)){
             path = mapScreen.select(getMousePosition());
         }
-        else if (Game.getInstance().getGameStatus().equals(GameStatus.COMMANDS_SCREEN)){
-            path = comScreen.select(getMousePosition());
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.ABOUT_SCREEN)) {
+            path = aboutScreen.select(getMousePosition());
+        }
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.COMMANDS_SCREEN)) {
+                path = comScreen.select(getMousePosition());
+
         }
         System.out.println(path);
         if (path != null) {
