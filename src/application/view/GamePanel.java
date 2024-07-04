@@ -22,6 +22,7 @@ public class GamePanel extends JPanel {
     private Font Win;
     private Font Map;
     private Font Com;
+    private Font Help;
     public void setController(Controller controllerPlayer) {
         this.addMouseListener(controllerPlayer);
         this.addKeyListener(controllerPlayer);
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel {
     private LoseScreen loseScreen;
     private MapScreen mapScreen;
     private ComScreen comScreen;
+    private HelpScreen helpScreen;
     private Map<Object, GameStatus> contenutoMap;
     public GamePanel(ImmaginiGioco immaginigioco, LevelProgress progress){
         this.immaginiGioco = immaginigioco;
@@ -130,6 +132,7 @@ public class GamePanel extends JPanel {
         pauseScreen=new PauseScreen();
         loseScreen=new LoseScreen();
         comScreen=new ComScreen();
+        helpScreen=new HelpScreen();
     }
 
     @Override
@@ -262,17 +265,24 @@ public class GamePanel extends JPanel {
         g2d.drawImage(immaginiGioco.getMapBG(),0,0,this);
         g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
         g2d.setColor(Color.BLACK);
-        Com=Alt.deriveFont(50.0f);
+        Com=Alt.deriveFont(35.0f);
         g2d.setFont(Com);
-        g2d.drawString("Scelta",(Settings.WINDOW_SIZE_X-200)/2,75);
-        g2d.drawString("Configurazione Tasti",(Settings.WINDOW_SIZE_X-625)/2,150);
+        g2d.drawString("Scelta",(Settings.WINDOW_SIZE_X-140)/2,75);
+        g2d.drawString("Configurazione Tasti",(Settings.WINDOW_SIZE_X-445)/2,130);
         g2d.setColor(Color.WHITE);
-        g2d.drawString("Scelta",(Settings.WINDOW_SIZE_X-220)/2,65);
-        g2d.drawString("Configurazione Tasti",(Settings.WINDOW_SIZE_X-645)/2,140);
+        g2d.drawString("Scelta",(Settings.WINDOW_SIZE_X-150)/2,70);
+        g2d.drawString("Configurazione Tasti",(Settings.WINDOW_SIZE_X-455)/2,125);
+        Com=Reg.deriveFont(30.0f);
+        g2d.setFont(Com);
+        g2d.drawString("Muovi",(Settings.WINDOW_SIZE_X-97)/2,250);
+        g2d.drawString("Salta",570,422);
+        g2d.drawString("Pausa",510,490);
+        g2d.drawImage(immaginiGioco.getSpazio(),(Settings.WINDOW_SIZE_X-immaginiGioco.getSpazio().getWidth(this))/2,320,this);
+        g2d.drawImage(immaginiGioco.getEsc(),(Settings.WINDOW_SIZE_X-immaginiGioco.getEsc().getWidth(this))/2,450,this);
         Com=Start.deriveFont(20.0f);
         g2d.setFont(Com);
-        if(Controller.getTipo()==0) g2d.drawString("Stai usando la configurazione Freccette",(Settings.WINDOW_SIZE_X-480)/2,500);
-        else g2d.drawString("Stai usando la configurazione WASD",(Settings.WINDOW_SIZE_X-423)/2,500);
+        if(Controller.getTipo()==0) g2d.drawString("Stai usando la configurazione Freccette",(Settings.WINDOW_SIZE_X-480)/2,550);
+        else g2d.drawString("Stai usando la configurazione WASD",(Settings.WINDOW_SIZE_X-423)/2,550);
         for (Function item: comScreen.getScreenFunctions()) {
             drawButtons(item, g2d,Start.deriveFont(25.0f),Color.WHITE);
         }
@@ -282,8 +292,40 @@ public class GamePanel extends JPanel {
 
     }
     private void drawCopyright(Graphics2D g2d) {
+
     }
     private void drawHelp(Graphics2D g2d) {
+        g2d.setColor(Color.BLACK);
+        g2d.drawImage(immaginiGioco.getHelpBG(),0,0,this);
+        g2d.drawImage(immaginiGioco.getBoard(),20,20,this);
+        Help=Reg.deriveFont(30.0f);
+        g2d.setFont(Help);
+        g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
+        g2d.drawString("Abilita",250,100);
+        g2d.drawString("Nemici",550,100);
+        g2d.drawImage(immaginiGioco.getVita(),230,170,this);
+        g2d.drawImage(immaginiGioco.getScudoIcon(),230,270,this);
+        g2d.drawImage(immaginiGioco.getVelocita(),230,370,this);
+        g2d.drawImage(immaginiGioco.getLentezza(),230,470,this);
+
+        g2d.drawImage(immaginiGioco.getCreeper(1,0),520,170,this);
+        g2d.drawImage(immaginiGioco.getCreeper(1,1),580,170,this);
+        g2d.drawImage(immaginiGioco.getSkeleton(1),520,320,this);
+        g2d.drawImage(immaginiGioco.getFreccia(1),580,320,this);
+        g2d.drawImage(immaginiGioco.getMiniZombie(1),520,470,this);
+        Help=Start.deriveFont(17.0f);
+        g2d.setFont(Help);
+        g2d.drawString("Vita",300,190);
+        g2d.drawString("Scudo",300,290);
+        g2d.drawString("Velocita",300,390);
+        g2d.drawString("Lentezza",300,490);
+
+        g2d.drawString("Creeper",650,210);
+        g2d.drawString("Scheletro",650,360);
+        g2d.drawString("Mini Zombie",590,490);
+        for(Function item : helpScreen.getScreenFunctions()) {
+            drawButtons(item,g2d,Start.deriveFont(25.0f),Color.WHITE);
+        }
     }
     private void drawMapSelection(Graphics2D g2d) {
         g2d.setColor(Color.BLACK);
@@ -602,6 +644,9 @@ public class GamePanel extends JPanel {
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.COMMANDS_SCREEN)){
             path = comScreen.select(getMousePosition());
+        }
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.HELP)){
+            path = helpScreen.select(getMousePosition());
         }
         System.out.println(path);
         if (path != null) {

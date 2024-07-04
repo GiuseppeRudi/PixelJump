@@ -100,6 +100,10 @@ public class ImmaginiGioco {
     private Image lock;
     private static Image WASD;
     private static Image freccette;
+    private Image esc;
+    private Image spazio;
+    private Image board;
+    private Image helpBG;
     public ImmaginiGioco() throws IOException {
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/sfondo_liv1.png"));
         backgroundImage = backgroundImage.getScaledInstance(6240,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
@@ -270,6 +274,30 @@ public class ImmaginiGioco {
         WASD = WASD.getScaledInstance(Settings.CELL_SIZE_RIGA*7,Settings.CELL_SIZE_COLONNA*7,Image.SCALE_SMOOTH);
         freccette = ImageIO.read(new File("src/application/resources/GraphicsManager/freccette.png"));
         freccette = freccette.getScaledInstance(Settings.CELL_SIZE_RIGA*7,Settings.CELL_SIZE_COLONNA*7,Image.SCALE_SMOOTH);
+        spazio = ImageIO.read(new File("src/application/resources/GraphicsManager/spazio.png"));
+        spazio = spazio.getScaledInstance(Settings.CELL_SIZE_RIGA*6,Settings.CELL_SIZE_COLONNA*6,Image.SCALE_SMOOTH);
+        esc = ImageIO.read(new File("src/application/resources/GraphicsManager/esc.png"));
+        esc = esc.getScaledInstance(Settings.CELL_SIZE_RIGA*2,Settings.CELL_SIZE_COLONNA*2,Image.SCALE_SMOOTH);
+        board = ImageIO.read(new File("src/application/resources/GraphicsManager/board.png"));
+        board = board.getScaledInstance(Settings.WINDOW_SIZE_X-45,Settings.WINDOW_SIZE_Y-30,Image.SCALE_SMOOTH);
+        helpBG = ImageIO.read(new File("src/application/resources/GraphicsManager/helpBG.jpg"));
+        helpBG = helpBG.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
+    }
+
+    public Image getBoard() {
+        return board;
+    }
+
+    public Image getHelpBG() {
+        return helpBG;
+    }
+
+    public Image getEsc() {
+        return esc;
+    }
+
+    public Image getSpazio() {
+        return spazio;
     }
 
     public static Image getWASD() {
