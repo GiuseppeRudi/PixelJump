@@ -114,7 +114,7 @@ public class Player extends AbstractPlayer{
         else if(world.isScudo(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isScudo(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
             abilita = new Sound("shield.wav");
             abilita.play();
-            abilita.incrementVolume();
+            for(int i=0;i<50;i++) abilita.incrementVolume();
             scudo=true;
         }
         else if(world.isLentezza(coordinatePlayer.getLast().i(),coordinatePlayer.getLast().j()) || world.isLentezza(coordinatePlayer.getFirst().i(),coordinatePlayer.getFirst().j())){
@@ -255,7 +255,6 @@ public class Player extends AbstractPlayer{
             }
             else if(world.isFreccia(coordinatePlayer.getLast().i()+1,coordinatePlayer.getLast().j())){
                 killPlayer();
-                setFalling(false);
             }
         }
     }
