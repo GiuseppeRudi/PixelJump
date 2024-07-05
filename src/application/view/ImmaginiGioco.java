@@ -541,9 +541,9 @@ public class ImmaginiGioco {
         return ponte3;
     }
     public Image getTeletrasporto(int liv) {
-        if(liv==2) return teletrasporto;
-        return ender_dragon;
+        return teletrasporto;
     }
+
     public Image getUsato() {
         return usato;
     }

@@ -157,9 +157,17 @@ public class GamePanel extends JPanel {
         }
         else if(gameStatus == GameStatus.MAP_SELECTION){
             drawMapSelection(g2d);
+            if(soundtrack==null) {
+                soundtrack = new Sound("stal.wav");
+                soundtrack.loop();
+            }
         }
         else if(gameStatus == GameStatus.ABOUT_SCREEN){
             drawAbout(g2d);
+            if(soundtrack==null) {
+                soundtrack = new Sound("menu3.wav");
+                soundtrack.loop();
+            }
         }
         else if(gameStatus == GameStatus.COMMANDS_SCREEN){
             drawCommands(g2d);

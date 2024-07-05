@@ -207,9 +207,6 @@ public class World {
                 else if (cella=='b') {
                     matrice_Principale[i][j] =Block.TERRA;
                 }
-                else if (cella=='d') {
-                    matrice_Principale[i][j] =Block.NEMICO;
-                }
                 else if (cella=='e') {
                     matrice_Principale[i][j] = Block.MURO;
                 }
@@ -225,12 +222,12 @@ public class World {
                 else if (cella=='i'){
                     matrice_Principale[i][j] = Block.BARILE;
                 }
-                else if (cella=='j'){
-                    matrice_Principale[i][j] = Block.FINE;
-                }
-                else if (cella=='k'){
-                    matrice_Principale[i][j] = Block.PORTALE;
-                }
+//                else if (cella=='j'){
+//                    matrice_Principale[i][j] = Block.FINE;
+//                }
+//                else if (cella=='k'){
+//                    matrice_Principale[i][j] = Block.PORTALE;
+//                }
                 else if (cella=='l'){
                     matrice_Principale[i][j] = Block.PONTE;
                 }
