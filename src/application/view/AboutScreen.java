@@ -14,6 +14,9 @@ public class AboutScreen {
         getFunctions();
         this.aboutScreenFunctions=createItems(this.functions);
     }
+    private void getFunctions() {
+        functions.add("Indietro");
+    }
 
     private Function[] createItems(ArrayList<Object> func){
         if(func == null)
@@ -22,10 +25,6 @@ public class AboutScreen {
         items[0] = new Function(func.getFirst(), new Point(47,62));
         return items;
     }
-    private void getFunctions() {
-        functions.add("Indietro");
-    }
-
 
     public Object select(Point mouseLocation) {
         for (Function item : aboutScreenFunctions){

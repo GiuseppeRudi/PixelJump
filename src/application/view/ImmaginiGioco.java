@@ -104,6 +104,9 @@ public class ImmaginiGioco {
     private Image spazio;
     private Image board;
     private Image helpBG;
+    private Image minecraftBackground;
+    private Image devBackground;
+    private Image copBackground;
     public ImmaginiGioco() throws IOException {
         backgroundImage = ImageIO.read(new File("src/application/resources/GraphicsManager/sfondo_liv1.png"));
         backgroundImage = backgroundImage.getScaledInstance(6240,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
@@ -282,6 +285,18 @@ public class ImmaginiGioco {
         board = board.getScaledInstance(Settings.WINDOW_SIZE_X-45,Settings.WINDOW_SIZE_Y-30,Image.SCALE_SMOOTH);
         helpBG = ImageIO.read(new File("src/application/resources/GraphicsManager/helpBG.jpg"));
         helpBG = helpBG.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
+        copBackground = ImageIO.read(new File("src/application/resources/GraphicsManager/cop_background.jpg"));
+        copBackground = copBackground.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
+        devBackground = ImageIO.read(new File("src/application/resources/GraphicsManager/dev_background.png"));
+        devBackground = devBackground.getScaledInstance(Settings.WINDOW_SIZE_X,Settings.WINDOW_SIZE_Y,Image.SCALE_SMOOTH);
+    }
+
+    public Image getDevBackground() {
+        return devBackground;
+    }
+
+    public Image getCopBackground() {
+        return copBackground;
     }
 
     public Image getBoard() {

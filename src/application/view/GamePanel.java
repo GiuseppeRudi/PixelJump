@@ -23,6 +23,8 @@ public class GamePanel extends JPanel {
     private Font Map;
     private Font Com;
     private Font Help;
+    private Font Dev;
+    private Font Cop;
     public void setController(Controller controllerPlayer) {
         this.addMouseListener(controllerPlayer);
         this.addKeyListener(controllerPlayer);
@@ -35,6 +37,8 @@ public class GamePanel extends JPanel {
     private MapScreen mapScreen;
     private ComScreen comScreen;
     private HelpScreen helpScreen;
+    private AboutScreen aboutScreen;
+    private CopyrightScreen copyrightScreen;
     private Map<Object, GameStatus> contenutoMap;
     public GamePanel(ImmaginiGioco immaginigioco, LevelProgress progress){
         this.immaginiGioco = immaginigioco;
@@ -133,6 +137,8 @@ public class GamePanel extends JPanel {
         loseScreen=new LoseScreen();
         comScreen=new ComScreen();
         helpScreen=new HelpScreen();
+        aboutScreen=new AboutScreen();
+        copyrightScreen=new CopyrightScreen();
     }
 
     @Override
@@ -289,10 +295,50 @@ public class GamePanel extends JPanel {
     }
 
     private void drawAbout(Graphics2D g2d) {
-
+        g2d.drawImage(immaginiGioco.getDevBackground(),0,0,this);
+        g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
+        g2d.setColor(Color.BLACK);
+        Dev=Alt.deriveFont(55.0f);
+        g2d.setFont(Dev);
+        g2d.drawString("sviluppato da", 220, 170); //prima nera
+        Dev=Alt.deriveFont(35.0f);
+        g2d.setFont(Dev);
+        g2d.drawString("per user interface design", 175,458); //seconda nera
+        g2d.setColor(Color.WHITE);
+        Dev=Alt.deriveFont(55.0f);
+        g2d.setFont(Dev);
+        g2d.drawString("sviluppato da", 210, 160);
+        Dev=Alt.deriveFont(35.0f);
+        g2d.setFont(Dev);
+        g2d.drawString("per user interface design", 165,450);
+        Dev=Alt.deriveFont(40.0f);
+        g2d.setFont(Dev);
+        g2d.drawString("Francesco Cristiano", 260, 230);
+        g2d.drawString("Giuseppe Rudi", 260, 280);
+        g2d.drawString("Simone Cozza", 260, 330);
+        g2d.drawString("Mirko Sonotaca", 260, 380);
+        drawButtons(aboutScreen.getScreenFunctions()[0],g2d,Start.deriveFont(25.0f),Color.WHITE );
     }
     private void drawCopyright(Graphics2D g2d) {
-
+        g2d.drawImage(immaginiGioco.getCopBackground(),0,0,this); //cambiare sfondo
+        g2d.drawImage(immaginiGioco.getSkin_button(),20,20,this);
+        Cop=Alt.deriveFont(55.0f);
+        g2d.setFont(Cop);
+        g2d.setColor(Color.BLACK);
+        g2d.drawString("Copyright", 280, 100);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("Copyright",270,90);
+        Cop=Alt.deriveFont(30.0f);
+        g2d.setFont(Cop);
+        g2d.drawString("font", 180, 200);
+        g2d.drawString("immagini", 180, 260);
+        g2d.drawString("suoni", 180, 320);
+        Font site=new Font("font", Font.BOLD,30);
+        g2d.setFont(site);
+        g2d.drawString("dafont", 355, 195);
+        g2d.drawString("minecraft wiki - shutterstock", 355, 255);
+        g2d.drawString("mojang studios - freesound", 355, 315);
+        drawButtons(copyrightScreen.getScreenFunctions()[0],g2d,Start.deriveFont(25.0f),Color.WHITE );
     }
     private void drawHelp(Graphics2D g2d) {
         g2d.setColor(Color.BLACK);
@@ -647,6 +693,12 @@ public class GamePanel extends JPanel {
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.HELP)){
             path = helpScreen.select(getMousePosition());
+        }
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.COPYRIGHT)){
+            path = copyrightScreen.select(getMousePosition());
+        }
+        else if (Game.getInstance().getGameStatus().equals(GameStatus.ABOUT_SCREEN)){
+            path = aboutScreen.select(getMousePosition());
         }
         System.out.println(path);
         if (path != null) {
