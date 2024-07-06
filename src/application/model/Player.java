@@ -137,11 +137,11 @@ public class Player extends AbstractPlayer{
             }
         }
         if(direction!=Settings.NOT_MOVING && direction!=Settings.JUMP) preDirection=direction;
+        if(protezione>0) protezione--;
         if(Controller.getPressed().contains(Settings.MOVE_RIGHT) && progresso<(world.getViewPort().getFirst().length() -Settings.Filtro_Size_Colonna) && super.getPosition(0).j()>=Settings.Filtro_Size_Colonna+progresso-15) progresso+=(super.getPosition(0).j()-(Settings.Filtro_Size_Colonna+progresso-15));
         else if(Controller.getPressed().contains(Settings.MOVE_LEFT) && progresso>0 && super.getPosition(0).j()<=Settings.Filtro_Size_Colonna+progresso-21) progresso-=((Settings.Filtro_Size_Colonna+progresso-21)-super.getPosition(0).j());
         makeSounds();
         checkJump();
-
     }
     public void checkAbilities(){
         if(velocita){
@@ -161,6 +161,16 @@ public class Player extends AbstractPlayer{
             }
         }
     }
+    private int protezione=0;
+
+    public int getProtezione() {
+        return protezione;
+    }
+
+    public void setProtezione(int protezione) {
+        this.protezione = protezione;
+    }
+
     private void makeSounds() {
         if(!Controller.getPressed().isEmpty() || isFalling() /*|| isJumping()*/) {
             if(world.getViewPort().get(coordinatePlayer.getLast().i()).charAt(coordinatePlayer.getLast().j())=='n' && world.getViewPort().get(coordinatePlayer.getFirst().i()).charAt(coordinatePlayer.getFirst().j())=='n'){
@@ -253,7 +263,7 @@ public class Player extends AbstractPlayer{
                 setJumping(true);
                 cont=1;
             }
-            else if(world.isFreccia(coordinatePlayer.getLast().i()+1,coordinatePlayer.getLast().j())){
+            else if(world.isFreccia(coordinatePlayer.getLast().i()+1,coordinatePlayer.getLast().j()) && protezione==0){
                 killPlayer();
             }
         }

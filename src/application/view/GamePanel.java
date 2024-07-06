@@ -69,8 +69,8 @@ public class GamePanel extends JPanel {
     public static boolean getLock3() {
         return lock3;
     }
-    private static boolean lock2=true;
-    private static boolean lock3=true;
+    private static boolean lock2=false;
+    private static boolean lock3=false;
 
     private void addInMap() {
         contenutoMap.put("Gioca",GameStatus.MAP_SELECTION);
@@ -206,15 +206,31 @@ public class GamePanel extends JPanel {
         }
         else if(gameStatus == GameStatus.HELP){
             drawHelp(g2d);
+            if(soundtrack==null) {
+                soundtrack = new Sound("menu2.wav");
+                soundtrack.loop();
+            }
         }
         else if(gameStatus == GameStatus.COPYRIGHT){
             drawCopyright(g2d);
+            if(soundtrack==null) {
+                soundtrack = new Sound("menu4.wav");
+                soundtrack.loop();
+            }
         }
         else{
             drawMap(g2d);
             if(gameStatus == GameStatus.IN_GAME && soundtrack==null) {
-                soundtrack = new Sound("blocks.wav");
-                soundtrack.loop();
+                if(world.getLiv()==1) {
+                    soundtrack = new Sound("blocks.wav");
+                    soundtrack.loop();
+                } else if(world.getLiv()==2){
+                    soundtrack = new Sound("nether1.wav");
+                    soundtrack.loop();
+                } else if(world.getLiv()==3){
+                    soundtrack = new Sound("so_below.wav");
+                    soundtrack.loop();
+                }
             }
             if(gameStatus == GameStatus.PAUSE) drawPause(g2d);
             else if(gameStatus == GameStatus.WIN){
@@ -679,46 +695,71 @@ public class GamePanel extends JPanel {
     private Object path;
     Sound click = new Sound("click.wav");
     public void select() {
-        if(Game.getInstance().getGameStatus().equals(GameStatus.START_SCREEN))
+        if (Game.getInstance().getGameStatus().equals(GameStatus.START_SCREEN)){
             path = startScreen.select(getMousePosition());
+            if (soundtrack != null && path!=null) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
+        }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.WIN)) {
             path = winScreen.select(getMousePosition(), world.getLiv());
+            if (soundtrack != null && path!=null) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.CHOOSE_SKIN) || Game.getInstance().getGameStatus().equals(GameStatus.STEVE) || Game.getInstance().getGameStatus().equals(GameStatus.ALEX)) {
             path = skinScreen.select(getMousePosition());
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.PAUSE)){
             path = pauseScreen.select(getMousePosition());
+            if (soundtrack != null && path!=null) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.GAME_OVER)){
             path = loseScreen.select(getMousePosition());
+            if (soundtrack != null && path!=null) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.MAP_SELECTION)){
             path = mapScreen.select(getMousePosition());
+            if (soundtrack != null && contenutoMap.get(path)!=GameStatus.MAP_SELECTION) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.COMMANDS_SCREEN)){
             path = comScreen.select(getMousePosition());
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.HELP)){
             path = helpScreen.select(getMousePosition());
+            if (soundtrack != null && path!=null) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.COPYRIGHT)){
             path = copyrightScreen.select(getMousePosition());
+            if (soundtrack != null && path!=null) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
         }
         else if (Game.getInstance().getGameStatus().equals(GameStatus.ABOUT_SCREEN)){
             path = aboutScreen.select(getMousePosition());
+            if (soundtrack != null && path!=null) {
+                soundtrack.pause();
+                soundtrack = null;
+            }
         }
         System.out.println(path);
         if (path != null) {
             click.play();
-            if(soundtrack!=null) {
-                GameStatus preGS=Game.getInstance().getGameStatus();
-                GameStatus aftGS=contenutoMap.get(path);
-                if(!((preGS==GameStatus.CHOOSE_SKIN || preGS==GameStatus.STEVE || preGS==GameStatus.ALEX) && (aftGS==GameStatus.CHOOSE_SKIN || aftGS==GameStatus.STEVE || aftGS==GameStatus.ALEX))) {
-                    soundtrack.pause();
-                    soundtrack = null;
-                }
-            }
             if(path=="Esci"){
                 System.exit(1);
             }

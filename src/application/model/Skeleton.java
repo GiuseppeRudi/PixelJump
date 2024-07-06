@@ -32,10 +32,10 @@ public class Skeleton {
         int testa_j = coordinate.getFirst().j();
         int corpo_i = coordinate.getLast().i();
         int corpo_j = coordinate.getLast().j();
-        if (testa_j + direction<11 || !world.isValidPosition(testa_i, testa_j + direction) || !world.isValidPosition(corpo_i, corpo_j + direction) || !world.isBlocco(corpo_i + 1, corpo_j + direction) || world.isBlocco(testa_i, testa_j + direction) || world.isBlocco(corpo_i, corpo_j + direction) || world.isNemico(testa_i, testa_j + direction) || world.isNemico(corpo_i, corpo_j + direction) || world.isNemico(testa_i, testa_j + (direction * 2)) || world.isNemico(corpo_i, corpo_j + (direction * 2))) {
+        if (testa_j + direction<11 || !world.isValidPosition(testa_i, testa_j + direction) || !world.isValidPosition(corpo_i, corpo_j + direction) || !world.isBlocco(corpo_i + 1, corpo_j + direction) || world.isBlocco(testa_i, testa_j + direction) || world.isBlocco(corpo_i, corpo_j + direction) || world.isNemico(testa_i, testa_j + direction) || world.isNemico(corpo_i, corpo_j + direction) || world.isNemico(testa_i, testa_j + (direction * 2)) || world.isNemico(corpo_i, corpo_j + (direction * 2)) || (world.isPlayer(corpo_i, corpo_j + direction) && world.getPlayer().getProtezione()>0)) {
             direction = -direction;
         }
-        if (world.isPlayer(testa_i, testa_j + direction) || world.isPlayer(corpo_i, corpo_j + direction)) {
+        if ((world.isPlayer(testa_i, testa_j + direction) || world.isPlayer(corpo_i, corpo_j + direction)) && world.isBlocco(corpo_i + 1, corpo_j + direction) && world.getPlayer().getProtezione()==0) {
             world.getPlayer().killPlayer();
         }
         if(passoFreccia%2==0) moveArrows();

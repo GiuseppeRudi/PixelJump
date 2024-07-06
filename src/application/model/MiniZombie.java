@@ -25,10 +25,10 @@ public class MiniZombie{
     public void move(){
         int i = coordinate.getFirst().i();
         int j = coordinate.getFirst().j();
-        if (j + direction<11 || !world.isValidPosition(i, j + direction) || !world.isBlocco(i + 1, j + direction) || world.isBlocco(i, j + direction) || world.isNemico(i, j + direction) || world.isNemico(i, j + (direction * 2))) {
+        if (j + direction<11 || !world.isValidPosition(i, j + direction) || !world.isBlocco(i + 1, j + direction) || world.isBlocco(i, j + direction) || world.isNemico(i, j + direction) || world.isNemico(i, j + (direction * 2)) || (world.isPlayer(i, j + direction) && world.getPlayer().getProtezione()>0)) {
             direction = -direction;
         }
-        if (world.isPlayer(i, j + direction)) {
+        if (world.isPlayer(i, j + direction) && world.isBlocco(i + 1, j + direction) && world.getPlayer().getProtezione()==0) {
             world.getPlayer().killPlayer();
         }
         if(passo%3==0 && world.isBlocco(i + 1, j + direction) && !world.isBlocco(i, j + direction)) {

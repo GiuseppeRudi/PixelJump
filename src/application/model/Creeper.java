@@ -32,10 +32,10 @@ public class Creeper {
         int testa_j = coordinate.getFirst().j();
         int corpo_i = coordinate.getLast().i();
         int corpo_j = coordinate.getLast().j();
-        if (testa_j + direction<11 || !world.isValidPosition(testa_i, testa_j + direction) || !world.isValidPosition(corpo_i, corpo_j + direction) || !world.isBlocco(corpo_i + 1, corpo_j + direction) || world.isBlocco(testa_i, testa_j + direction) || world.isBlocco(corpo_i, corpo_j + direction) || world.isNemico(testa_i, testa_j + direction) || world.isNemico(corpo_i, corpo_j + direction) || world.isNemico(testa_i, testa_j + (direction * 2)) || world.isNemico(corpo_i, corpo_j + (direction * 2))) {
+        if (testa_j + direction<11 || !world.isValidPosition(testa_i, testa_j + direction) || !world.isValidPosition(corpo_i, corpo_j + direction) || !world.isBlocco(corpo_i + 1, corpo_j + direction) || world.isBlocco(testa_i, testa_j + direction) || world.isBlocco(corpo_i, corpo_j + direction) || world.isNemico(corpo_i, corpo_j + direction) || world.isNemico(corpo_i, corpo_j + (direction * 2)) || (world.isPlayer(corpo_i, corpo_j + direction) && world.getPlayer().getProtezione()>0)) {
             direction = -direction;
         }
-        if (world.isPlayer(testa_i, testa_j + direction) || world.isPlayer(corpo_i, corpo_j + direction)) {
+        if ((world.isPlayer(testa_i, testa_j + direction) || world.isPlayer(corpo_i, corpo_j + direction)) && world.isBlocco(corpo_i + 1, corpo_j + direction) && world.getPlayer().getProtezione()==0) {
             world.getPlayer().killPlayer();
         }
         if(!world.getPlayer().getCoordinatePlayer().isEmpty()) {
@@ -46,10 +46,8 @@ public class Creeper {
             else if(esplosione>0) esplosione=0;
         }
         if(esplosione>10){
-            world.getPlayer().killPlayer();
-//            LinkedList<Object> l=new LinkedList<>();
-//            l.add(this);
-//            world.removeEnemy(l);
+            if(world.getPlayer().getProtezione()==0) world.getPlayer().killPlayer();
+            else esplosione=0;
         }
         if(esplosione==0 && passo%4==0 && world.isBlocco(corpo_i + 1, corpo_j + direction) && !world.isBlocco(testa_i, testa_j + direction) && !world.isBlocco(corpo_i, corpo_j + direction)) {
             world.setMatrice_Principale(testa_i, testa_j, Block.VUOTO);

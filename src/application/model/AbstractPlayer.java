@@ -129,7 +129,7 @@ public abstract class AbstractPlayer {
         //qui aggiorniamo la linked list con le nuove coordinate che abbiamo precedentemnete controllato nel movePlayer in world
         coordinate = simulateMove();
         //System.out.println(coordinate.getLast().i()+" "+ coordinate.getLast().j());
-        if(coordinate.getLast().i()+1>=world.getViewPort().size() || world.isMorte(coordinate.getLast().i()+1,coordinate.getLast().j()) || world.isNemico(coordinate.getFirst().i(),coordinate.getFirst().j()) || world.isNemico(coordinate.getLast().i(), coordinate.getLast().j())) {
+        if((coordinate.getLast().i()+1>=world.getViewPort().size() || world.isMorte(coordinate.getLast().i()+1,coordinate.getLast().j()) || world.isNemico(coordinate.getFirst().i(),coordinate.getFirst().j()) || world.isNemico(coordinate.getLast().i(), coordinate.getLast().j())) && world.getPlayer().getProtezione()==0) {
             //se cade nel vuoto muore perde una vita ne ha 3 , quando perde tutte le vite muore del tutto
             killPlayer();
         }
@@ -169,7 +169,10 @@ public abstract class AbstractPlayer {
             world.updateDirection(Settings.MOVE_RIGHT);
             world.setMorte(true);
         }
-        else world.getPlayer().setScudo(false);
+        else{
+            world.getPlayer().setProtezione(10);
+            world.getPlayer().setScudo(false);
+        }
     }
     abstract void move();
     // perche questo simulateMove di player è diverso da simulateplayer di abstract
