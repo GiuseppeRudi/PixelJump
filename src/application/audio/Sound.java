@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Sound {
+    //audio
     private AudioInputStream audioIn;
     private Clip clip;
     public Sound(String name) { //Riceve come parametro il nome di una risorsa .wav da riprodurre.
